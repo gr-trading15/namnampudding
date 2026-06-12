@@ -1,0 +1,47 @@
+<script>
+(function(){
+  function injectBundleStylesIntoShadowRoot() {
+    var host = document.querySelector('shadow-dom-container');
+    if (!host || !host.shadowRoot) return false;
+
+    var root = host.shadowRoot;
+
+    if (root.querySelector('#bundle-item-shadow-style')) return true;
+
+    var style = document.createElement('style');
+    style.id = 'bundle-item-shadow-style';
+    style.textContent = `
+      {% for item in cart.items %}
+        {% if item.properties._is_bundle_item != blank %}
+          .item-list-wrapper .item:nth-child({{ forloop.index }}) .quantity-handler-wrapper > .quantity-handler{display:none !important;}
+        {% endif %}
+      {% endfor %}
+    `;
+    root.appendChild(style);
+
+    return true;
+  }
+
+  function waitForShadowHost() {
+    if (injectBundleStylesIntoShadowRoot()) return;
+
+    var observer = new MutationObserver(function() {
+      if (injectBundleStylesIntoShadowRoot()) {
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+
+    setTimeout(function() {
+      observer.disconnect();
+    }, 10000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForShadowHost);
+  } else {
+    waitForShadowHost();
+  }
+})();
+</script>

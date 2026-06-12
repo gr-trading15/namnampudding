@@ -1,0 +1,656 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "a6426f52-ab54-4e20-af8e-1e03ff2d1061": {
+      "type": "slide",
+      "blocks": {
+        "template--15340900384812__a6426f52-ab54-4e20-af8e-1e03ff2d1061-slide-1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/byob_banner.png",
+            "image_1": "shopify://shop_images/byob_banner.png",
+            "heading": "Premium Gourmet Snacks & Desserts — Shipped Pan-India",
+            "heading_size": "h2",
+            "subheading": "",
+            "button_label": "",
+            "link": "shopify://products/build-your-own-box",
+            "button_style_secondary": false,
+            "box_align": "middle-left",
+            "show_text_box": false,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "slide_BbPTL6": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/IMG_9121.jpg",
+            "image_1": "shopify://shop_images/IMG_9177.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": false,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "55337d58-886a-429b-b72c-a41b9a3a265c": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/image00031.jpg",
+            "image_1": "shopify://shop_images/image00031.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": false,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        }
+      },
+      "block_order": [
+        "template--15340900384812__a6426f52-ab54-4e20-af8e-1e03ff2d1061-slide-1",
+        "slide_BbPTL6",
+        "55337d58-886a-429b-b72c-a41b9a3a265c"
+      ],
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "adapt_image",
+        "slider_visual": "dots",
+        "auto_rotate": true,
+        "change_slides_speed": 3,
+        "show_text_below": false,
+        "accessibility_info": ""
+      }
+    },
+    "17215637569e9fa1b8": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "namnam_dual_marquee_bTzMMg": {
+      "type": "namnam-dual-marquee",
+      "blocks": {
+        "item_Nc4tmf": {
+          "type": "item",
+          "settings": {
+            "text": "LOVED BY 10,000+ FOODIES",
+            "emoji": "💛",
+            "pill_style": "pill1"
+          }
+        },
+        "item_gzDN9z": {
+          "type": "item",
+          "settings": {
+            "text": "CLEAN INGREDIENTS",
+            "emoji": "🌱",
+            "pill_style": "pill2"
+          }
+        },
+        "item_pPtxA7": {
+          "type": "item",
+          "settings": {
+            "text": "NO PRESERVATIVES",
+            "emoji": "🚫",
+            "pill_style": "pill1"
+          }
+        },
+        "item_4Lz8nf": {
+          "type": "item",
+          "settings": {
+            "text": "BETTER SNACKING",
+            "emoji": "🤩",
+            "pill_style": "pill2"
+          }
+        },
+        "item_bottom_Wq7f3d": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "GUILT-FREE INDULGENCE",
+            "emoji": "😋",
+            "pill_style": "pill2"
+          }
+        },
+        "item_bottom_RqQrqw": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "HANDCRAFTED IN SMALL BATCHES",
+            "emoji": "👩‍🍳",
+            "pill_style": "pill1"
+          }
+        },
+        "item_bottom_TYU7xf": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "30-DAY HAPPINESS GUARANTEE",
+            "emoji": "👍",
+            "pill_style": "pill2"
+          }
+        }
+      },
+      "block_order": [
+        "item_Nc4tmf",
+        "item_gzDN9z",
+        "item_pPtxA7",
+        "item_4Lz8nf",
+        "item_bottom_Wq7f3d",
+        "item_bottom_RqQrqw",
+        "item_bottom_TYU7xf"
+      ],
+      "name": "Nam Nam Dual Marquee",
+      "settings": {
+        "bg": "#f3ecd8",
+        "text": "#2b1c11",
+        "pill1": "#da851a",
+        "pill2": "#ffeab8",
+        "speed": 18,
+        "gap_desktop": 12,
+        "gap_mobile": 8,
+        "font_desktop": 17,
+        "font_mobile": 12,
+        "full_bleed": true,
+        "hover_pause": true
+      }
+    },
+    "image_with_text_VEBfqc": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_Kbb6cJ": {
+          "type": "heading",
+          "settings": {
+            "heading": "Want to know why freeze-dried candy is the coolest thing you’ll taste?",
+            "heading_size": "h2"
+          }
+        },
+        "text_BjgKJU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Freeze-dried candy is like regular candy but with a cool upgrade! ❄️ First we freeze it, take out the water, and boom—it’s crispy, crunchy, and melts in your mouth! 💥🍬 Super fun, super tasty, and way cooler than regular candy.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_CPNPhc": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/shop",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_Kbb6cJ",
+        "text_BjgKJU",
+        "button_CPNPhc"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/freeze_dried_skittlez_png.webp",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "color_scheme": "",
+        "image_behavior": "zoom-in",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "nn_overlay_cta_ArD4jd": {
+      "type": "NN-Overlay-CTA",
+      "name": "NN Overlay CTA",
+      "settings": {
+        "image": "shopify://shop_images/all_joy_long.png",
+        "alt": "All Joy. No Rules. Nam Nam banner",
+        "cta_label": "Take A Bite",
+        "cta_link": "shopify://collections/shop",
+        "cta_new_tab": false,
+        "enable_scrim": true,
+        "scrim_color": "#00000014",
+        "scrim_color_mobile": "#00000026",
+        "offset_x": 50,
+        "offset_y": 90,
+        "offset_x_m": 50,
+        "offset_y_m": 91,
+        "section_bg": "#f4ecd7",
+        "btn_bg": "#da851a",
+        "btn_bg_hover": "#020912",
+        "btn_text": "#ffffff",
+        "max_width": "1400px",
+        "radius": 10
+      }
+    },
+    "171887290518cf4147": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_cNiTyj": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Shop The Bestsellers",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "bestsellers",
+        "products_to_show": 6,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": true,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "blob",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "enable_quick_add": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_tKwX8b": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "<strong>New Treats on the Block!</strong>",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "new-arrivals",
+        "products_to_show": 10,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": true,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "blob",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "testimonial_slider_EBLQYN": {
+      "type": "Testimonial_slider",
+      "blocks": {
+        "testimonial_N7bY7A": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/Generated_Image_March_18_2026_-_5_33PM.jpg",
+            "testimonial_product": ""
+          }
+        },
+        "testimonial_Pq4z99": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/Generated_Image_March_18_2026_-_5_31PM.jpg",
+            "testimonial_product": ""
+          }
+        },
+        "testimonial_w8fjaJ": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/I_m_hooked_on_the_Almond_Mocha_Brittle_Rich_flavour_addictive_crunch_and_fast_shipping._My_new_go-to_snack.png",
+            "testimonial_product": "brittle-bestsellers-trio"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_N7bY7A",
+        "testimonial_Pq4z99",
+        "testimonial_w8fjaJ"
+      ],
+      "name": "Testimonial Slider",
+      "settings": {
+        "show_heading": true,
+        "heading_text": "Here's What Our Customers Are Saying!",
+        "heading_color": "#1a1a1a",
+        "background_color": "#f4ecd7",
+        "accent_color": "#e88e1c",
+        "top_padding": 28,
+        "bottom_padding": 28,
+        "peek_px": 32
+      }
+    },
+    "image_with_text_cTbNHk": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_GHJtM3": {
+          "type": "heading",
+          "settings": {
+            "heading": "Build a Box of Your Dreams!",
+            "heading_size": "h2"
+          }
+        },
+        "text_p6YTUL": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Personalize a box with your favorite sweet and sour candies, and have it delivered right to your doorstep!</p>",
+            "text_style": "body"
+          }
+        },
+        "button_BRjXX8": {
+          "type": "button",
+          "settings": {
+            "button_label": "Build Now",
+            "button_link": "shopify://products/build-your-own-box",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_GHJtM3",
+        "text_p6YTUL",
+        "button_BRjXX8"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/IMG_9766.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "color_scheme": "",
+        "image_behavior": "zoom-in",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "74a75699-0530-4bab-bf61-c37ed860bffc": {
+      "type": "collapsible-content",
+      "blocks": {
+        "template--15340900384812__74a75699-0530-4bab-bf61-c37ed860bffc-collapsible_row-1": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What makes Nam Nam different from other candy brands?",
+            "icon": "question_mark",
+            "row_content": "<p>We don’t make mass-produced candy ,we make <strong>handcrafted joy</strong>. Every Nam Nam product starts from a small idea (and a big craving), made in limited batches with ingredients you can actually pronounce. We call it <strong>“snack magic, made real.”</strong></p>",
+            "page": ""
+          }
+        },
+        "47243735-7fbb-46e7-a483-27be4af16d3d": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are your chocolates and candies suitable for kids?",
+            "icon": "snowflake",
+            "row_content": "<p>100%! Kids (and kids-at-heart) love Nam Nam. All our products are made without alcohol or harmful additives or preservatives,so they’re safe and fun for all ages.</p>",
+            "page": ""
+          }
+        },
+        "ee4df4bc-ec87-4110-b6df-0e6c58064c03": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Where do you deliver and how long does it take?",
+            "icon": "price_tag",
+            "row_content": "<p>We deliver Pan-India 🌍!</p><p>Orders usually ship within <strong>24 hours</strong> and reach most metros in <strong>2–5 days</strong>. You’ll receive live tracking updates as soon as your order is on its way.</p>",
+            "page": ""
+          }
+        },
+        "4a033790-8c67-42a7-93e1-9f3481def77c": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What if my order arrives melted, broken, or damaged?",
+            "icon": "truck",
+            "row_content": "<p>Don’t worry -we’ve got your back! If anything arrives in less-than-perfect condition, just drop us a WhatsApp or email with a picture within <strong>48 hours</strong>, and we’ll <strong>replace it or refund you instantly</strong>. No questions, no stress.</p>",
+            "page": ""
+          }
+        },
+        "4f922865-0aa5-44f3-aa47-1281697e84c1": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How long do Nam Nam products stay fresh?",
+            "icon": "lightning_bolt",
+            "row_content": "<p>Most Nam Nam goodies (like brittles, popcorn, and candies) stay perfectly fresh for <strong>6–9 months</strong> when stored in a cool, dry place -no refrigeration needed. Each pack has a “Best Before” date mentioned on it for your peace of mind.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_n4aUm3": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you use preservatives or artificial colors/flavours?",
+            "icon": "leaf",
+            "row_content": "<p>Nope! We’re all about <strong>real ingredients and real joy</strong> - no artificial colors, no harmful preservatives. Just honest flavours, premium nuts, real chocolate, and the crunch that comes from careful crafting, not chemicals.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--15340900384812__74a75699-0530-4bab-bf61-c37ed860bffc-collapsible_row-1",
+        "47243735-7fbb-46e7-a483-27be4af16d3d",
+        "ee4df4bc-ec87-4110-b6df-0e6c58064c03",
+        "4a033790-8c67-42a7-93e1-9f3481def77c",
+        "4f922865-0aa5-44f3-aa47-1281697e84c1",
+        "collapsible_row_n4aUm3"
+      ],
+      "settings": {
+        "caption": "",
+        "heading": "FAQs",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "layout": "row",
+        "color_scheme": "scheme-3061b9c1-ec9b-43a6-86da-a01cb749dfbb",
+        "container_color_scheme": "scheme-3061b9c1-ec9b-43a6-86da-a01cb749dfbb",
+        "open_first_collapsible_row": false,
+        "image_ratio": "small",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "1727254999e14e9046": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "a1b386fb-3b20-40f5-9f13-951b752401e3": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--15340900384812__a1b386fb-3b20-40f5-9f13-951b752401e3-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>“These milk chocolate strawberries are my latest obsession – rich, crunchy, and perfectly indulgent with every bite! 🍓🍫⭐️⭐️⭐️⭐️⭐️”</strong>— Simran Kaur",
+            "heading_size": "h2"
+          }
+        },
+        "template--15340900384812__a1b386fb-3b20-40f5-9f13-951b752401e3-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "template--15340900384812__a1b386fb-3b20-40f5-9f13-951b752401e3-heading-1",
+        "template--15340900384812__a1b386fb-3b20-40f5-9f13-951b752401e3-text-1"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/Generated_Image_March_01_2026_-_2_00AM.png",
+        "height": "large",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "color_scheme": "",
+        "image_behavior": "zoom-in",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17750320186789678b": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_GDDPFF": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_GDDPFF"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17750316523a1b5630": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_cc4QK4": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Check us out on Instagram",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_cc4QK4"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "16983957907007f0f1": {
+      "type": "apps",
+      "blocks": {
+        "4ef7f83e-43b7-4400-9a18-e5942ed5dcee": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "4ef7f83e-43b7-4400-9a18-e5942ed5dcee"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    },
+    "170609608839427271": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "grt_home_review_WkDmyb": {
+      "type": "grt-home-review",
+      "disabled": true,
+      "name": "GRT Review",
+      "settings": {
+        "review_type": "1",
+        "review_display_type": "2",
+        "widget_color": "#ffffff",
+        "widget_background": "#000000",
+        "widget_text": "★Reviews",
+        "desk_card": 4,
+        "mobile_card": "2",
+        "review_count": 16,
+        "show_view_all": false
+      }
+    }
+  },
+  "order": [
+    "a6426f52-ab54-4e20-af8e-1e03ff2d1061",
+    "17215637569e9fa1b8",
+    "namnam_dual_marquee_bTzMMg",
+    "image_with_text_VEBfqc",
+    "nn_overlay_cta_ArD4jd",
+    "171887290518cf4147",
+    "featured_collection_cNiTyj",
+    "featured_collection_tKwX8b",
+    "testimonial_slider_EBLQYN",
+    "image_with_text_cTbNHk",
+    "74a75699-0530-4bab-bf61-c37ed860bffc",
+    "1727254999e14e9046",
+    "a1b386fb-3b20-40f5-9f13-951b752401e3",
+    "17750320186789678b",
+    "17750316523a1b5630",
+    "16983957907007f0f1",
+    "170609608839427271",
+    "grt_home_review_WkDmyb"
+  ]
+}

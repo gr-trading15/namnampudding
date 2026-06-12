@@ -1,0 +1,118 @@
+{% if pr %}
+    {% assign avg = pr.value.average_rating | default: 0 | round %}
+    {% assign avgnumber = pr.value.average_rating | default: 0 %}
+    {% assign total = pr.value.total_rating | default: 0 %}
+    {% assign ratings_count = pr.value.ratings_count %}
+    {% assign empty_stars = 5 | minus: avg %}
+    {% assign type = true %}
+    {% if grt_type == "home" %}
+        {% assign type = false %}
+    {% endif %}
+    
+    
+    {% if type == true %}
+    <div class="product-icon-list grt-product-icon-list vstar-star">
+        <div class="prod-review-wrap go-to-review">
+        <div class="star-rating">
+        {% for i in (1..avg) %}
+            <span class="star">
+            <svg class="trustoo-rating-icon loox-icon" style="color:#FFA800" viewBox="0 0 20 19" data-lx-fill="full" aria-hidden="true">
+                <use href="#trustoo-rating-icon"></use>
+            </svg>
+            </span>
+        {% endfor %} 
+
+        {% for i in (1..empty_stars) %}
+            <span class="star">
+            <svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true">
+                <use href="#trustoo-rating-icon"></use>
+            </svg>
+            </span>
+        {% endfor %}
+        </div>
+        {% if grt_type_style == "card" %}
+            <div class="tt-rating-text grt-font-{{- grt_type_style -}}">({{ total }})</div>
+        {% else %}
+            <div class="tt-rating-text">{{ total }} Reviews</div>
+        {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if type == false %}
+        
+        <div class="grid-box-wrapper">
+            <div class="grt-review-left">
+                <div class="grt-review-wrapper">
+                    <div class="main-rating">{{avgnumber}}</div>
+                    <div class="main-review-star">
+                        {% for i in (1..avg) %}
+                            <span class="star">
+                            <svg class="trustoo-rating-icon loox-icon" style="color:#FFA800" viewBox="0 0 20 19" data-lx-fill="full" aria-hidden="true">
+                                <use href="#trustoo-rating-icon"></use>
+                            </svg>
+                            </span>
+                        {% endfor %} 
+
+                        {% for i in (1..empty_stars) %}
+                            <span class="star">
+                            <svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true">
+                                <use href="#trustoo-rating-icon"></use>
+                            </svg>
+                            </span>
+                        {% endfor %}
+                    </div>
+                    <div class="review-number">{{ total }} Reviews</div>
+                </div>
+                <div class="tt-dividing" style="width: 1px;background: #00000017;height: 110px;opacity: 1;display: block;"></div>
+                <div id="review-wrap">
+                    {% if ratings_count != blank %}
+                    {%- comment -%}
+                    Clean JSON string:
+                    {"5":15,"4":1,"3":0,"2":0,"1":0}
+                    → 5:15,4:1,3:0,2:0,1:0
+                    {%- endcomment -%}
+                    {% assign clean = ratings_count | remove: '{' | remove: '}' | replace: '"', '' %}
+                    {% assign pairs = clean | split: ',' %}
+
+                    {%- comment -%} 1) Sum total reviews {%- endcomment -%}
+                    {% assign total = 0 %}
+                    {% for pair in pairs %}
+                    {% assign parts = pair | split: ':' %}
+                    {% assign val = parts[1] | strip | plus: 0 %}
+                    {% assign total = total | plus: val %}
+                    {% endfor %}
+
+                    {% if total > 0 %}
+                    <ul class="grt-review-list">
+                        {%- comment -%}
+                        2) Loop again to build rows
+                        {%- endcomment -%}
+                        {% for pair in pairs %}
+                        {% assign parts = pair | split: ':' %}
+                        {% assign stars = parts[0] | strip %}
+                        {% assign count = parts[1] | strip | plus: 0 %}
+
+                            {% assign pct = count | times: 100 | divided_by: total %}
+
+                            <li class="grt-review-item">
+                            <span class="grt-review-label">{{ stars }} Star</span>
+
+                            <div class="grt-review-bar">
+                                <div class="grt-review-bar-fill" style="width:{{ pct }}%;"></div>
+                            </div>
+
+                            <span class="grt-review-value">{{ count }}</span>
+                            </li>
+                            
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endif %}
+                </div>
+
+            </div>
+        <div><button class="btn" onclick="openReview()">Write a Review</button></div>
+        </div>
+    {% endif %}
+{% endif %}

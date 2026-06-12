@@ -1,0 +1,93 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "506ab1c7-38fa-42d6-9caf-504caa0342c9": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_nnykzx": {
+          "type": "announcement",
+          "settings": {
+            "text": "Get a Free Gift Worth ₹300 on Orders Over ₹1499",
+            "link": "shopify://collections/shop"
+          }
+        },
+        "announcement_E7QJxf": {
+          "type": "announcement",
+          "settings": {
+            "text": "Enjoy up-to ₹250 OFF on all Prepaid Orders!",
+            "link": "shopify://collections/shop"
+          }
+        },
+        "sections--15340900876332__506ab1c7-38fa-42d6-9caf-504caa0342c9-announcement-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Enjoy Free Shipping on all Orders Above Rs 499",
+            "link": "shopify://collections/shop"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_nnykzx",
+        "announcement_E7QJxf",
+        "sections--15340900876332__506ab1c7-38fa-42d6-9caf-504caa0342c9-announcement-1"
+      ],
+      "settings": {
+        "color_scheme": "scheme-9471de3e-45d9-4d05-87e7-78449e462877",
+        "show_line_separator": true,
+        "show_social": false,
+        "auto_rotate": true,
+        "change_slides_speed": 3,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_position": "top-center",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "reduce-logo-size",
+        "show_line_separator": true,
+        "color_scheme": "scheme-5cd5513a-488d-474d-8814-b58e91182d20",
+        "menu_color_scheme": "scheme-7ce81d0c-a89d-4f5b-96bf-f7f4a192e1d6",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "175507311085982378": {
+      "type": "apps",
+      "blocks": {
+        "customerlabs_1pd_capi_tracking_header_block_yRnXjJ": {
+          "type": "shopify://apps/customerlabs-1pd-capi-tracking/blocks/header-block/e7b7e586-f2a0-478c-a96a-edb8673644b2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "customerlabs_1pd_capi_tracking_header_block_yRnXjJ"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "506ab1c7-38fa-42d6-9caf-504caa0342c9",
+    "header",
+    "175507311085982378"
+  ]
+}

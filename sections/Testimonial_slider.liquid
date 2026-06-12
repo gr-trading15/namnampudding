@@ -1,0 +1,233 @@
+{% comment %}
+Testimonial Slider - Final (arrows removed, vertical scroll preserved)
+- Cards fully visible, centered, next/prev peek slightly
+- Uses % width (responsive) instead of fixed px
+- Editable padding (top/bottom), peek amount
+- Active card scales slightly, horizontal-only swipe
+- Animated pill + dots; product link optional
+- Touch logic: only block vertical scroll when clear horizontal intent (dx > dy && dx > threshold)
+{% endcomment %}
+
+<section id="testimonial-slider-{{ section.id }}"
+         class="testimonial-section"
+         style="--bg: {{ section.settings.background_color }}; --accent: {{ section.settings.accent_color }}; padding-top: {{ section.settings.top_padding }}px; padding-bottom: {{ section.settings.bottom_padding }}px;">
+  <div class="container">
+    {% if section.settings.show_heading %}
+      <h2 class="section-title" style="color: {{ section.settings.heading_color }};">{{ section.settings.heading_text }}</h2>
+    {% endif %}
+
+    <div class="slider-container">
+      <div class="testimonial-slider" id="slider-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% if block.settings.testimonial_image != blank %}
+            <div class="testimonial-card" role="group" aria-label="Testimonial {{ forloop.index }}">
+              {%- assign prod_handle = block.settings.testimonial_product -%}
+              {%- assign prod_obj = '' -%}
+              {%- if prod_handle != blank -%}
+                {%- assign prod_obj = all_products[prod_handle] -%}
+              {%- endif -%}
+
+              {% if prod_obj and prod_obj.url %}
+                <a href="{{ prod_obj.url }}" class="testimonial-link" aria-label="Open product {{ prod_obj.title }}">
+              {% endif %}
+
+                <img
+                  src="{{ block.settings.testimonial_image | img_url: '800x800' }}"
+                  srcset="{{ block.settings.testimonial_image | img_url: '360x360' }} 360w, {{ block.settings.testimonial_image | img_url: '600x600' }} 600w, {{ block.settings.testimonial_image | img_url: '800x800' }} 800w"
+                  sizes="(max-width: 480px) 88vw, (max-width: 768px) 70vw, 90vw"
+                  alt="Testimonial {{ forloop.index }}"
+                  loading="lazy"
+                />
+
+              {% if prod_obj and prod_obj.url %}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="fancy-dots-wrap" aria-hidden="false" role="tablist">
+      <div class="fancy-dots" id="dots-{{ section.id }}"></div>
+      <div class="fancy-pill" id="pill-{{ section.id }}" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonial-section { background: var(--bg); overflow: hidden; position: relative; z-index: 1; }
+  .testimonial-section .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-title { font-size: clamp(18px, 4.5vw, 28px); font-weight: 800; text-align: center; margin-bottom: 14px; }
+
+  .slider-container { position: relative; overflow: hidden; }
+
+  .testimonial-slider {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    touch-action: pan-x;
+    padding: 0 {{ section.settings.peek_px | default: 32 }}px; /* peek amount */
+  }
+  .testimonial-slider::-webkit-scrollbar { display: none; }
+
+  .testimonial-card {
+    flex: 0 0 85%; /* responsive width */
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    scroll-snap-align: center;
+    background: #fff;
+    transition: transform 300ms ease;
+  }
+  .testimonial-card.center { transform: scale(1.05); z-index: 2; }
+  .testimonial-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .testimonial-link { display: block; width: 100%; height: 100%; }
+
+  .fancy-dots-wrap { display:flex; justify-content:center; align-items:center; padding: 12px 0; margin-top: 10px; height: 50px; position: relative; }
+  .fancy-dots { display:flex; gap:12px; position: relative; z-index:2; }
+  .fancy-dots .dot { width:18px; height:18px; border-radius:50%; border:3px solid rgba(0,0,0,.85); background:#fff; transition: transform 300ms cubic-bezier(.2,.9,.22,1); }
+  .fancy-pill { position:absolute; top:50%; transform:translateY(-50%); width:56px; height:24px; border-radius:999px; background:var(--accent); transition:left 350ms ease; pointer-events:none; }
+
+  @media (max-width: 768px) {
+    .testimonial-card { flex: 0 0 88%; }
+    .testimonial-card.center { transform: scale(1.07); }
+  }
+</style>
+
+<script>
+(function(){
+  const slider = document.getElementById("slider-{{ section.id }}");
+  const dotsContainer = document.getElementById("dots-{{ section.id }}");
+  const pill = document.getElementById("pill-{{ section.id }}");
+  if (!slider || !dotsContainer || !pill) return;
+  const cards = Array.from(slider.querySelectorAll('.testimonial-card'));
+  if (!cards.length) return;
+
+  // Create dots
+  cards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    dot.dataset.index = i;
+    dot.setAttribute('role','tab');
+    dot.setAttribute('aria-label','Go to slide ' + (i+1));
+    dot.addEventListener('click', () => { scrollToCard(i); });
+    dotsContainer.appendChild(dot);
+  });
+  const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+  let currentIndex = 0;
+
+  function movePill(i) {
+    const dot = dots[i]; if (!dot) return;
+    const wrapRect = dotsContainer.getBoundingClientRect();
+    const dotRect = dot.getBoundingClientRect();
+    const centerX = (dotRect.left + dotRect.right) / 2 - wrapRect.left;
+    const pillWidth = pill.offsetWidth || 56;
+    pill.style.left = (centerX - pillWidth / 2) + 'px';
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+  }
+
+  function updateCards(i) {
+    cards.forEach((card, idx) => {
+      card.classList.remove('center');
+      if (idx === i) card.classList.add('center');
+    });
+    movePill(i);
+    currentIndex = i;
+  }
+
+  function scrollToCard(i) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    const card = cards[i];
+    const left = card.offsetLeft - (slider.offsetWidth / 2) + (card.offsetWidth / 2);
+    slider.scrollTo({ left, behavior: 'smooth' });
+    updateCards(i);
+  }
+
+  // Debounced scroll handler to snap to nearest center
+  let scrollTimer;
+  slider.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const center = slider.scrollLeft + slider.offsetWidth / 2;
+      let best = 0, bestDist = Infinity;
+      cards.forEach((c, idx) => {
+        const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+        const d = Math.abs(center - cardCenter);
+        if (d < bestDist) { bestDist = d; best = idx; }
+      });
+      scrollToCard(best);
+    }, 80);
+  });
+
+  // touch handling: only block vertical scroll when user clearly intends horizontal swipe
+  let startX = 0, startY = 0, isScrolling;
+  const HORIZONTAL_THRESHOLD = 12; // px — small intentional horizontal move required
+
+  slider.addEventListener('touchstart', e => {
+    const t = e.changedTouches[0];
+    startX = t.pageX; startY = t.pageY; isScrolling = undefined;
+  }, { passive: true });
+
+  slider.addEventListener('touchmove', e => {
+    const t = e.changedTouches[0];
+    const dx = Math.abs(t.pageX - startX);
+    const dy = Math.abs(t.pageY - startY);
+
+    if (typeof isScrolling === 'undefined') {
+      // determine intent only after a small movement
+      if (dx < HORIZONTAL_THRESHOLD && dy < HORIZONTAL_THRESHOLD) {
+        // not enough movement yet to decide; let native behavior continue
+        return;
+      }
+      isScrolling = dy > dx;
+    }
+
+    // If user intends horizontal (dx > dy) and horizontal movement exceeds threshold, prevent vertical scroll
+    if (!isScrolling && dx > HORIZONTAL_THRESHOLD) {
+      // user clearly swiping horizontally -> prevent vertical page scroll
+      e.preventDefault();
+    }
+    // Otherwise (vertical intent) do nothing and allow page to scroll
+  }, { passive: false });
+
+  slider.addEventListener('touchend', e => {
+    const t = e.changedTouches[0];
+    const dx = t.pageX - startX;
+    if (dx < -60 && currentIndex < cards.length - 1) scrollToCard(currentIndex + 1);
+    if (dx > 60 && currentIndex > 0) scrollToCard(currentIndex - 1);
+  });
+
+  // initial state
+  setTimeout(() => { updateCards(0); }, 60);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Testimonial Slider",
+  "settings": [
+    { "type": "checkbox", "id": "show_heading", "label": "Show heading", "default": true },
+    { "type": "text", "id": "heading_text", "label": "Heading text", "default": "What Our Customers Say" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1a1a1a" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#ffffff" },
+    { "type": "color", "id": "accent_color", "label": "Accent / primary color", "default": "#FF6B6B" },
+    { "type": "number", "id": "top_padding", "label": "Top padding (px)", "default": 28 },
+    { "type": "number", "id": "bottom_padding", "label": "Bottom padding (px)", "default": 28 },
+    { "type": "number", "id": "peek_px", "label": "Peek amount (px)", "default": 32 }
+  ],
+  "blocks": [
+    { "type": "testimonial", "name": "Testimonial Image", "settings": [
+        { "type": "image_picker", "id": "testimonial_image", "label": "Upload testimonial image" },
+        { "type": "product", "id": "testimonial_product", "label": "Link to product (optional)" }
+    ]}
+  ],
+  "presets": [ { "name": "Testimonial Slider", "category": "Testimonials" } ]
+}
+{% endschema %}

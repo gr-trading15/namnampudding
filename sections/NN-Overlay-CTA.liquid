@@ -1,0 +1,105 @@
+{% comment %} NN Overlay CTA (button on image) {% endcomment %}
+<section class="nn-hero-overlay"
+  style="--section-bg: {{ section.settings.section_bg | default: '#FFF7EC' }};
+         --btn: {{ section.settings.btn_bg | default: '#FF7E5F' }};
+         --btn-hover: {{ section.settings.btn_bg_hover | default: '#E86F52' }};
+         --btn-text: {{ section.settings.btn_text | default: '#FFFFFF' }};
+         --maxw: {{ section.settings.max_width | default: '1400px' }};
+         --radius: {{ section.settings.radius | default: 10 }}px;
+         --scrim: {{ section.settings.scrim_color | default: 'rgba(0,0,0,0.08)' }};
+         --scrim-mobile: {{ section.settings.scrim_color_mobile | default: 'rgba(0,0,0,0.15)' }};
+         --offset-x: {{ section.settings.offset_x | default: 50 }}%;
+         --offset-y: {{ section.settings.offset_y | default: 90 }}%;
+         --offset-x-m: {{ section.settings.offset_x_m | default: 50 }}%;
+         --offset-y-m: {{ section.settings.offset_y_m | default: 88 }}%;">
+  <div class="nn-wrap">
+    <div class="nn-media">
+      {% if section.settings.image != blank %}
+        <img class="nn-img"
+          src="{{ section.settings.image | image_url: width: 2000 }}"
+          srcset="
+            {{ section.settings.image | image_url: width: 800 }} 800w,
+            {{ section.settings.image | image_url: width: 1200 }} 1200w,
+            {{ section.settings.image | image_url: width: 1800 }} 1800w,
+            {{ section.settings.image | image_url: width: 2400 }} 2400w"
+          sizes="(max-width: 768px) 96vw, 1400px"
+          alt="{{ section.settings.alt | escape }}"
+          loading="lazy">
+      {% else %}
+        <div class="nn-placeholder">Upload your banner image in the section settings.</div>
+      {% endif %}
+
+      {% if section.settings.enable_scrim %}
+        <div class="nn-scrim" aria-hidden="true"></div>
+      {% endif %}
+
+      {% if section.settings.cta_label != blank %}
+        <a class="nn-cta"
+           href="{{ section.settings.cta_link | default: 'https://namnam.in/collections/shop' }}"
+           {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.cta_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <style>
+    .nn-hero-overlay{ background: var(--section-bg); padding: clamp(8px, 2.5vw, 18px) clamp(8px, 3vw, 20px); }
+    .nn-wrap{ max-width: var(--maxw); margin: 0 auto; }
+    .nn-media{ position: relative; border-radius: var(--radius); overflow: clip; line-height: 0; }
+    .nn-img{ width: 100%; height: auto; display: block; }
+    .nn-scrim{ position:absolute; inset:0; pointer-events:none; background: var(--scrim); }
+    @media (max-width: 767px){ .nn-scrim{ background: var(--scrim-mobile); } }
+
+    .nn-cta{
+      position:absolute; left: var(--offset-x); top: var(--offset-y); transform: translate(-50%, -50%);
+      display:inline-block; padding:14px 28px; border-radius:999px; background:var(--btn); color:var(--btn-text);
+      text-decoration:none; font-weight:800; font-size:16px; white-space:nowrap;
+      box-shadow:0 10px 22px rgba(0,0,0,.14);
+      transition: transform .18s, box-shadow .18s, background-color .18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nn-cta:hover{ background: var(--btn-hover); transform: translate(-50%, -54%); box-shadow:0 14px 28px rgba(0,0,0,.18); }
+    .nn-cta:active{ transform: translate(-50%, -48%); box-shadow:0 8px 16px rgba(0,0,0,.12); }
+    @media (max-width: 767px){
+      .nn-cta{ left: var(--offset-x-m); top: var(--offset-y-m); font-size:15px; padding:13px 24px; }
+    }
+    .nn-placeholder{ aspect-ratio:16/9; background:#f4efe8; border:1px dashed #ddd; border-radius: var(--radius);
+      display:grid; place-items:center; color:#777; font-size:14px; }
+    @media (prefers-reduced-motion: reduce){ .nn-cta{ transition:none; } }
+  </style>
+
+  {% schema %}
+  {
+    "name": "NN Overlay CTA",
+    "settings": [
+      { "type":"image_picker", "id":"image", "label":"Banner image" },
+      { "type":"text", "id":"alt", "label":"Alt text", "default":"All Joy. No Rules. Nam Nam banner" },
+
+      { "type":"text", "id":"cta_label", "label":"CTA label", "default":"SNACK YOUR HEART OUT" },
+      { "type":"url",  "id":"cta_link",  "label":"CTA link" },
+      { "type":"checkbox", "id":"cta_new_tab", "label":"Open link in new tab", "default": false },
+
+      { "type":"checkbox", "id":"enable_scrim", "label":"Add legibility scrim", "default": true },
+      { "type":"color", "id":"scrim_color", "label":"Desktop scrim color", "default":"rgba(0,0,0,0.08)" },
+      { "type":"color", "id":"scrim_color_mobile", "label":"Mobile scrim color", "default":"rgba(0,0,0,0.15)" },
+
+      { "type":"range", "id":"offset_x",  "label":"CTA X (desktop, %)", "min":0, "max":100, "step":1, "default":50, "unit":"%" },
+      { "type":"range", "id":"offset_y",  "label":"CTA Y (desktop, %)", "min":0, "max":100, "step":1, "default":90, "unit":"%" },
+      { "type":"range", "id":"offset_x_m","label":"CTA X (mobile, %)",  "min":0, "max":100, "step":1, "default":50, "unit":"%" },
+      { "type":"range", "id":"offset_y_m","label":"CTA Y (mobile, %)",  "min":0, "max":100, "step":1, "default":88, "unit":"%" },
+
+      { "type":"color", "id":"section_bg", "label":"Section background", "default":"#FFF7EC" },
+      { "type":"color", "id":"btn_bg", "label":"Button color", "default":"#FF7E5F" },
+      { "type":"color", "id":"btn_bg_hover", "label":"Button hover", "default":"#E86F52" },
+      { "type":"color", "id":"btn_text", "label":"Button text", "default":"#FFFFFF" },
+
+      { "type":"text", "id":"max_width", "label":"Max content width", "default":"1400px" },
+      { "type":"range", "id":"radius", "label":"Image corner radius", "min":0, "max":30, "step":1, "default":10 }
+    ],
+    "presets": [
+      { "name":"NN Overlay CTA" }
+    ]
+  }
+  {% endschema %}
+</section>

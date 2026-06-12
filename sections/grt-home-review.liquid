@@ -1,0 +1,1042 @@
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+
+{% schema %}
+{
+  "name": "GRT Review",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Review type"
+    },
+    {
+      "type": "select",
+      "id": "review_type",
+      "options": [
+        { "value": "0", "label": "Select" },
+        { "value": "1", "label": "All Review" },
+        { "value": "2", "label": "Product review" }
+      ],
+      "default": "0",
+      "label": "Type of Review"
+    },
+    {
+      "type": "select",
+      "id": "review_display_type",
+      "options": [
+        { "value": "1", "label": "Page" },
+        { "value": "2", "label": "Modal" }
+      ],
+      "default": "1",
+      "label": "Review visibility type"
+    },
+    {
+      "type": "header",
+      "content": "Review widget style",
+      "visible_if": "{{ section.settings.review_display_type == '2' }}"
+    },
+    {
+      "type": "color",
+      "id": "widget_color",
+      "default": "#ffffff",
+      "label": "Text color",
+      "visible_if": "{{ section.settings.review_display_type == '2' }}"
+    },
+    {
+      "type": "color",
+      "id": "widget_background",
+      "default": "#000000",
+      "label": "Background color",
+      "visible_if": "{{ section.settings.review_display_type == '2' }}"
+    },
+    {
+      "type": "text",
+      "id": "widget_text",
+      "default": "★Reviews",
+      "label": "Widget Text",
+      "visible_if": "{{ section.settings.review_display_type == '2' }}"
+    },
+    {
+      "type": "header",
+      "content": "Card visibility number"
+    },
+    {
+      "type": "range",
+      "id": "desk_card",
+      "label": "Web Review Cards in row",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mobile_card",
+      "options": [
+        { "value": "1", "label": "Single review" },
+        { "value": "2", "label": "Two review" }
+      ],
+      "default": "2",
+      "label": "Mobile Review Cards in row"
+    },
+    {
+      "type": "header",
+      "content": "Show Review count"
+    },
+    {
+      "type": "range",
+      "id": "review_count",
+      "label": "Mobile visibility",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": false
+    }
+  ],
+  "presets": [{ "name": "GRT Review", "blocks": [] }]
+}
+{% endschema %}
+
+{% if section.settings.review_display_type == "2" %}
+  <style>
+    .vstar-tab {
+      align-items: center;
+      border-radius: 0 0 8px 8px;
+      cursor: pointer;
+      display: flex;
+      font-size: 16px;
+      height: 33.64px;
+      justify-content: center;
+      min-width: 103.1px;
+      padding: 0 15px;
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: rotate(90deg) translate(50%);
+      transform-origin: 100% 0;
+      width: auto;
+      z-index: 11000;
+      background-color:  {{ section.settings.widget_background }};
+      color: {{ section.settings.widget_color }};
+    }
+  </style>
+  <div class="vstar-tab" id="open-review-modal-{{ section.id }}">{{ section.settings.widget_text }}</div>
+{% endif %}
+
+{% liquid
+  assign is_modal = false
+  if section.settings.review_display_type == '2'
+    assign is_modal = true
+  endif
+%}
+
+<div class="page-width">
+  <div class="shop-reviews grt-review-section">
+
+    {% if is_modal %}
+      <div id="review-modal-{{ section.id }}" class="review-modal">
+        <div class="review-modal__inner">
+          <span class="review-modal__close" data-close>&times;</span>
+    {% endif %}
+
+    <h2 class="customer-reviews"><strong>Customer Reviews</strong></h2>
+
+    {%- case section.settings.review_type -%}
+      {%- when '1' -%}
+        <!-- All reviews: shop rating summary -->
+        <div class="main-review" id="rating-summary-{{ section.id }}"></div>
+
+      {%- when '2' -%}
+        <!-- Product reviews: product rating snippet (only if product exists) -->
+        {% if product %}
+          {% assign pr = product.metafields.custom.product_rating %}
+          <style>
+            .grt-product-icon-list{margin-top:10px;margin-bottom:5px; font-family:"Alphakind" !important; font-weight:bold;}
+          </style>
+          {% if pr %}
+            {% render 'grt-product-review', pr: pr, grt_type: "home" %}
+          {% endif %}
+        {% endif %}
+    {%- endcase -%}
+
+    <div class="reviews-list" id="reviews-container-{{ section.id }}"></div>
+    <button id="load-more-{{ section.id }}" class="view-all-btn" hidden>Load More</button>
+
+    {% if section.settings.show_view_all %}
+      <a href="/pages/all-review" class="view-all-btn">Show All Reviews</a>
+    {% endif %}
+
+    {% if is_modal %}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+"use strict";
+
+(function(SECTION_ID){
+  /* ====== CONFIG (Liquid-powered) ====== */
+  const STOREFRONT_ACCESS_TOKEN = "01d7b63f473a1a0b70b4de983fcec257";
+  const SHOPIFY_DOMAIN = "namnampudding.myshopify.com";
+  const SHOP_URL = {{ shop.url | json }};
+  const DESK_COLS = {{ section.settings.desk_card | default: 4 }};
+  const INITIAL_LIMIT = {{ section.settings.review_count | default: 4 }};
+  const PAGE_SIZE = Math.min(INITIAL_LIMIT, 20);
+  const REVIEW_TYPE = {{ section.settings.review_type | json }};
+  const IS_MODAL = {{ is_modal | json }};
+
+  {% if product %}
+    const PRODUCT_HANDLE = {{ product.handle | json }};
+  {% else %}
+    const PRODUCT_HANDLE = null;
+  {% endif %}
+
+  // Dynamic IDs based on section.id
+  const RATING_SUMMARY_ID    = "rating-summary-" + SECTION_ID;
+  const REVIEWS_CONTAINER_ID = "reviews-container-" + SECTION_ID;
+  const LOAD_MORE_ID         = "load-more-" + SECTION_ID;
+  const LOADING_ID           = "reviews-loading-" + SECTION_ID;
+  const SECTION_MODAL_ID     = "review-modal-" + SECTION_ID;
+  const SECTION_TAB_ID       = "open-review-modal-" + SECTION_ID;
+
+  /* ====== STATE (per section) ====== */
+  let hasNextPage   = false;
+  let nextCursor    = null;
+  let isLoadingMore = false;
+  let iso           = null;
+  let allReviews    = [];
+
+  // Global store for all sections → used by shared detail modal
+  window.__grtReviewStore = window.__grtReviewStore || {};
+
+  /* ====== UTIL ====== */
+  const esc = (s) => String(s ?? "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+
+  function getCtaBtn(){
+    return document.getElementById(LOAD_MORE_ID);
+  }
+
+  function injectIsotopeStyles(){
+    if (document.getElementById("reviews-isotope-styles")) return;
+    const widthDesktop = (100 / Math.max(1, DESK_COLS)).toFixed(5) + "%";
+    const css = `
+      .reviews-grid{position:relative}
+      .grid-sizer,.review-item{width:${widthDesktop}}
+      @media (max-width:1024px){.grid-sizer,.review-item{width:33.3333%}}
+      @media (max-width:640px){.grid-sizer,.review-item{width:50%}}
+      .review-item{margin-bottom:16px;box-sizing:border-box}
+      .review-image{width:100%;height:auto;display:block}
+    `;
+    const style = document.createElement("style");
+    style.id = "reviews-isotope-styles";
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function renderStars(val) {
+    const r = Math.max(0, Math.min(5, parseInt(val || 0, 10)));
+    let s = "";
+    for (let i = 1; i <= 5; i++) {
+      s += `<span class="star"><svg style="color:${i<=r?'#FFA800':'rgba(0,0,0,.2)'}" class="loox-icon" viewBox="0 0 24 24" data-lx-fill="full" aria-hidden="true"><use href="#trustoo-rating-icon"></use></svg></span>`;
+    }
+    return s;
+  }
+
+  function parseImages(field, type) {
+    var imgtype = type || false;
+    if (!field?.value) return "";
+
+    const raw = field.value.trim();
+
+    // Default ratio used BEFORE the image loads (prevents CLS)
+    // Set to what matches most images: "4 / 3" (landscape) or "3 / 4" (portrait)
+    const DEFAULT_RATIO = "4 / 3";
+
+    const OUT_W = imgtype === true ? 800 : 300;
+    const OUT_H = Math.round(OUT_W * 3 / 4); // matches DEFAULT_RATIO 4/3
+
+    const buildImg = (url) => {
+      return `
+        <div class="review-image-container" style="aspect-ratio:${DEFAULT_RATIO}" data-default-ratio="${DEFAULT_RATIO}">
+          <img
+            src="${url}?w=${OUT_W}"
+            class="review-image"
+            loading="lazy"
+            decoding="async"
+            width="${OUT_W}"
+            height="${OUT_H}"
+            alt=""
+            onload="(function(img){
+              var w = img.naturalWidth || 0;
+              var h = img.naturalHeight || 0;
+              if(!w || !h) return;
+
+              var wrap = img.closest('.review-image-container');
+              if(!wrap) return;
+
+              // Switch wrapper to real aspect ratio AFTER load
+              // This can slightly change height, but avoids bad cropping
+              wrap.style.aspectRatio = w + ' / ' + h;
+            })(this)"
+            onerror="this.closest('.review-image-container')?.remove();"
+          >
+        </div>`;
+    };
+
+    try {
+      const arr = JSON.parse(raw.replace(/\\"/g, '"'));
+      const first = Array.isArray(arr) ? arr[0] : null;
+
+      if (first) {
+        var oldUrl = esc(first);
+        var newUrl = oldUrl.replace("/review_app/uploads/reviews/", "/review_app/img/get/");
+        console.log(oldUrl, "first:", newUrl);
+        return buildImg(newUrl);
+      }
+    } catch (_) {
+      return buildImg(esc(raw));
+    }
+
+    return "";
+  }
+
+  /* ====== SHARED DETAIL MODAL ====== */
+  function ensureGlobalDetailModal() {
+    if (document.getElementById("grt_review_modal")) return;
+
+    const el = document.createElement("div");
+    el.id = "grt_review_modal";
+    el.className = "grt_review_modal";
+    el.setAttribute("aria-hidden", "true");
+
+    el.innerHTML = `
+      <div class="grt_review_modal__overlay" data-grt-review-close></div>
+      <div class="grt_review_modal__dialog">
+        <button class="grt_review_modal__close" data-grt-review-close>&times;</button>
+        <div class="grt_review_modal__content">
+          <div class="grt_review_modal__media js-grt-review-media"></div>
+          <div class="grt_review_modal__details">
+            <div class="grt_review_modal__rating js-grt-review-rating"></div>
+            <div class="grt_review_modal__meta">
+              <span class="js-grt-review-name"></span>
+              <span class="js-grt-review-date"></span>
+            </div>
+            <p class="grt_review_modal__text js-grt-review-text"></p>
+            <div class="grt_review_modal__product js-grt-review-product"></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(el);
+  }
+
+  function openDetailModal(review) {
+    if (!review) return;
+    ensureGlobalDetailModal();
+
+    const modal     = document.getElementById("grt_review_modal");
+    const mediaEl   = modal.querySelector(".js-grt-review-media");
+    const ratingEl  = modal.querySelector(".js-grt-review-rating");
+    const nameEl    = modal.querySelector(".js-grt-review-name");
+    const dateEl    = modal.querySelector(".js-grt-review-date");
+    const textEl    = modal.querySelector(".js-grt-review-text");
+    const productEl = modal.querySelector(".js-grt-review-product");
+
+    const dateStr = review.posted_date?.value
+      ? new Date(review.posted_date.value).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+        })
+      : "";
+
+    let mediaHTML = "";
+    /*
+    const imgs = parseImages(review.review_img,true);
+    if (imgs.trim() !== "") {
+      mediaHTML = `<div class="grt_review_modal__photos">${imgs}</div>`;
+    } else if (review.product_node?.reference?.featuredImage?.url) {
+      mediaHTML = `<img src="${review.product_node.reference.featuredImage.url}&width=600"
+                      alt="${review.product_node.reference.featuredImage.altText || ""}"
+                      class="grt_review_modal__product-img" />`;
+    }
+    */
+    
+    const video = parseYouTubeEmbed(review.video_url);
+    const imgs = parseImages(review.review_img, true);
+
+    if (video && video.trim() !== "") {
+      mediaHTML = video;
+    } else if (imgs.trim() !== "") {
+      mediaHTML = `<div class="grt_review_modal__photos">${imgs}</div>`;
+    } else if (review.product_node?.reference?.featuredImage?.url) {
+      mediaHTML = `<img src="${review.product_node.reference.featuredImage.url}&width=600"
+                        alt="${review.product_node.reference.featuredImage.altText || ""}"
+                        class="grt_review_modal__product-img" />`;
+    }
+
+    mediaEl.innerHTML  = mediaHTML;
+    ratingEl.innerHTML = renderStars(review.rating?.value);
+    nameEl.textContent = esc(review.user_name?.value) || "Anonymous";
+    dateEl.textContent = dateStr;
+    textEl.textContent = review.review_desc?.value || "";
+
+    if (review.product_node?.reference?.handle) {
+      const href = `${SHOP_URL}/products/${esc(review.product_node.reference.handle)}?utm_source=reviewapp&utm_medium=productreviewcta&utm_campaign=grt-social`;
+      productEl.innerHTML = `
+        <div class="grt_review_modal__product-inner">
+          <a href="${href}" target="_blank" class="grt_review_modal__cta">View product</a>
+        </div>`;
+    } else {
+      productEl.innerHTML = "";
+    }
+
+    modal.classList.add("grt_is_visible");
+    modal.setAttribute("aria-hidden", "false");
+    document.documentElement.classList.add("grt_review_modal_open");
+  }
+
+  function closeDetailModal() {
+    const modal = document.getElementById("grt_review_modal");
+    if (!modal) return;
+    modal.classList.remove("grt_is_visible");
+    modal.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("grt_review_modal_open");
+  }
+
+  
+  /* ====== RENDER REVIEW CARDS (per section) ====== */
+function renderReviewsItemsHTML(reviews, startIndex) {
+  const store = window.__grtReviewStore;
+  if (!store[SECTION_ID]) store[SECTION_ID] = [];
+
+  const baseIndex = startIndex || 0;
+  let html = "";
+
+  reviews.forEach((r, idx) => {
+    const globalIdx = baseIndex + idx;
+    store[SECTION_ID][globalIdx] = r;
+
+    /* ================= MEDIA (VIDEO THUMB → IMAGE → PRODUCT) ================= */
+    let mediaHTML = "";
+
+    // parseYouTubeEmbed() returns poster+play HTML (not iframe)
+    const videoThumb = parseYouTubeEmbed(r.video_url);
+
+    // For cards, use normal size (300) to keep grid fast + light
+    const imgs = parseImages(r.review_img); // ✅ not true (800) for card grid
+
+    if (videoThumb && videoThumb.trim() !== "") {
+      mediaHTML = videoThumb;
+
+    } else if (imgs && imgs.trim() !== "") {
+      mediaHTML = imgs;
+
+    } else if (r.product_node?.reference?.featuredImage?.url) {
+      mediaHTML = `
+        <img
+          src="${r.product_node.reference.featuredImage.url}&width=600"
+          alt="${r.product_node.reference.featuredImage.altText || ""}"
+          class="grt_review_modal__product-img"
+          loading="lazy"
+          decoding="async"
+        />`;
+    }
+
+    /* ================= PRODUCT INFO ================= */
+    let isProd      = false;
+    let handle      = "";
+    let productText = "";
+    let productImg  = "";
+    let productAlt  = "";
+
+    if (r.product_node?.reference) {
+      handle      = r.product_node.reference.handle;
+      productText = r.product_node.reference.title;
+      productImg  = (r.product_node.reference.featuredImage?.url || "") + "&width=40";
+      productAlt  = r.product_node.reference.featuredImage?.altText || "";
+      isProd      = true;
+    }
+
+    const dateStr = r.posted_date?.value
+      ? new Date(r.posted_date.value).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+        })
+      : "";
+
+    const productHref = handle
+      ? `${SHOP_URL}/products/${esc(handle)}?utm_source=reviewapp&utm_medium=productreview_link&utm_campaign=grt-social`
+      : "";
+
+    // (optional debug)
+    // console.log("mediaHTML:", mediaHTML);
+
+    /* ================= HTML ================= */
+    html += `
+      <div class="review-item"
+           data-grt-section-id="${SECTION_ID}"
+           data-grt-review-index="${globalIdx}">
+        <div class="review-item-wrap">
+
+          ${mediaHTML}
+
+          <div class="review-details">
+            <div class="review-header">
+              <div class="star-rating">${renderStars(r.rating?.value)}</div>
+              <p class="review-date">${dateStr}</p>
+            </div>
+
+            <div class="reviewer-name">
+              <span class="user-name">${esc(r.user_name?.value) || "Anonymous"}</span>
+              <span class="country-flag IN" style="border:1px solid #ccc"></span>
+            </div>
+
+            ${
+              String(r.verified_badge?.value ?? "").toLowerCase() === "true"
+                ? `<div class="user-verified">
+                    <svg class="trustoo-badge-icon" width="14" height="14" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#333" fill-rule="evenodd" clip-rule="evenodd" d="M7.19673 0.0153323L12.5436 0.837143C13.1763 0.935269 13.6434 1.47905 13.6434 2.11994V10.5895C13.6434 10.9922 13.4564 11.3725 13.1375 11.6178L7.7906 15.7309C7.56377 15.9054 7.28562 16 6.99945 16C6.71328 16 6.43514 15.9054 6.20831 15.7309L0.861434 11.6178C0.542522 11.3725 0.355469 10.9922 0.355469 10.5895V2.11994C0.355469 1.47905 0.822592 0.935269 1.4553 0.837143L6.80218 0.0153323C6.93301 -0.00511076 7.06589 -0.00511076 7.19673 0.0153323ZM5.51506 10.4871C5.64668 10.6197 5.81854 10.6863 5.99108 10.6863C6.16294 10.6863 6.33549 10.6197 6.46711 10.4871L11.1796 5.72205C11.4422 5.4563 11.4422 5.02573 11.1796 4.75997C10.9164 4.49353 10.4902 4.49353 10.2276 4.75997L5.99108 9.04298L3.77394 6.80156C3.51138 6.5358 3.08514 6.5358 2.82189 6.80156C2.55932 7.06732 2.55932 7.49857 2.82189 7.76433L5.51506 10.4871Z"></path></svg>
+                    <span class="verified-text">Verified purchase</span>
+                  </div>`
+                : ""
+            }
+
+            <p class="review-content">${esc(r.review_desc?.value)}</p>
+          </div>
+
+          ${
+            isProd
+              ? `<div class="review-small review_type_${REVIEW_TYPE}">
+                  <a href="${productHref}" target="_blank" rel="noopener" class="product-link">
+                    <span><img src="${productImg}" alt="${productAlt}" loading="lazy" /></span>
+                    ${esc(productText)}
+                  </a>
+                </div>`
+              : ""
+          }
+
+        </div>
+      </div>`;
+  });
+
+  return html;
+}
+
+
+  function parseYouTubeEmbed(videoField) {
+    if (!videoField?.value) return "";
+
+    const url = String(videoField.value || "").trim();
+    if (!url) return "";
+
+    let videoId = "";
+    let isShort = false;
+
+    // Shorts
+    if (/youtube\.com\/shorts\//i.test(url)) {
+      isShort = true;
+      videoId = url.split("/shorts/")[1]?.split(/[?&]/)[0] || "";
+    } else {
+      // youtu.be / watch?v= / embed/
+      const match =
+        url.match(/youtu\.be\/([^?&]+)/i) ||
+        url.match(/[?&]v=([^?&]+)/i) ||
+        url.match(/embed\/([^?&]+)/i);
+
+      if (match) videoId = match[1] || "";
+    }
+
+    if (!videoId) return "";
+
+    // Thumbnail (hqdefault always exists)
+    const poster = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+    return `
+      <div class="review-video-container ${isShort ? "is-short" : "is-short"}">
+        <button type="button"
+                class="review-video-thumb js-grt-yt-thumb"
+                data-ytid="${videoId}"
+                data-ytshort="${isShort ? "1" : "0"}"
+                aria-label="Play video">
+          <img src="${poster}" alt="" loading="lazy" decoding="async">
+          <span class="review-video-play" aria-hidden="true"></span>
+        </button>
+      </div>
+    `;
+  }
+
+// ▶️ Play YouTube video when thumbnail is clicked
+document.addEventListener(
+  "click",
+  function (e) {
+    const thumb = e.target.closest(".js-grt-yt-thumb");
+    if (!thumb) return;
+
+    // IMPORTANT: prevent card click / modal open
+    e.preventDefault();
+    e.stopPropagation();
+
+    const videoId = thumb.getAttribute("data-ytid");
+    if (!videoId) return;
+
+    const container = thumb.closest(".review-video-container");
+    if (!container) return;
+
+    // Replace thumbnail with autoplay iframe
+    container.innerHTML = `
+      <iframe
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&mute=1"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    `;
+
+    // Re-layout Isotope after iframe loads
+    if (typeof requestRelayoutSoon === "function") {
+      requestRelayoutSoon();
+    }
+  },
+  true // capture phase → runs BEFORE card click handler
+);
+
+
+  function htmlToElements(html) {
+    const tpl = document.createElement("template");
+    tpl.innerHTML = html.trim();
+    return Array.from(tpl.content.querySelectorAll(".review-item"));
+  }
+
+  function requestRelayoutSoon(){
+    if (!iso) return;
+    requestAnimationFrame(() => iso.layout());
+  }
+
+  function bindImageLoadRelayout(parentElOrElems){
+    const nodeList = Array.isArray(parentElOrElems)
+      ? parentElOrElems.flatMap(el => Array.from(el.querySelectorAll ? el.querySelectorAll("img") : []))
+      : (parentElOrElems?.querySelectorAll ? parentElOrElems.querySelectorAll("img") : []);
+    nodeList.forEach(img => {
+      if (img.complete) return;
+      img.addEventListener("load", requestRelayoutSoon, { once: true });
+      img.addEventListener("error", requestRelayoutSoon, { once: true });
+    });
+  }
+
+  function toggleCta(){
+    const btn = getCtaBtn();
+    if (!btn) return;
+    btn.hidden = !hasNextPage;
+    btn.style.display = hasNextPage ? "" : "none";
+  }
+
+  /* ====== DATA (Storefront GraphQL, per section) ====== */
+  async function fetchReviewsPage(after = null) {
+    let query     = "";
+    let variables = { first: PAGE_SIZE, after };
+
+    if (REVIEW_TYPE === "1") {
+      // All reviews – shop-level metaobject list
+      query = `
+        query GetFeaturedReviews($first: Int!, $after: String) {
+          shop {
+            metafield(namespace: "custom", key: "store_featured_reviews") {
+              id
+              type
+              references(first: $first, after: $after) {
+                pageInfo {
+                  hasNextPage
+                  endCursor
+                }
+                edges {
+                  cursor
+                  node {
+                    ... on Metaobject {
+                      id
+                      handle
+                      type
+                      updatedAt
+
+                      review_title: field(key: "review_title") { value }
+                      review_desc:  field(key: "review_desc")  { value }
+                      user_name:    field(key: "user_name")    { value }
+                      posted_date:  field(key: "posted_date")  { value }
+                      rating:       field(key: "rating")       { value }
+                      review_img:   field(key: "review_img")   { value }
+                      video_url:    field(key:"video_url"){ value }
+                      status:       field(key: "status")       { value }
+                      is_featured:  field(key: "is_featured")  { value }
+                      verified_badge: field(key: "verified_badge") { value }
+                      unix_time:    field(key: "unix_time")    { value }
+
+                      product_node: field(key: "product_node") {
+                        value
+                        reference {
+                          ... on Product {
+                            id
+                            handle
+                            title
+                            featuredImage {
+                              url
+                              altText
+                              width
+                              height
+                            }
+                            images(first: 1) {
+                              nodes {
+                                url
+                                altText
+                                width
+                                height
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }`;
+    } else if (REVIEW_TYPE === "2" && PRODUCT_HANDLE) {
+      // Product reviews – product-level metaobject list
+      query = `
+        query GetProductReviewsPage($handle:String!,$first:Int!,$after:String){
+          product(handle:$handle){
+            id
+            handle
+            title
+            metafield(namespace:"custom", key:"product_review"){
+              references(first:$first, after:$after){
+                pageInfo{ hasNextPage endCursor }
+                edges{
+                  cursor
+                  node{
+                    ... on Metaobject{
+                      id type
+                      review_title: field(key:"review_title"){ value }
+                      review_desc:  field(key:"review_desc"){ value }
+                      user_name:    field(key:"user_name"){ value }
+                      posted_date:  field(key:"posted_date"){ value }
+                      product_url:  field(key:"product_url"){ value }
+                      rating:       field(key:"rating"){ value }
+                      review_img:   field(key:"review_img"){ value }
+                      video_url:    field(key:"video_url"){ value } 
+                      status:       field(key:"status"){ value }
+                      is_featured:  field(key:"is_featured"){ value }
+                      verified_badge:  field(key:"verified_badge"){ value }
+                      unix_time:    field(key:"unix_time"){ value }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }`;
+      variables.handle = PRODUCT_HANDLE;
+    } else {
+      console.warn("GRT Review (section", SECTION_ID, "): no valid review source", { REVIEW_TYPE, PRODUCT_HANDLE });
+      return { reviews: [], endCursor: null, hasNext: false };
+    }
+
+    const res = await fetch(`https://${SHOPIFY_DOMAIN}/api/2025-01/graphql.json`, {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "X-Shopify-Storefront-Access-Token":STOREFRONT_ACCESS_TOKEN
+      },
+      body: JSON.stringify({ query, variables })
+    });
+
+    const json = await res.json().catch(()=> ({}));
+    if (!json || json.errors) {
+      console.error("GraphQL Errors (section " + SECTION_ID + "):", json && json.errors);
+      return { reviews:[], endCursor:null, hasNext:false };
+    }
+
+    let payload = null;
+    if (REVIEW_TYPE === "1") {
+      payload = json.data?.shop?.metafield?.references;
+    } else if (REVIEW_TYPE === "2") {
+      payload = json.data?.product?.metafield?.references;
+    }
+
+    const edges = payload?.edges || [];
+    let reviews = edges.map(e => e.node);
+
+    reviews = reviews.filter(r => String(r.status?.value ?? "").toLowerCase() !== "false");
+    {% comment %} 
+    // Filter out status === "false"
+    reviews = reviews.filter(r => String(r.status?.value ?? "").toLowerCase() !== "false");
+
+    // Sort: featured first, then by unix_time desc (fallback posted_date)
+    const ts = (r) => {
+      const u = parseInt(r.unix_time?.value || "", 10);
+      if (!isNaN(u)) return u;
+      try { return r.posted_date?.value ? Date.parse(r.posted_date.value) : 0; } catch { return 0; }
+    };
+    reviews.sort((a,b) => {
+      const fa = String(a.is_featured?.value ?? "").toLowerCase() === "true" ? 1 : 0;
+      const fb = String(b.is_featured?.value ?? "").toLowerCase() === "true" ? 1 : 0;
+      if (fb !== fa) return fb - fa;
+      return ts(b) - ts(a);
+    });
+     {% endcomment %}
+
+    const endCursor = edges.length ? edges[edges.length - 1].cursor : null;
+    const hasNext   = Boolean(payload?.pageInfo?.hasNextPage);
+    return { reviews, endCursor, hasNext };
+  }
+
+  // Expose dynamic review fetch fn for debugging:
+  window["grtFetchReviews_" + SECTION_ID] = fetchReviewsPage;
+
+  async function fetchShopRating(){
+    const query = `
+      query GetShopRating{
+        metaobjects(type:"shop_rating", first:1){
+          edges{ node{
+            average_rating: field(key:"average_rating"){ value }
+            total_rating:   field(key:"total_rating"){ value }
+            ratings_count:  field(key:"ratings_count"){ value }
+          }}
+        }
+      }`;
+    const res = await fetch(`https://${SHOPIFY_DOMAIN}/api/2025-01/graphql.json`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "X-Shopify-Storefront-Access-Token":STOREFRONT_ACCESS_TOKEN
+      },
+      body: JSON.stringify({ query })
+    });
+    const json = await res.json().catch(()=> ({}));
+    if (!json || json.errors) return null;
+    return json.data?.metaobjects?.edges?.[0]?.node || null;
+  }
+
+  function bindLoadMoreOnce(){
+    const btn = getCtaBtn();
+    if (!btn || btn._bound) return;
+    btn._bound = true;
+
+    btn.addEventListener("click", async ()=>{
+      if (isLoadingMore || !hasNextPage) return;
+      isLoadingMore = true;
+      const prev = btn.textContent;
+      btn.textContent = "Loading…";
+      btn.disabled = true;
+      btn.setAttribute("aria-busy","true");
+
+      try{
+        const { reviews, endCursor, hasNext } = await fetchReviewsPage(nextCursor);
+        if (reviews.length){
+          const container = document.getElementById(REVIEWS_CONTAINER_ID);
+          const startIndex = allReviews.length;
+          allReviews = allReviews.concat(reviews);
+
+          const html    = renderReviewsItemsHTML(reviews, startIndex);
+          const newElems = htmlToElements(html);
+          newElems.forEach(el => container.appendChild(el));
+          if (iso) { iso.appended(newElems); requestRelayoutSoon(); }
+          bindImageLoadRelayout(newElems);
+        }
+        nextCursor  = endCursor;
+        hasNextPage = hasNext;
+        toggleCta();
+      }catch(e){
+        console.error("Load more failed (section " + SECTION_ID + "):", e);
+      }finally{
+        btn.textContent = prev;
+        btn.disabled = false;
+        btn.removeAttribute("aria-busy");
+        isLoadingMore = false;
+      }
+    });
+  }
+
+  
+  /* ====== GLOBAL CLICK HANDLERS (only once) ====== */
+
+  function initGlobalClickHandlersOnce(){
+    if (window.__grt_review_global_click_bound) return;
+    window.__grt_review_global_click_bound = true;
+
+    // Allow clicks inside modal dialog without bubbling close
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".grt_review_modal__dialog")) {
+        e.stopPropagation();
+      }
+    });
+
+    // Card click → open detail; overlay/close button → close
+    document.addEventListener("click", function (e) {
+      const card = e.target.closest("[data-grt-review-index]");
+      if (card) {
+        const sid  = card.getAttribute("data-grt-section-id");
+        const idx  = Number(card.getAttribute("data-grt-review-index"));
+        const store = window.__grtReviewStore || {};
+        const list  = store[sid] || [];
+        const review = list[idx];
+        if (review) openDetailModal(review);
+        return;
+      }
+
+      if (
+        e.target.matches("[data-grt-review-close]") ||
+        e.target.classList.contains("grt_review_modal__overlay")
+      ) {
+        closeDetailModal();
+      }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeDetailModal();
+    });
+  }
+
+  /* ====== INIT PER SECTION ====== */
+
+  async function initSection(){
+    initGlobalClickHandlersOnce();
+
+    // Per-section slide-tab modal open/close
+    if (IS_MODAL) {
+      const m = document.getElementById(SECTION_MODAL_ID);
+      const o = document.getElementById(SECTION_TAB_ID);
+      if (m && o) {
+        const c = m.querySelector("[data-close]");
+        o.onclick = function(){ m.style.display = "block"; };
+        if (c) c.onclick = function(){ m.style.display = "none"; };
+        m.onclick = function(e){ if(e.target === m) m.style.display = "none"; };
+      }
+    }
+
+    const container       = document.getElementById(REVIEWS_CONTAINER_ID);
+    const ratingContainer = document.getElementById(RATING_SUMMARY_ID);
+    if (!container) return;
+
+    injectIsotopeStyles();
+    container.innerHTML = `<p id="${LOADING_ID}" style="text-align:center;margin:20px 0;">Loading reviews…</p>`;
+
+    // Rating summary only for All Review
+    if (REVIEW_TYPE === "1" && ratingContainer) {
+      try {
+        const rating = await fetchShopRating();
+        if (rating) {
+          let stars = "";
+          for (let i = 1; i <= 5; i++) {
+            stars += `<span class="star"><svg style="color:#FFA800" data-lx-fill="full" class="loox-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#looxicons-rating-icon"></use></svg></span>`;
+          }
+
+          let breakdown = "";
+          if (rating.ratings_count?.value) {
+            const obj      = JSON.parse(rating.ratings_count.value);
+            const totalSum = Object.values(obj).reduce((sum, n) => sum + n, 0);
+            const sortedEntries = Object.entries(obj).sort((a, b) => Number(b[0]) - Number(a[0]));
+
+            breakdown = '<ul class="grt-review-list">';
+            sortedEntries.forEach(([key, value]) => {
+              const pct = totalSum ? (value / totalSum) * 100 : 0;
+              breakdown += `
+                <li class="grt-review-item">
+                  <span class="grt-review-label">${key} Star</span>
+                  <div class="grt-review-bar">
+                    <div class="grt-review-bar-fill" style="width:${pct}%;"></div>
+                  </div>
+                  <span class="grt-review-value">${value}</span>
+                </li>
+              `;
+            });
+            breakdown += '</ul>';
+          }
+
+          ratingContainer.innerHTML =
+            `<div class="grid-box-wrapper">
+              <div class="grt-review-left">
+                <div class="grt-review-wrapper">
+                  <div class="main-rating">${esc(rating.average_rating?.value) || "N/A"}</div>
+                  <div class="main-review-star">${stars}</div>
+                  <div class="review-number">${esc(rating.total_rating?.value) || 0}</div>
+                </div>
+                <div class="tt-dividing" style="width: 1px;background: #00000017;height: 110px;opacity: 1;display: block;"></div>
+                <div><div>${breakdown}</div></div>
+              </div>
+              <div><button class="btn" onclick="openReview()">Write a Review</button></div>
+            </div>`;
+        } else {
+          ratingContainer.innerHTML = "<p>No rating data available.</p>";
+        }
+      } catch {
+        ratingContainer.innerHTML = "<p>No rating data available.</p>";
+      }
+    }
+
+    // First page of reviews
+    try{
+      const { reviews, endCursor, hasNext } = await fetchReviewsPage(null);
+      const loadingEl = document.getElementById(LOADING_ID);
+      if (loadingEl) loadingEl.remove();
+
+      const gridSizer = document.createElement("div");
+      gridSizer.className = "grid-sizer";
+      container.appendChild(gridSizer);
+
+      if (!reviews.length) {
+        const reviewEl = document.getElementById('grt-customer-{{ section.id }}');
+        if (reviewEl) reviewEl.remove();
+        container.insertAdjacentHTML("beforeend", `<div class="grt-no-review-block"><div><h2>Customer Reviews</h2><div><button class="btn grt-btn-cta-box" onclick="openReview()">Write a Review</button></div></div><div class="grt-noreview-ratting-wrapper"><div class="star-rating"><span class="star"><svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true"><use href="#trustoo-rating-icon"></use></svg></span><span class="star"><svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true"><use href="#trustoo-rating-icon"></use></svg></span><span class="star"><svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true"><use href="#trustoo-rating-icon"></use></svg></span><span class="star"><svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true"><use href="#trustoo-rating-icon"></use></svg></span><span class="star"><svg class="trustoo-rating-icon loox-icon" viewBox="0 0 20 19" style="color:rgba(0,0,0,.2)" data-lx-fill="full" aria-hidden="true"><use href="#trustoo-rating-icon"></use></svg></span></div><p>There are no reviews yet.</p></div></div>`);
+        hasNextPage = false;
+        toggleCta();
+        return;
+      }
+
+      const startIndex = 0;
+      allReviews = reviews.slice();
+
+      const html  = renderReviewsItemsHTML(reviews, startIndex);
+      const items = htmlToElements(html);
+      items.forEach(el => container.appendChild(el));
+
+      if (window.Isotope) {
+        iso = new Isotope(container, {
+          itemSelector: ".review-item",
+          layoutMode: "masonry",
+          percentPosition: true,
+          masonry: { columnWidth: ".grid-sizer", gutter: 0 }
+        });
+        requestRelayoutSoon();
+        bindImageLoadRelayout(container);
+      }
+
+      nextCursor  = endCursor;
+      hasNextPage = hasNext || reviews.length > INITIAL_LIMIT;
+
+      toggleCta();
+      bindLoadMoreOnce();
+    }catch(e){
+      console.error("Initial reviews fetch failed (section " + SECTION_ID + "):", e);
+      container.innerHTML = `<p>Failed to load reviews.</p>`;
+      hasNextPage = false;
+      toggleCta();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", initSection);
+
+})( {{ section.id | json }} );
+</script>

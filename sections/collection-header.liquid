@@ -1,0 +1,409 @@
+{%- comment -%}
+  sections/namnam-header.liquid
+  Final: Seamless hero, full-bleed pills (edge-to-edge), persisted centered selection,
+  editable strapline/banner colors, mobile-first.
+{%- endcomment -%}
+
+<section id="namnam-collection-{{ section.id }}" class="nn-section polished nn-seamless" aria-label="{{ section.settings.hero_title | escape }}">
+  <style>
+    /* Theme variables */
+    #namnam-collection-{{ section.id }}{
+      --nn-hero-bg: {{ section.settings.hero_bg_color }};
+      --nn-title-color: {{ section.settings.title_color }};
+      --nn-sub-color: {{ section.settings.subtitle_color }};
+      --nn-promo-bg: {{ section.settings.promo_bg_color }};
+      --nn-promo-text: {{ section.settings.promo_text_color }};
+      --nn-pill-bg: {{ section.settings.pill_bg_color }};
+      --nn-pill-text: {{ section.settings.pill_text_color }};
+      --nn-pill-active-bg: {{ section.settings.pill_active_bg }};
+      --nn-pill-active-text: {{ section.settings.pill_active_text }};
+      --nn-pill-border: {{ section.settings.pill_border_color }};
+      --nn-star-color: {{ section.settings.star_color }};
+      --nn-banner-bg: {{ section.settings.banner_bg_color }};
+      --nn-strapline-bg: {{ section.settings.strapline_bg_color }};
+      --nn-strapline-text: {{ section.settings.strapline_text_color }};
+      --nn-announcement-bg: {{ section.settings.announcement_bg_color }};
+      --nn-announcement-text: {{ section.settings.announcement_text_color }};
+      --nn-max-w: {{ section.settings.max_width | default: '1100px' }};
+      --nn-font-family: {{ section.settings.font_family | default: "Inter, 'Helvetica Neue', Arial, sans-serif" }};
+      --nn-ease: cubic-bezier(.2,.9,.2,1);
+    }
+
+    /* Optional announcement bar (full-width) */
+    .nn-announcement {
+      width: 100%;
+      background: var(--nn-announcement-bg);
+      color: var(--nn-announcement-text);
+      padding: 10px 16px;
+      text-align:center;
+      font-weight:700;
+      font-size:14px;
+      box-sizing: border-box;
+    }
+
+    /* Section container: keeps content centered but pills will break out */
+    .nn-section.polished {
+      font-family: var(--nn-font-family);
+      max-width: var(--nn-max-w);
+      margin: 0 auto;
+      padding: 0 12px 22px;
+      box-sizing: border-box;
+    }
+
+    /* Promo small pill */
+    .nn-promo {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:6px 12px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:13px;
+      color: var(--nn-promo-text);
+      background: var(--nn-promo-bg);
+      margin:12px 0;
+    }
+
+    /* HERO: seamless (no outer card shadow or rounded border) */
+    .nn-hero {
+      background: var(--nn-hero-bg);
+      border-radius: 0;
+      padding: 22px 12px 18px;
+      text-align: center;
+      box-shadow: none;
+      margin: 0;
+    }
+
+    .nn-title {
+      color: var(--nn-title-color);
+      font-size: 44px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      letter-spacing: -0.5px;
+      line-height: 1.02;
+    }
+    .nn-sub {
+      color: var(--nn-sub-color);
+      font-size: 15px;
+      margin: 0 0 16px;
+      font-weight:500;
+      opacity:.95;
+    }
+
+    /* FULL-BLEED PILLS: break out of container to span edge-to-edge */
+    .nn-pill-row {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding: 10px 16px 14px;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scroll-behavior:smooth;
+      scroll-snap-type: x mandatory;
+
+      width: 100vw;                             /* full viewport width */
+      margin-left: calc(-50vw + 50%);           /* center the full-bleed */
+      box-sizing: border-box;
+      justify-content:flex-start;
+      position: relative;
+      background: transparent;                  /* transparent so it doesn't look boxed */
+    }
+    .nn-pill-row::-webkit-scrollbar { display:none; }
+
+    /* safe padding at ends so first/last pills don't sit flush against edge */
+    .nn-pill-row::before,
+    .nn-pill-row::after {
+      content: '';
+      flex: 0 0 16px;
+      min-width: 16px;
+    }
+
+    .nn-pill {
+      scroll-snap-align: center;
+      flex: 0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:12px 22px;
+      font-weight:700;
+      font-size:15px;
+      min-height:44px;
+      line-height:1;
+      text-decoration:none;
+      color: var(--nn-pill-text);
+      background: var(--nn-pill-bg);
+      border: 1px solid transparent;
+      transition: transform .22s var(--nn-ease), box-shadow .18s var(--nn-ease), background .12s var(--nn-ease);
+      -webkit-tap-highlight-color: transparent;
+      will-change: transform;
+    }
+    .nn-pill[data-style="outline"] {
+      background: transparent;
+      border-color: var(--nn-pill-border);
+      box-shadow: none;
+    }
+    .nn-pill.active {
+      background: var(--nn-pill-active-bg) !important;
+      color: var(--nn-pill-active-text) !important;
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(28,18,66,0.10);
+    }
+
+    /* subtle left/right fade hint (optional) to indicate scrollability */
+    .nn-pill-row::after,
+    .nn-pill-row::before { pointer-events: none; }
+
+    /* Banner (editable background) */
+    .nn-save-banner {
+      display:inline-block;
+      margin-top:8px;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:800;
+      font-size:15px;
+      background: var(--nn-banner-bg);
+      color: var(--nn-title-color);
+    }
+
+    /* Ratings & strapline (editable bg/text) */
+    .nn-stats { display:flex; align-items:center; gap:10px; justify-content:center; margin-top:14px; }
+    .nn-stars svg { width:18px; height:18px; color: var(--nn-star-color); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
+    .nn-rating-num { font-weight:700; color: var(--nn-sub-color); font-size:14px; }
+
+    .nn-strap {
+      display:inline-block;
+      margin-top:12px;
+      padding:10px 14px;
+      border-radius:10px;
+      background: var(--nn-strapline-bg);
+      color: var(--nn-strapline-text);
+      font-weight:800;
+      font-size:18px;
+    }
+
+    /* responsive adjustments */
+    @media (max-width: 820px) {
+      .nn-title { font-size: 36px; }
+      .nn-pill { padding:12px 18px; font-size:15px; min-height:46px; }
+      .nn-save-banner { font-size:14px; padding:9px 12px; }
+      .nn-strap { font-size:16px; padding:9px 12px; }
+    }
+    @media (max-width: 420px) {
+      .nn-title { font-size:32px; }
+      .nn-sub { font-size:14px; }
+      .nn-hero { padding:18px 10px 14px; }
+      /* ensure full-bleed pill row still fits on tiny screens */
+      .nn-pill-row { padding-left: 12px; padding-right: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nn-pill, .nn-hero, .nn-save-banner, .nn-strap { transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+
+  {%- if section.settings.show_announcement -%}
+    <div class="nn-announcement">{{ section.settings.announcement_text }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.show_promo -%}
+    <div class="nn-promo">{{ section.settings.promo_text }}</div>
+  {%- endif -%}
+
+  <div class="nn-hero" role="region" aria-labelledby="nn-title-{{ section.id }}">
+    <h1 id="nn-title-{{ section.id }}" class="nn-title">{{ section.settings.hero_title }}</h1>
+    <p class="nn-sub">{{ section.settings.hero_subtitle }}</p>
+
+    <div class="nn-pill-row" id="nn-pill-row-{{ section.id }}" role="tablist" aria-label="Product categories">
+      {%- for block in section.blocks -%}
+        {%- assign col = block.settings.collection -%}
+        {%- if col -%}
+          <a
+            href="{{ col.url }}"
+            class="nn-pill {% if forloop.index0 == section.settings.initial_active_index %}active{% endif %}"
+            role="tab"
+            aria-selected="{% if forloop.index0 == section.settings.initial_active_index %}true{% else %}false{% endif %}"
+            data-style="{{ section.settings.pill_style }}"
+            data-collection-handle="{{ col.handle }}"
+            data-collection-url="{{ col.url }}">
+            {{ col.title }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="nn-save-banner">{{ section.settings.banner_text }}</div>
+
+    <div class="nn-stats" aria-live="polite">
+      <div class="nn-stars" aria-hidden="true">
+        {% assign star_count = section.settings.star_count | default: 5 %}
+        {% for i in (1..star_count) %}
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        {% endfor %}
+      </div>
+      <div class="nn-rating-num">({{ section.settings.rating_count | default: 5000 }})</div>
+    </div>
+
+    <div class="nn-strap">{{ section.settings.strapline }}</div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    var sid = "{{ section.id }}";
+    var row = document.getElementById('nn-pill-row-' + sid);
+    if (!row) return;
+    var pills = Array.prototype.slice.call(row.querySelectorAll('.nn-pill'));
+    var initialIndexSetting = parseInt({{ section.settings.initial_active_index | default: 0 }},10) || 0;
+    var navigateOnClick = {{ section.settings.navigate_on_click | default: true }};
+
+    function normalizePath(url){
+      var a = document.createElement('a');
+      a.href = url || '';
+      var p = a.pathname || '';
+      if (p.length > 1 && p.slice(-1) === '/') p = p.slice(0,-1);
+      return p;
+    }
+
+    // Determine initial active pill by exact URL match OR stored handle (sessionStorage) OR fallback
+    var currentPath = normalizePath(window.location.href);
+    var initialIndex = initialIndexSetting;
+    for (var i=0;i<pills.length;i++){
+      var pUrl = normalizePath(pills[i].dataset.collectionUrl || pills[i].href);
+      if (pUrl && pUrl === currentPath) { initialIndex = i; break; }
+    }
+
+    if (initialIndex === initialIndexSetting) {
+      try {
+        var stored = sessionStorage.getItem('nn:selected-collection-handle');
+        if (stored) {
+          for (var j=0;j<pills.length;j++){
+            if (pills[j].dataset.collectionHandle === stored) { initialIndex = j; break; }
+          }
+          sessionStorage.removeItem('nn:selected-collection-handle');
+        }
+      } catch(e){}
+    }
+
+    function activate(idx, options){
+      options = options || {};
+      pills.forEach(function(p,i){
+        p.classList.toggle('active', i===idx);
+        p.setAttribute('aria-selected', i===idx ? 'true' : 'false');
+      });
+      var pill = pills[idx];
+      if (!pill) return;
+      if (options.scroll !== false) {
+        try { pill.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); } catch(e){}
+      }
+      var detail = { handle: pill.dataset.collectionHandle || '', url: pill.dataset.collectionUrl || pill.href || '' };
+      if (options.dispatch !== false) document.dispatchEvent(new CustomEvent('nn:collection-selected', { bubbles:true, detail: detail }));
+    }
+
+    // attach click handlers
+    pills.forEach(function(p, idx){
+      p.addEventListener('click', function(e){
+        var handle = p.dataset.collectionHandle || '';
+        try { sessionStorage.setItem('nn:selected-collection-handle', handle); } catch(err){}
+        if (!navigateOnClick) {
+          e.preventDefault();
+          activate(idx, { scroll:true, dispatch:true });
+        } else {
+          // center & dispatch then allow navigation
+          activate(idx, { scroll:true, dispatch:true });
+        }
+      });
+
+      p.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var handle = p.dataset.collectionHandle || '';
+          try { sessionStorage.setItem('nn:selected-collection-handle', handle); } catch(err){}
+          if (!navigateOnClick) activate(idx, { scroll:true, dispatch:true });
+          else activate(idx, { scroll:true, dispatch:true });
+        }
+        if (e.key === 'ArrowRight') { e.preventDefault(); var n=(idx+1)%pills.length; pills[n].focus(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); var n=(idx-1+pills.length)%pills.length; pills[n].focus(); }
+      });
+    });
+
+    // initial center activation
+    setTimeout(function(){ activate(initialIndex, { scroll:true, dispatch:true }); }, 60);
+
+    // public API
+    window.nnSelectCollectionByHandle = window.nnSelectCollectionByHandle || function(handle){
+      var idx = pills.findIndex(function(p){ return p.dataset.collectionHandle === handle; });
+      if (idx >= 0) activate(idx, { scroll:true, dispatch:true });
+    };
+  })();
+</script>
+
+{%- schema -%}
+{
+  "name": "NamNam Header",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_announcement", "label": "Show top announcement bar", "default": false },
+    { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "Free shipping on orders over ₹499" },
+    { "type": "color", "id": "announcement_bg_color", "label": "Announcement background color", "default": "#E6F7F0" },
+    { "type": "color", "id": "announcement_text_color", "label": "Announcement text color", "default": "#063" },
+
+    { "type": "checkbox", "id": "show_promo", "label": "Show promo insert (small pill)", "default": false },
+    { "type": "text", "id": "promo_text", "label": "Promo text", "default": "New — Bare Bites" },
+    { "type": "color", "id": "promo_bg_color", "label": "Promo background color", "default": "#FFDAB2" },
+    { "type": "color", "id": "promo_text_color", "label": "Promo text color", "default": "#2A2430" },
+
+    { "type": "text", "id": "hero_title", "label": "Hero title", "default": "Discover NamNam" },
+    { "type": "text", "id": "hero_subtitle", "label": "Hero subtitle", "default": "Browse through all our handcrafted sweets & snacks" },
+
+    { "type": "color", "id": "hero_bg_color", "label": "Hero background color (single)", "default": "#F2E6D9" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#241A3A" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#6F6B78" },
+    { "type": "text", "id": "title_font_size", "label": "Title font size", "default": "44px" },
+
+    { "type": "text", "id": "banner_text", "label": "Banner text", "default": "The More You Buy, The More You Save" },
+    { "type": "color", "id": "banner_bg_color", "label": "Banner background color", "default": "#FFFFFF" },
+
+    { "type": "text", "id": "strapline", "label": "Strapline text", "default": "No More Boring Sweets." },
+    { "type": "color", "id": "strapline_color", "label": "Strapline text color", "default": "#C46200" },
+    { "type": "color", "id": "strapline_bg_color", "label": "Strapline background color", "default": "transparent" },
+    { "type": "color", "id": "strapline_text_color", "label": "Strapline text color (bg mode)", "default": "#C46200" },
+
+    { "type": "number", "id": "star_count", "label": "Star count", "default": 5 },
+    { "type": "number", "id": "rating_count", "label": "Rating count", "default": 5000 },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#FFCC33" },
+
+    { "type": "select", "id": "pill_style", "label": "Pill style", "options": [ {"value":"filled","label":"Filled"},{"value":"outline","label":"Outline"} ], "default":"filled" },
+    { "type": "color", "id": "pill_bg_color", "label": "Pill background", "default": "#FFFFFF" },
+    { "type": "color", "id": "pill_text_color", "label": "Pill text color", "default": "#342F3D" },
+    { "type": "color", "id": "pill_active_bg", "label": "Active pill background", "default": "#C46D20" },
+    { "type": "color", "id": "pill_active_text", "label": "Active pill text color", "default": "#FFFFFF" },
+    { "type": "color", "id": "pill_border_color", "label": "Pill border color", "default": "#E6DFEF" },
+
+    { "type": "checkbox", "id": "navigate_on_click", "label": "Navigate to collection page when a pill is clicked", "default": true },
+
+    { "type": "text", "id": "max_width", "label": "Max width", "default": "1100px" },
+    { "type": "range", "id": "hero_radius", "label": "Hero radius (not used in seamless mode)", "min": 0, "max": 40, "default": 0 },
+    { "type": "text", "id": "font_family", "label": "Font family (CSS)", "default": "Inter, 'Helvetica Neue', Arial, sans-serif" },
+    { "type": "number", "id": "initial_active_index", "label": "Initial active pill index", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Choose collection" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "NamNam Header",
+      "category": "Collection",
+      "blocks": []
+    }
+  ]
+}
+{%- endschema -%}

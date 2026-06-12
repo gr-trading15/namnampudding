@@ -1,0 +1,6 @@
+{%- capture app-plaza-snippets -%}
+{%- include 'app-plaza-speed-up' -%}
+{%- endcapture -%}
+{%- unless app-plaza-snippets contains 'Liquid error' -%}
+{{ app-plaza-snippets }}
+{%- endunless -%}

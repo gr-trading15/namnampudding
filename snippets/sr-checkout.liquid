@@ -1,0 +1,87 @@
+<script type="application/javascript">
+checkoutBuyer = "https://fastrr-boost-ui.pickrr.com/";
+</script>
+<input type="hidden" value="namnam.in" id="sellerDomain"/>
+<link rel="stylesheet" href="https://fastrr-boost-ui.pickrr.com/assets/styles/shopify.css">
+<script src="https://fastrr-boost-ui.pickrr.com/assets/js/channels/shopify.js" defer></script>
+
+<input type="hidden" value="rz" id="template"/>
+
+<style>
+
+  .shiprocket-headless[data-type="product"]{
+    display:none !important;
+  }
+.sr-headless-checkout{
+    font-family:inherit;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+    border-radius:42px;
+    height:51.25px;
+    background-color: rgba(var(--color-button),var(--alpha-button-background));
+    color: rgb(var(--color-button-text));
+    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.5);
+   }
+
+
+ .styles_Footer__XL90t.UpcartDesignSettings__cartAccentColor.upcart-footer  .shiprocket-headless[data-type="mini-cart"] .sr-headless-checkout .sr-d-flex .loader5{
+  display:none!important;
+}
+  
+.shiprocket-headless[data-type="cart"] .sr-headless-checkout{
+   font-weight:500;
+}
+
+.shiprocket-headless[data-type="mini-cart"] .sr-headless-checkout{
+   font-weight:500;
+  background-color:#E88E1C;
+}
+
+.sr-powered-by{
+  right:12px;
+}
+
+/* .styles_Button__fullWidth__uCmBU.UpcartDesignSettings__button.upcart-checkout-button{
+display:none !important;
+} */
+
+  
+</style>
+
+
+<!-- <script>
+// Select the node that will be observed for mutations
+let fastrrBtn = '<div id="headless-button" class="shiprocket-headless" data-type="mini-cart"></div>'
+let buttonAdded = false
+let parsedBtnCode = new DOMParser().parseFromString(fastrrBtn, 'text/html').querySelectorAll('.shiprocket-headless')[0];
+const headlessNode = document.querySelector('html');
+
+// Options for the observer (which mutations to observe)
+const configuration = { attributes: true, childList: true, subtree: true };
+
+// Callback function to execute when mutations are observed
+const headlessCallback = (mutationList, observer) => {
+  for (const mutation of mutationList) {
+    
+  let sidecart = document.querySelector('#CartPopup')
+    
+  let sideCartButton = document.querySelector('.styles_Button__fullWidth__uCmBU.UpcartDesignSettings__button.upcart-checkout-button')
+    
+    if(sidecart) {
+      if(!document.getElementById('headless-button')) {
+      
+      sideCartButton.before(parsedBtnCode)
+      }
+    }
+
+  }
+};
+
+// Create an observer instance linked to the callback function
+const observer1 = new MutationObserver(headlessCallback);
+
+// Start observing the target node for configured mutations
+observer1.observe(headlessNode, configuration);
+
+</script> -->

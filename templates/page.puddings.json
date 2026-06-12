@@ -1,0 +1,465 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "custom-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "c369b5bd-22ea-4e5b-ae28-58d8428e724b": {
+      "type": "slide",
+      "blocks": {
+        "template--15611813986348__c369b5bd-22ea-4e5b-ae28-58d8428e724b-slide-1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/IMG_1685.jpg",
+            "image_1": "shopify://shop_images/IMG_1673.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": false,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        },
+        "template--15611813986348__c369b5bd-22ea-4e5b-ae28-58d8428e724b-slide-2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/DSC02379_1.jpg",
+            "image_1": "shopify://shop_images/DSC02446s1_cf5200e9-06d5-49d3-aeb5-4c592750e932.jpg",
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": false,
+            "text_alignment": "center",
+            "image_overlay_opacity": 0,
+            "color_scheme": "background-1",
+            "text_alignment_mobile": "center"
+          }
+        }
+      },
+      "block_order": [
+        "template--15611813986348__c369b5bd-22ea-4e5b-ae28-58d8428e724b-slide-1",
+        "template--15611813986348__c369b5bd-22ea-4e5b-ae28-58d8428e724b-slide-2"
+      ],
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "show_text_below": false,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
+    "c105ab45-5c5d-4f54-aec1-84d7e439581b": {
+      "type": "featured-product",
+      "blocks": {
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-title-1": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-price-1": {
+          "type": "price",
+          "settings": {}
+        },
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-variant_picker-1": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-quantity_selector-1": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-buy_buttons-1": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-share-1": {
+          "type": "share",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-text-1",
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-title-1",
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-price-1",
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-variant_picker-1",
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-quantity_selector-1",
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-buy_buttons-1",
+        "template--15611813986348__c105ab45-5c5d-4f54-aec1-84d7e439581b-share-1"
+      ],
+      "settings": {
+        "product": "creamy-vanilla-pudding",
+        "color_scheme": "background-1",
+        "secondary_background": false,
+        "media_size": "small",
+        "constrain_to_viewport": true,
+        "media_fit": "cover",
+        "media_position": "left",
+        "image_zoom": "none",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "293640ad-ac7e-44b2-8f6d-110ffc27a238": {
+      "type": "featured-product",
+      "blocks": {
+        "f0a33792-6ee2-41f4-80f2-24f295ba002a": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "199bc889-bb95-43eb-abc1-fc4fe66b54d5": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "8b2c3046-49af-45a8-8292-281762d61d5a": {
+          "type": "price",
+          "settings": {}
+        },
+        "9f2b1bc7-a7d9-4772-8c58-65e351023ae1": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "500deb66-6667-499a-8c86-b47fecf307f5": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "c6b2d5f0-b006-4232-9d8b-61db00e96d88": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "ac4c5b7d-22e4-4727-98c8-620afb1e2ad1": {
+          "type": "share",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "f0a33792-6ee2-41f4-80f2-24f295ba002a",
+        "199bc889-bb95-43eb-abc1-fc4fe66b54d5",
+        "8b2c3046-49af-45a8-8292-281762d61d5a",
+        "9f2b1bc7-a7d9-4772-8c58-65e351023ae1",
+        "500deb66-6667-499a-8c86-b47fecf307f5",
+        "c6b2d5f0-b006-4232-9d8b-61db00e96d88",
+        "ac4c5b7d-22e4-4727-98c8-620afb1e2ad1"
+      ],
+      "settings": {
+        "product": "silky-chocolate-pudding",
+        "color_scheme": "background-1",
+        "secondary_background": false,
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "media_position": "right",
+        "image_zoom": "none",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "d8f623b2-1761-421a-98c8-bd6f75bd4a29": {
+      "type": "featured-product",
+      "blocks": {
+        "30536e41-c7e7-41f2-b0b4-98efdba95988": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "a7d9c7da-1352-4c18-be64-8fabdd412fd1": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h2"
+          }
+        },
+        "ca342497-683b-45a5-b089-c09b677b0d95": {
+          "type": "price",
+          "settings": {}
+        },
+        "9b41aa0c-48bd-4500-81c7-41e0c42032bc": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "c1e99dca-ef1d-4416-9b80-5b3775f2f02f": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "d8bc0d0f-cd6b-474a-af8f-13f9b256352a": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "c993da21-4f15-421d-81fc-263a8ee3c420": {
+          "type": "share",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "30536e41-c7e7-41f2-b0b4-98efdba95988",
+        "a7d9c7da-1352-4c18-be64-8fabdd412fd1",
+        "ca342497-683b-45a5-b089-c09b677b0d95",
+        "9b41aa0c-48bd-4500-81c7-41e0c42032bc",
+        "c1e99dca-ef1d-4416-9b80-5b3775f2f02f",
+        "d8bc0d0f-cd6b-474a-af8f-13f9b256352a",
+        "c993da21-4f15-421d-81fc-263a8ee3c420"
+      ],
+      "settings": {
+        "product": "combo-pack",
+        "color_scheme": "background-1",
+        "secondary_background": false,
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "media_position": "right",
+        "image_zoom": "none",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "7f0e1a0b-48c1-44da-9052-455c13a7b5dd": {
+      "type": "collapsible-content",
+      "blocks": {
+        "template--15611813986348__7f0e1a0b-48c1-44da-9052-455c13a7b5dd-collapsible_row-1": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Why Nam Nam Freeze Dried Candy?",
+            "icon": "clipboard",
+            "row_content": "<p>Ever wondered what happens when your favourite candy gets a makeover? Nam Nam's freeze drying magic turns ordinary candies into extraordinary, crunchy delights! 😋 Brace yourself for a taste bud adventure like never before!</p>",
+            "page": ""
+          }
+        },
+        "1b197a56-0865-45b4-b205-7f7fdf5bc27f": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Does the flavor change?",
+            "icon": "clipboard",
+            "row_content": "<p>Nope! It's a flavor explosion! Our freeze-drying process cranks up the intensity, making every bite a flavor-packed thrill ride. Prepare your taste buds for a symphony of deliciousness! 🤤</p>",
+            "page": ""
+          }
+        },
+        "cf912be4-ba40-4535-96aa-13227ce9be79": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Why the Splurge? 💸",
+            "icon": "clipboard",
+            "row_content": "<p>Because greatness takes time! It takes 8-12 hours to transform each batch into crispy perfection. Our top-notch equipment doesn't come cheap, but we're committed to offering you the finest freeze-dried treats at the best price. Treat yourself without breaking the bank! 🤑</p>",
+            "page": ""
+          }
+        },
+        "a9893458-b2d9-4345-b5b8-694d6057fb87": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Hoping for fewer calories?",
+            "icon": "clipboard",
+            "row_content": "<p>Sorry, no shortcuts there! The puffiness might fool you, but the calorie count remains the same. Indulge guilt-free in our airy, freeze-dried wonders! </p>",
+            "page": ""
+          }
+        },
+        "fef0a8d5-8d96-4cee-bb63-7f8229b21ea0": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How long does it last?",
+            "icon": "clipboard",
+            "row_content": "<p>Well, that depends on your willpower! Seriously, though, our freeze-dried wonders can stick around for a minimum of a year if you keep them cool, dry, and away from prying hands. Our candies are so fresh that they hardly hang out on our shelves for more than 2-3 days! Want to extend the party? Throw in a couple of oxygen absorbers, and voilà—your treats are set for an extended shelf life! 😀</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "template--15611813986348__7f0e1a0b-48c1-44da-9052-455c13a7b5dd-collapsible_row-1",
+        "1b197a56-0865-45b4-b205-7f7fdf5bc27f",
+        "cf912be4-ba40-4535-96aa-13227ce9be79",
+        "a9893458-b2d9-4345-b5b8-694d6057fb87",
+        "fef0a8d5-8d96-4cee-bb63-7f8229b21ea0"
+      ],
+      "disabled": true,
+      "settings": {
+        "caption": "",
+        "heading": "FAQs",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "layout": "section",
+        "color_scheme": "scheme-3061b9c1-ec9b-43a6-86da-a01cb749dfbb",
+        "container_color_scheme": "scheme-3061b9c1-ec9b-43a6-86da-a01cb749dfbb",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "fe7ffde8-f2b8-4828-be3b-c23e9cf0c50d": {
+      "type": "video",
+      "settings": {
+        "heading": "Video",
+        "heading_size": "h2",
+        "enable_video_looping": false,
+        "video": "shopify://files/videos/Audio nam nam (1).MP4",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "21d67316-246a-4276-ae69-c9b12b67570e": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--15672319868972__21d67316-246a-4276-ae69-c9b12b67570e-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Indulge a Spoonful",
+            "heading_size": "h2"
+          }
+        },
+        "template--15672319868972__21d67316-246a-4276-ae69-c9b12b67570e-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Creamy, decadent, and utterly irresistible, our puddings are like a spoonful of pure joy. They taste like a sweet escape in every bite!</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "template--15672319868972__21d67316-246a-4276-ae69-c9b12b67570e-heading-1",
+        "template--15672319868972__21d67316-246a-4276-ae69-c9b12b67570e-text-1"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/Spoon_1.jpg",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "center",
+        "content_layout": "no-overlap",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "3a757ccb-35ba-4266-9a1a-c0623d1d2c60": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--15672319868972__3a757ccb-35ba-4266-9a1a-c0623d1d2c60-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "\"Absolutely divine! These puddings are a heavenly delight for the taste buds.\"-Meghna ⭐️⭐️⭐️⭐️⭐️",
+            "heading_size": "h2"
+          }
+        }
+      },
+      "block_order": [
+        "template--15672319868972__3a757ccb-35ba-4266-9a1a-c0623d1d2c60-heading-1"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/IMG_1673.jpg",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "d27b75d3-e3f7-45a4-b6d1-6089b5f18366": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/replicate-prediction-lxizoqrby3p6bhskefvhace3ie.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "c369b5bd-22ea-4e5b-ae28-58d8428e724b",
+    "c105ab45-5c5d-4f54-aec1-84d7e439581b",
+    "293640ad-ac7e-44b2-8f6d-110ffc27a238",
+    "d8f623b2-1761-421a-98c8-bd6f75bd4a29",
+    "7f0e1a0b-48c1-44da-9052-455c13a7b5dd",
+    "fe7ffde8-f2b8-4828-be3b-c23e9cf0c50d",
+    "21d67316-246a-4276-ae69-c9b12b67570e",
+    "3a757ccb-35ba-4266-9a1a-c0623d1d2c60",
+    "d27b75d3-e3f7-45a4-b6d1-6089b5f18366"
+  ]
+}

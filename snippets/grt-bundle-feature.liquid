@@ -1,0 +1,543 @@
+{% if product.metafields.custom != blank and product.metafields.custom.bundle.value.limit != blank  and product.metafields.custom.bundle.value.enable != false %}
+{% assign list_data = product.metafields.custom.bundle.value.list_items.value %}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<style>
+/* ===== Candy bundle selectable cards ===== */
+.product-form--bundle.product-form>.form{max-width: 100%;}
+.candy_main_container .candy-container{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* Desktop: 4 columns */
+  gap: 14px;
+  margin:20px 0;
+}
+.card-label{font-size:13px; line-height:normal;}
+.card-price{
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+}
+
+.candy_main_container .cady_box{
+  position: relative;
+  border: 3px solid #111;
+  border-radius: 20px;
+  padding: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, opacity .12s ease;
+  background: transparent;
+}
+
+.candy_main_container .cady_box:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.candy_main_container .cady_box .img_container{
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+
+.candy_main_container .cady_box img.candy_img{
+  border-radius: 10px;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Selected state */
+.candy_main_container .cady_box.is-selected{
+  border-color: #111;
+  outline: 3px solid #9edbd3;
+  outline-offset: -3px;
+}
+
+/* Check badge */
+.candy_main_container .cady_box .candy_check_badge{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+}
+
+.candy_main_container .cady_box.is-selected .candy_check_badge{
+  border-color: rgba(0,0,0,0.9);
+}
+
+.candy_main_container .cady_box .candy_check_badge svg{
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity .12s ease, transform .12s ease;
+}
+.candy_main_container .cady_box.is-selected .candy_check_badge{background: #da851a; border:solid 2px #111;}
+
+.candy_main_container .cady_box.is-selected .candy_check_badge svg{
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Disabled state when limit reached */
+.candy_main_container .cady_box.is-disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.candy_main_container .cady_box.is-disabled a{
+  pointer-events: none; /* prevent opening product */
+}
+
+/* Total area */
+.candy_main_container .candy_total_row{
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 12px;
+  background: rgba(0,0,0,0.02);
+}
+
+.candy_main_container .candy_total_label{
+  font-weight: 600;
+}
+
+.candy_main_container .candy_total_value{
+  font-weight: 700;
+}
+
+/* ===== NEW: header layout + progress bar ===== */
+.candy_main_container .candy_list_text{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.candy_main_container .candy_count{
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.candy_main_container .candy_progress{
+  flex: 1;
+  height: 14px;
+  border-radius: 999px;
+  background: #fff;
+  border:solid 2px #111;
+  overflow: hidden;
+  position: relative;
+}
+
+.candy_main_container .candy_progress_fill{
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: #da851a;
+  transition: width 160ms ease;
+}
+
+.candy_main_container .candy_help_text{
+  margin: 0 0 10px;
+  font-size: 13px;
+  text-align: right;
+}
+
+.candy_main_container .candy_help_text.is-error{
+  color: #b42318;
+}
+
+.product-form--bundle .product-form__submit.bundle-needs-selection{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Hide manual quantity controls for bundle pricing mode */
+.product-form--bundle .product-form__quantity,
+.product-form--bundle quantity-input,
+.product-form--bundle .quantity,product-info .product-form__quantity,product-info .price--show-badge,product-info .product__tax,product-info .caption-with-letter-spacing{
+  display: none !important;
+}
+@media (max-width: 749px){
+  .candy_main_container .candy-container{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+</style>
+
+<div class="candy_main_container">
+  <div class="candy_row">
+
+    {%- comment -%} UPDATED HEADER: X/L selected + progress bar {%- endcomment -%}
+    <div class="candy_list_text" style="display:none;">
+      <span class="candy_count">
+        <span id="indicate_value">0</span>/<span id="candy_limit">{{ product.metafields.custom.bundle.value.limit }}</span> selected
+      </span>
+
+      <div class="candy_progress" role="progressbar"
+           aria-valuemin="0"
+           aria-valuemax="{{ product.metafields.custom.bundle.value.limit }}"
+           aria-valuenow="0">
+        <span class="candy_progress_fill" style="width:0%"></span>
+      </div>
+    </div>
+    <p class="candy_help_text" style="display:none;" data-candy-help></p>
+
+    <div class="candy-container">
+      {% for item in list_data %}
+        <!-- candy box 1 -->
+        <div class="cady_box" data-pid="{{ product.id }}" data-title="{{ item.title | escape }}">
+          <div class="img_container">
+            <a href="/products/{{ item.handle }}">
+              <img class="candy_img" src="{{ item.featured_image | image_url }}" width="130" height="130" alt="{{ item.title | escape }}" loading="eager" />
+            </a>
+            <div class="card-label"><span>{{ item.title }}</span></div>
+            {% assign vrnt = item.variants.first %}
+            {% assign vrnt_id = vrnt.id %}
+            <div class="card-price">{{ vrnt.price | money }}</div>
+            <input type="hidden" class="item_id" value="{{ vrnt_id }}" />
+            <input type="hidden" class="item_price" value="{{ item.variants.first.price }}" />
+          </div>
+        </div>
+        <!-- candy box 1 -->
+      {% endfor %}
+    </div>
+    <div data-candy-properties hidden></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const roots = document.querySelectorAll(".candy_main_container");
+  if (!roots.length) return;
+
+  roots.forEach((root) => {
+    const limit = Number("{{ product.metafields.custom.bundle.value.limit | default: 0 }}") || 0;
+    const indicateEl = root.querySelector("#indicate_value");
+    const container = root.querySelector(".candy-container");
+    const progressEl = root.querySelector(".candy_progress");
+    const progressFillEl = root.querySelector(".candy_progress_fill");
+    const limitEl = root.querySelector("#candy_limit");
+    const helpEl = root.querySelector("[data-candy-help]");
+    const propsHost = root.querySelector("[data-candy-properties]");
+    const formEl = root.closest("form");
+    const productFormEl = root.closest("product-form");
+    const baseProductPriceCents = Number("{{ product.selected_or_first_available_variant.price | default: 0 }}") || 0;
+    const submitBtn =
+      (productFormEl && productFormEl.querySelector('[name="add"]')) || (formEl && formEl.querySelector('[name="add"]'));
+    const errorWrapper = productFormEl && productFormEl.querySelector(".product-form__error-message-wrapper");
+    const errorMessageEl = errorWrapper && errorWrapper.querySelector(".product-form__error-message");
+    let quantityInput = formEl ? formEl.querySelector('[name="quantity"]') : null;
+
+    if (!container || !indicateEl || !limit) return;
+
+    const listText = root.querySelector(".candy_list_text");
+    if (listText && !root.querySelector(".candy_total_row")) {
+      const totalRow = document.createElement("div");
+      totalRow.className = "candy_total_row";
+      totalRow.innerHTML = `
+        <div class="candy_total_label">Total</div>
+        <div class="candy_total_value" data-candy-total>$0.00</div>
+      `;
+      listText.insertAdjacentElement("afterend", totalRow);
+    }
+    const totalEl = root.querySelector("[data-candy-total]");
+
+    if (formEl && !quantityInput) {
+      quantityInput = document.createElement("input");
+      quantityInput.type = "hidden";
+      quantityInput.name = "quantity";
+      quantityInput.value = "1";
+      formEl.appendChild(quantityInput);
+    }
+
+    container.querySelectorAll(".cady_box").forEach((box) => {
+      if (!box.querySelector(".candy_check_badge")) {
+        const badge = document.createElement("div");
+        badge.className = "candy_check_badge";
+        badge.setAttribute("aria-hidden", "true");
+        badge.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        `;
+        box.appendChild(badge);
+      }
+    });
+
+    function getPriceCents(box) {
+      const priceInput = box.querySelector(".item_price");
+      const value = priceInput ? priceInput.value : "0";
+      const parsed = parseInt(String(value).replace(/[^\d-]/g, ""), 10);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function formatMoney(cents) {
+      if (window.Shopify && typeof window.Shopify.formatMoney === "function") {
+        return window.Shopify.formatMoney(cents, window.Shopify.money_format || "{{ shop.money_format }}");
+      }
+      return (cents / 100).toLocaleString(undefined, {
+        style: "currency",
+        currency: "{{ cart.currency.iso_code | default: shop.currency }}",
+      });
+    }
+
+    function getSelectedBoxes() {
+      return Array.from(container.querySelectorAll(".cady_box.is-selected"));
+    }
+
+    function setHelpText(message, isError) {
+      if (!helpEl) return;
+      helpEl.textContent = message || "";
+      helpEl.classList.toggle("is-error", Boolean(isError));
+    }
+
+    function setBundleError(message) {
+      if (errorWrapper && errorMessageEl) {
+        errorMessageEl.textContent = message;
+        errorWrapper.removeAttribute("hidden");
+        errorWrapper.setAttribute("data-bundle-error", "true");
+      }
+      setHelpText(message, true);
+    }
+
+    function clearBundleError() {
+      if (errorWrapper && errorWrapper.getAttribute("data-bundle-error") === "true") {
+        errorWrapper.removeAttribute("data-bundle-error");
+        errorWrapper.setAttribute("hidden", "hidden");
+        if (errorMessageEl) errorMessageEl.textContent = "";
+      }
+    }
+
+    function getCalculatedQuantity(totalCents) {
+      if (!Number.isFinite(baseProductPriceCents) || baseProductPriceCents <= 0) return 1;
+      if (!Number.isFinite(totalCents) || totalCents <= 0) return 1;
+      return Math.max(1, Math.floor(totalCents / baseProductPriceCents));
+    }
+
+    function syncQuantity(totalCents) {
+      if (!quantityInput) return 1;
+      const quantity = getCalculatedQuantity(totalCents);
+      quantityInput.value = String(quantity);
+      quantityInput.setAttribute("value", String(quantity));
+      return quantity;
+    }
+
+    function syncProperties(selectedBoxes, totalCents, quantityValue) {
+      if (!propsHost) return;
+      propsHost.innerHTML = "";
+
+      const titles = [];
+      selectedBoxes.forEach((box, index) => {
+        const title = (box.dataset.title || "").trim();
+        const variantInput = box.querySelector(".item_id");
+        const variantId = variantInput ? String(variantInput.value || "") : "";
+
+        if (title) {
+          titles.push(title);
+          const titleInput = document.createElement("input");
+          titleInput.type = "hidden";
+          titleInput.name = "properties[Bundle Item " + (index + 1) + "]";
+          titleInput.value = title;
+          propsHost.appendChild(titleInput);
+        }
+
+        if (variantId) {
+          const idInput = document.createElement("input");
+          idInput.type = "hidden";
+          idInput.name = "properties[_Bundle Item " + (index + 1) + " Variant ID]";
+          idInput.value = variantId;
+          propsHost.appendChild(idInput);
+        }
+      });
+
+      if (titles.length) {
+        const selectionInput = document.createElement("input");
+        selectionInput.type = "hidden";
+        selectionInput.name = "properties[_Bundle Selection]";
+        selectionInput.value = titles.join(", ");
+        propsHost.appendChild(selectionInput);
+      }
+
+      const countInput = document.createElement("input");
+      countInput.type = "hidden";
+      countInput.name = "properties[_Bundle Count]";
+      countInput.value = String(selectedBoxes.length);
+      propsHost.appendChild(countInput);
+
+      const bundleFlagInput = document.createElement("input");
+      bundleFlagInput.type = "hidden";
+      bundleFlagInput.name = "properties[_is_bundle_item]";
+      bundleFlagInput.value = "true";
+      propsHost.appendChild(bundleFlagInput);
+
+      const totalInput = document.createElement("input");
+      totalInput.type = "hidden";
+      totalInput.name = "properties[_Bundle Total Cents]";
+      totalInput.value = String(totalCents);
+      propsHost.appendChild(totalInput);
+
+      const qtyInput = document.createElement("input");
+      qtyInput.type = "hidden";
+      qtyInput.name = "properties[_Bundle Calculated Quantity]";
+      qtyInput.value = String(quantityValue);
+      propsHost.appendChild(qtyInput);
+    }
+
+    function updateSubmitGuard(count) {
+      if (!submitBtn) return;
+      const ready = count === limit;
+      submitBtn.classList.toggle("bundle-needs-selection", !ready);
+      submitBtn.setAttribute("aria-disabled", ready ? "false" : "true");
+    }
+
+    function updateUI() {
+      const selected = getSelectedBoxes();
+      const count = selected.length;
+
+      indicateEl.textContent = String(count);
+      if (limitEl) limitEl.textContent = String(limit);
+
+      let total = 0;
+      for (const box of selected) total += getPriceCents(box);
+      if (totalEl) totalEl.textContent = formatMoney(total);
+      const calculatedQty = syncQuantity(total);
+
+      const pct = limit > 0 ? Math.min(100, (count / limit) * 100) : 0;
+      if (progressFillEl) progressFillEl.style.width = pct + "%";
+      if (progressEl) {
+        progressEl.setAttribute("aria-valuenow", String(count));
+        progressEl.setAttribute("aria-valuemax", String(limit));
+      }
+
+      const reached = count >= limit;
+      container.querySelectorAll(".cady_box").forEach((box) => {
+        if (reached && !box.classList.contains("is-selected")) {
+          box.classList.add("is-disabled");
+          box.setAttribute("aria-disabled", "true");
+        } else {
+          box.classList.remove("is-disabled");
+          box.removeAttribute("aria-disabled");
+        }
+      });
+
+      syncProperties(selected, total, calculatedQty);
+      updateSubmitGuard(count);
+      clearBundleError();
+
+      const remaining = Math.max(limit - count, 0);
+      setHelpText(
+        remaining > 0
+          ? "Select " + remaining + " more item" + (remaining === 1 ? "" : "s") + " to continue"
+          : "Selection complete",
+        false
+      );
+    }
+
+    function toggleBox(box) {
+      if (!box || !box.classList.contains("cady_box")) return;
+      if (box.classList.contains("is-disabled") && !box.classList.contains("is-selected")) return;
+
+      const selected = getSelectedBoxes();
+      const isSelected = box.classList.contains("is-selected");
+
+      if (isSelected) {
+        box.classList.remove("is-selected");
+        box.setAttribute("aria-checked", "false");
+        updateUI();
+        return;
+      }
+
+      if (selected.length >= limit) return;
+
+      box.classList.add("is-selected");
+      box.setAttribute("aria-checked", "true");
+      updateUI();
+    }
+
+    container.addEventListener("click", (event) => {
+      const box = event.target.closest(".cady_box");
+      if (!box) return;
+      event.preventDefault();
+      toggleBox(box);
+    });
+
+    container.querySelectorAll(".cady_box").forEach((box) => {
+      box.setAttribute("role", "checkbox");
+      box.setAttribute("tabindex", "0");
+      box.setAttribute("aria-checked", box.classList.contains("is-selected") ? "true" : "false");
+    });
+
+    container.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const box = event.target.closest(".cady_box");
+      if (!box) return;
+      event.preventDefault();
+      toggleBox(box);
+    });
+
+    if (formEl) {
+      formEl.addEventListener(
+        "submit",
+        (event) => {
+          const count = getSelectedBoxes().length;
+          if (count === limit) {
+            clearBundleError();
+            updateSubmitGuard(count);
+            return;
+          }
+
+          event.preventDefault();
+          event.stopImmediatePropagation();
+
+          const remaining = Math.max(limit - count, 0);
+          const message =
+            remaining > 0
+              ? "Please select " +
+                remaining +
+                " more item" +
+                (remaining === 1 ? "" : "s") +
+                " before adding to cart."
+              : "Please select exactly " + limit + " items before adding to cart.";
+
+          setBundleError(message);
+          updateSubmitGuard(count);
+        },
+        true
+      );
+    }
+
+    if (typeof window.getCandyBundleSelection !== "function") {
+      window.getCandyBundleSelection = function () {
+        return getSelectedBoxes().map((box) => {
+          const idEl = box.querySelector(".item_id");
+          return {
+            variantId: idEl ? idEl.value : null,
+            priceCents: getPriceCents(box),
+            title: box.dataset.title || "",
+          };
+        });
+      };
+    }
+
+    updateUI();
+  });
+})();
+</script>
+
+{% endif %}

@@ -1,0 +1,492 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rich_text_FgfNci": {
+      "type": "rich-text",
+      "blocks": {
+        "text_DHkKVL": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>⭐ 4.5/5 From 8,500+ Verified Customers</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_DHkKVL"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "body"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "text_YwzMJQ": {
+          "type": "text",
+          "settings": {
+            "text": "<em>Freeze-dried fresh strawberries coated in rich Belgian dark couverture.</em>",
+            "text_style": "body"
+          }
+        },
+        "grt_review_APGBY7": {
+          "type": "grt-review",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "text_mLFPjF": {
+          "type": "text",
+          "settings": {
+            "text": "Tax included.",
+            "text_style": "uppercase"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "vo_product_options_block_Qb9YjT": {
+          "type": "shopify://apps/vo-product-options/blocks/block/430cbd7b-bd20-4c16-ba41-db6f4c645164",
+          "settings": {
+            "font_color": ""
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "custom_liquid_3dp8ed": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{{ product.metafields.custom.product_short_description }}"
+          }
+        },
+        "icon_with_text_PKkexW": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "serving_dish",
+            "heading_1": "<strong>Freshly Made in Small Batches</strong>",
+            "icon_2": "truck",
+            "heading_2": "<strong>Melt-Proof Delivery</strong>",
+            "icon_3": "leaf",
+            "heading_3": "<strong>Real Ingredients Only</strong>"
+          }
+        },
+        "custom_liquid_FLgNm3": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<a href=\"/products/build-your-own-box\" class=\"nn-trial-banner\">\n  <img\n    src=\"https://cdn.shopify.com/s/files/1/0591/7294/5964/files/banner_final.png?v=1780488141\"\n    alt=\"Build Your Own Box\"\n    loading=\"lazy\"\n  >\n</a>\n\n<style>\n.nn-trial-banner{\n  display:block;\n  width:100%;\n  margin:12px 0 16px;\n  text-decoration:none;\n}\n\n.nn-trial-banner img{\n  display:block;\n  width:100%;\n  height:auto;\n  border-radius:16px;\n  box-shadow:0 6px 18px rgba(0,0,0,0.08);\n  transition:transform .2s ease;\n}\n\n.nn-trial-banner:active img{\n  transform:scale(.98);\n}\n</style>"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "text_EqykzJ": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Your order will be delivered within a maximum of 4 to 5 Business days.</strong>",
+            "text_style": "uppercase"
+          }
+        },
+        "trust_badges_bear_widget_AGaPYe": {
+          "type": "shopify://apps/conversion-bear-trust-badges/blocks/widget/163a9b59-0ec2-4cb7-bf5c-31408b4a9420",
+          "settings": {}
+        },
+        "collapsible_tab_yNk8zF": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Description",
+            "icon": "clipboard",
+            "content": "<p>{{product.metafields.custom.collapsible_product_description}}<p>\n\n\n<p><span>Experience pure delight risk-free! Our 100% Satisfaction Guarantee ensures that if you're not thrilled with your product, we'll promptly refund your purchase—no questions asked.</span></p>",
+            "page": ""
+          }
+        },
+        "02e642fe-552e-4e5c-8948-9b5ea6f27561": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Ingredients",
+            "icon": "serving_dish",
+            "content": "<p>{{ product.metafields.custom.product_ingredients }}\n</p>",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "text_YwzMJQ",
+        "grt_review_APGBY7",
+        "price",
+        "text_mLFPjF",
+        "variant_picker",
+        "vo_product_options_block_Qb9YjT",
+        "quantity_selector",
+        "custom_liquid_3dp8ed",
+        "icon_with_text_PKkexW",
+        "custom_liquid_FLgNm3",
+        "buy_buttons",
+        "text_EqykzJ",
+        "trust_badges_bear_widget_AGaPYe",
+        "collapsible_tab_yNk8zF",
+        "02e642fe-552e-4e5c-8948-9b5ea6f27561",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "media_size": "small",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail",
+        "media_position": "left",
+        "image_zoom": "none",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 20,
+        "padding_bottom": 12
+      }
+    },
+    "1719401238f991f376": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "grt_home_review_6QE43P": {
+      "type": "grt-home-review",
+      "name": "GRT Review",
+      "settings": {
+        "review_type": "2",
+        "review_display_type": "1",
+        "widget_color": "#ffffff",
+        "widget_background": "#000000",
+        "widget_text": "★Reviews",
+        "desk_card": 4,
+        "mobile_card": "2",
+        "review_count": 6,
+        "show_view_all": false
+      }
+    },
+    "namnam_dual_marquee_GaUUhU": {
+      "type": "namnam-dual-marquee",
+      "blocks": {
+        "item_xgHWqp": {
+          "type": "item",
+          "settings": {
+            "text": "LOVED BY 10,000+ FOODIES",
+            "emoji": "💛",
+            "pill_style": "pill1"
+          }
+        },
+        "item_xGbB9f": {
+          "type": "item",
+          "settings": {
+            "text": "CLEAN INGREDIENTS",
+            "emoji": "🌱",
+            "pill_style": "pill2"
+          }
+        },
+        "item_GWdXyr": {
+          "type": "item",
+          "settings": {
+            "text": "NO PRESERVATIVES",
+            "emoji": "🚫",
+            "pill_style": "pill1"
+          }
+        },
+        "item_iVTTpJ": {
+          "type": "item",
+          "settings": {
+            "text": "BETTER SNACKING",
+            "emoji": "🤩",
+            "pill_style": "pill2"
+          }
+        },
+        "item_bottom_bPRi6f": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "GUILT-FREE INDULGENCE",
+            "emoji": "😋",
+            "pill_style": "pill2"
+          }
+        },
+        "item_bottom_wW3YfH": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "HANDCRAFTED WITH CARE",
+            "emoji": "👩‍🍳",
+            "pill_style": "pill1"
+          }
+        },
+        "item_bottom_m783HY": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "30-DAY HAPPINESS GUARANTEE",
+            "emoji": "👍",
+            "pill_style": "pill2"
+          }
+        }
+      },
+      "block_order": [
+        "item_xgHWqp",
+        "item_xGbB9f",
+        "item_GWdXyr",
+        "item_iVTTpJ",
+        "item_bottom_bPRi6f",
+        "item_bottom_wW3YfH",
+        "item_bottom_m783HY"
+      ],
+      "name": "Nam Nam Dual Marquee",
+      "settings": {
+        "bg": "#f3ecd8",
+        "text": "#2b1c11",
+        "pill1": "#da851a",
+        "pill2": "#ffeab8",
+        "speed": 25,
+        "gap_desktop": 40,
+        "gap_mobile": 22,
+        "font_desktop": 17,
+        "font_mobile": 15,
+        "full_bleed": true,
+        "hover_pause": true
+      }
+    },
+    "image_banner_PzAHqg": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Generated_Image_December_19_2025_-_2_20PM.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "testimonial_slider_W9kfKQ": {
+      "type": "Testimonial_slider",
+      "blocks": {
+        "testimonial_RjApUd": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/file_000000005104720cb30c387f9bf74793.png",
+            "testimonial_product": ""
+          }
+        },
+        "testimonial_qnHeUN": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/file_0000000001ac722faafbc53b7a1ec175.png",
+            "testimonial_product": ""
+          }
+        },
+        "testimonial_MNewAA": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/file_00000000cfb871fda909bcac45d22cb5.png",
+            "testimonial_product": ""
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_RjApUd",
+        "testimonial_qnHeUN",
+        "testimonial_MNewAA"
+      ],
+      "name": "Testimonial Slider",
+      "settings": {
+        "show_heading": true,
+        "heading_text": "Here's What Our Customers Are Saying!",
+        "heading_color": "#1a1a1a",
+        "background_color": "#f4ecd7",
+        "accent_color": "#e88e1c",
+        "top_padding": 28,
+        "bottom_padding": 28,
+        "peek_px": 32
+      }
+    },
+    "image_banner_gkN47R": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Amazing_dark_chocolate_strawberry.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "image_with_text_g6p4XM": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_YG8bxF": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h1"
+          }
+        },
+        "text_dc9TXJ": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Bought this thinking the strawberries would be those chewy dried ones. They are actually crunchy. Dark chocolate is proper, not too sweet. Finished the tin in 2 days. Reordered.</p><h4><strong>-Varnika</strong></h4>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_YG8bxF",
+        "text_dc9TXJ"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/file_0000000077e471fdaa1e08d72a5c8a24.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "adapt",
+        "image_shape": "blob",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "testimonial_slider_VBw3FT": {
+      "type": "Testimonial_slider",
+      "blocks": {
+        "testimonial_JDYia8": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/reveiws.png",
+            "testimonial_product": ""
+          }
+        },
+        "testimonial_XJHFEY": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/IMG_3215.png",
+            "testimonial_product": ""
+          }
+        },
+        "testimonial_DRFwUV": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_image": "shopify://shop_images/IMG_3119_9e86fdf0-161d-4152-8d0b-2a5bf40aee2c.png",
+            "testimonial_product": ""
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_JDYia8",
+        "testimonial_XJHFEY",
+        "testimonial_DRFwUV"
+      ],
+      "name": "Testimonial Slider",
+      "settings": {
+        "show_heading": true,
+        "heading_text": "Here's What Our Customers Are Saying !",
+        "heading_color": "#1a1a1a",
+        "background_color": "#f4ecd7",
+        "accent_color": "#ff6b6b",
+        "top_padding": 28,
+        "bottom_padding": 0,
+        "peek_px": 36
+      }
+    },
+    "custom_liquid_8cC9hF": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<!-- ============================================================\n  NAM NAM — UGC TRUST WIDGET (single-file version)\n  HOW TO USE:\n  1. Shopify admin → Settings → Files → upload your videos (MP4, vertical)\n  2. Copy each video's URL (link icon next to the file)\n  3. Paste URLs + names + captions in the CONFIG block just below\n  4. Theme customizer → your product page template → Add section →\n     Custom Liquid → paste this ENTIRE file → Save\n============================================================ -->\n\n<script>\n/* ====================== CONFIG — EDIT THIS ====================== */\n\nvar NN_TRIGGER_TEXT = \"What customers are saying\";\nvar NN_HEADER_TITLE = \"Real people. Real Nam Nam.\";\nvar NN_RATING       = 4.8;\nvar NN_REVIEW_COUNT = 248;\nvar NN_CUSTOMERS    = \"25,000+ happy customers\";\nvar NN_COMMUNITY    = \"Join 25,000 happy customers\";\nvar NN_RISK_LINE    = \"Damaged in transit? We replace it. No forms, no fuss.\";\nvar NN_CTA_TEXT     = \"Add to cart\";\n\n/* Videos — paste your uploaded file URLs here. Add as many blocks as you want. */\nvar NN_VIDEOS = [\n  {\n    src: \"https://cdn.shopify.com/videos/c/o/v/3d2c90169cc7441e83298eed614d7a91.mov\",\n    name: \"Mehek\",\n    location: \"Mumbai\",\n    caption: \"These strawberries are unreal 🍓\",\n    verified: true\n  },\n  {\n    src: \"PASTE_VIDEO_URL_HERE\",\n    name: \"Rahul\",\n    location: \"Delhi\",\n    caption: \"Unboxing my Nam Nam order\",\n    verified: true\n  }\n  /* , { src: \"...\", name: \"...\", location: \"...\", caption: \"...\", verified: true } */\n];\n\n/* Reviews */\nvar NN_REVIEWS = [\n  {\n    rating: 5,\n    title: \"Worth every rupee\",\n    body: \"Ordered for a gift, ended up keeping half the box. The chocolate snap is insane.\",\n    name: \"Ananya S.\",\n    location: \"Bangalore\",\n    verified: true\n  },\n  {\n    rating: 5,\n    title: \"Better than I expected\",\n    body: \"Packaging alone felt premium. The freeze-dried strawberries are crunchy then melty.\",\n    name: \"Karan M.\",\n    location: \"Gurgaon\",\n    verified: true\n  }\n];\n\n/* FAQs */\nvar NN_FAQS = [\n  { q: \"How long does delivery take?\", a: \"2–4 days for metros, 4–7 days for the rest of India. Shipped in insulated packaging.\" },\n  { q: \"Will the chocolate melt?\", a: \"We ship with ice gel packs and insulated liners. If it arrives damaged, we replace it free.\" },\n  { q: \"What if I don't like it?\", a: \"Tell us within 48 hours of delivery and we'll make it right — replacement or refund.\" }\n];\n\n/* ================== END CONFIG — don't edit below ================== */\n</script>\n\n<style>\n#nn-ugc{--nn-accent:#FFD23F;--nn-cta:#da851a;--nn-text:#020912;--nn-bg:#fff;--nn-r:16px;--nn-ease:cubic-bezier(.32,.72,0,1);font-family:\"Montserrat\",-apple-system,sans-serif;color:var(--nn-text)}\n#nn-ugc .nnu-trigger{position:fixed;bottom:20px;right:16px;z-index:9990;display:flex;align-items:center;gap:10px;padding:10px 18px 10px 12px;border:0;border-radius:999px;background:var(--nn-text);color:#fff;cursor:pointer;box-shadow:0 6px 24px rgba(2,9,18,.28);transition:transform .2s var(--nn-ease);-webkit-tap-highlight-color:transparent}\n#nn-ugc .nnu-trigger:hover{transform:scale(1.04)}\n#nn-ugc .nnu-trigger:active{transform:scale(.97)}\n#nn-ugc.is-open .nnu-trigger{transform:scale(0);pointer-events:none}\n#nn-ugc .nnu-tpulse{position:absolute;inset:0;border-radius:999px;border:2px solid var(--nn-accent);opacity:0;animation:nnu-p 3.2s var(--nn-ease) infinite;pointer-events:none}\n@keyframes nnu-p{0%{opacity:.55;transform:scale(1)}60%,100%{opacity:0;transform:scale(1.18)}}\n#nn-ugc .nnu-ticon{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--nn-accent);color:var(--nn-text);flex-shrink:0}\n#nn-ugc .nnu-tlabel{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;text-align:left}\n#nn-ugc .nnu-tlabel strong{font-size:13px;font-weight:700}\n#nn-ugc .nnu-tlabel em{font-style:normal;font-size:11px;opacity:.75}\n#nn-ugc .nnu-overlay{position:fixed;inset:0;z-index:9991;background:rgba(2,9,18,.45);opacity:0;transition:opacity .25s var(--nn-ease)}\n#nn-ugc .nnu-overlay.on{opacity:1}\n#nn-ugc .nnu-drawer{position:fixed;z-index:9992;background:var(--nn-bg);display:flex;flex-direction:column;overflow:hidden;will-change:transform;left:0;right:0;bottom:0;height:86dvh;border-radius:22px 22px 0 0;transform:translate3d(0,102%,0);transition:transform .25s var(--nn-ease);box-shadow:0 -8px 40px rgba(2,9,18,.25)}\n#nn-ugc .nnu-drawer.on{transform:translate3d(0,0,0)}\n@media(min-width:768px){#nn-ugc .nnu-drawer{top:0;bottom:0;left:auto;right:0;width:420px;height:100dvh;border-radius:var(--nn-r) 0 0 var(--nn-r);transform:translate3d(102%,0,0)}#nn-ugc .nnu-drawer.on{transform:translate3d(0,0,0)}#nn-ugc .nnu-handle{display:none}}\n#nn-ugc .nnu-handle{width:44px;height:5px;border-radius:999px;background:rgba(2,9,18,.15);margin:10px auto 0;flex-shrink:0}\n#nn-ugc .nnu-head{padding:14px 20px 16px;border-bottom:1px solid rgba(2,9,18,.08);flex-shrink:0;position:relative}\n#nn-ugc .nnu-x{position:absolute;top:12px;right:14px;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(2,9,18,.06);color:var(--nn-text);cursor:pointer;font-size:17px}\n#nn-ugc .nnu-title{font-family:\"Quicksand\",\"Montserrat\",sans-serif;font-weight:700;font-size:18px;margin:0 40px 6px 0}\n#nn-ugc .nnu-stars{color:var(--nn-accent);font-size:15px;letter-spacing:2px}\n#nn-ugc .nnu-rline{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}\n#nn-ugc .nnu-cust{font-size:12.5px;opacity:.7;margin-top:3px}\n#nn-ugc .nnu-tabs{display:flex;gap:6px;padding:10px 16px 0;flex-shrink:0}\n#nn-ugc .nnu-tab{flex:1;padding:9px 8px;border:0;border-radius:999px;background:rgba(2,9,18,.05);color:var(--nn-text);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}\n#nn-ugc .nnu-tab.on{background:var(--nn-text);color:#fff}\n#nn-ugc .nnu-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px 16px 16px}\n#nn-ugc .nnu-panel[hidden]{display:none}\n#nn-ugc .nnu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n#nn-ugc .nnu-vcard{position:relative;border-radius:var(--nn-r);overflow:hidden;aspect-ratio:9/14;background:rgba(2,9,18,.06);cursor:pointer;border:0;padding:0;width:100%}\n#nn-ugc .nnu-vcard video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}\n#nn-ugc .nnu-vplay{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.85);display:grid;place-items:center;color:var(--nn-text);pointer-events:none}\n#nn-ugc .nnu-unmute{position:absolute;inset:0;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;z-index:2}\n#nn-ugc .nnu-unmute span{background:rgba(2,9,18,.72);color:#fff;font-size:13px;font-weight:700;padding:9px 16px;border-radius:999px;font-family:\"Montserrat\",sans-serif}\n#nn-ugc .nnu-vmeta{position:absolute;left:0;right:0;bottom:0;padding:24px 10px 10px;background:linear-gradient(transparent,rgba(2,9,18,.75));color:#fff;text-align:left;pointer-events:none}\n#nn-ugc .nnu-vname{font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:4px}\n#nn-ugc .nnu-vloc{font-size:10px;opacity:.8;display:block}\n#nn-ugc .nnu-vcap{font-size:10.5px;opacity:.92;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}\n#nn-ugc .nnu-vrf{display:inline-grid;place-items:center;width:13px;height:13px;border-radius:50%;background:var(--nn-accent);color:var(--nn-text);font-size:9px;font-weight:800}\n#nn-ugc .nnu-rev{padding:14px;border:1px solid rgba(2,9,18,.08);border-radius:var(--nn-r);margin-bottom:10px}\n#nn-ugc .nnu-rhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}\n#nn-ugc .nnu-rname{font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px}\n#nn-ugc .nnu-rloc{font-size:11px;opacity:.6;font-weight:500}\n#nn-ugc .nnu-rstars{color:var(--nn-accent);font-size:13px;letter-spacing:1px}\n#nn-ugc .nnu-rtitle{font-size:13.5px;font-weight:700;margin:2px 0 4px}\n#nn-ugc .nnu-rbody{font-size:13px;line-height:1.5;opacity:.85;margin:0}\n#nn-ugc .nnu-faq{border-bottom:1px solid rgba(2,9,18,.08)}\n#nn-ugc .nnu-fq{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 2px;background:none;border:0;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--nn-text);text-align:left;cursor:pointer}\n#nn-ugc .nnu-fi{transition:transform .2s var(--nn-ease);font-size:16px;flex-shrink:0}\n#nn-ugc .nnu-fq.on .nnu-fi{transform:rotate(45deg)}\n#nn-ugc .nnu-fa{font-size:13px;line-height:1.55;opacity:.85;padding:0 2px 14px;margin:0}\n#nn-ugc .nnu-fa[hidden]{display:none}\n#nn-ugc .nnu-risk{display:flex;gap:9px;margin-top:14px;padding:12px 14px;border-radius:var(--nn-r);background:rgba(255,210,63,.18);font-size:12.5px;line-height:1.45;font-weight:600}\n#nn-ugc .nnu-ctaw{flex-shrink:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(2,9,18,.08);background:var(--nn-bg)}\n#nn-ugc .nnu-comm{font-size:11.5px;text-align:center;opacity:.7;margin:0 0 8px;font-weight:600}\n#nn-ugc .nnu-cta{width:100%;padding:15px;border:0;border-radius:999px;background:var(--nn-cta);color:#fff;font-family:\"Quicksand\",\"Montserrat\",sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:transform .15s var(--nn-ease);-webkit-tap-highlight-color:transparent}\n#nn-ugc .nnu-cta:active{transform:scale(.98)}\n#nn-ugc .nnu-cta.done{background:#2bb673}\n#nn-ugc .nnu-player{position:fixed;inset:0;z-index:9993;background:rgba(2,9,18,.96);display:grid;place-items:center;opacity:0;transition:opacity .2s ease}\n#nn-ugc .nnu-player.on{opacity:1}\n#nn-ugc .nnu-player video{max-width:min(94vw,440px);max-height:86dvh;border-radius:var(--nn-r);background:#000}\n#nn-ugc .nnu-px{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:19px;cursor:pointer;display:grid;place-items:center}\n#nn-ugc .nnu-pmeta{position:absolute;left:0;right:0;bottom:calc(20px + env(safe-area-inset-bottom,0px));text-align:center;color:#fff;font-size:13px;padding:0 24px;pointer-events:none}\n#nn-ugc .nnu-pmeta strong{display:block;font-size:14px}\n@media(prefers-reduced-motion:reduce){#nn-ugc .nnu-tpulse{animation:none}#nn-ugc .nnu-drawer,#nn-ugc .nnu-overlay{transition-duration:.01ms}}\n</style>\n\n<div id=\"nn-ugc\">\n  <button type=\"button\" class=\"nnu-trigger\" aria-haspopup=\"dialog\" aria-expanded=\"false\">\n    <span class=\"nnu-tpulse\" aria-hidden=\"true\"></span>\n    <span class=\"nnu-ticon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\"><path d=\"M8 5.5v13l11-6.5z\" fill=\"currentColor\"/></svg></span>\n    <span class=\"nnu-tlabel\"><strong id=\"nnu-ttext\"></strong><em id=\"nnu-tcount\"></em></span>\n  </button>\n  <div class=\"nnu-overlay\" hidden></div>\n  <div class=\"nnu-drawer\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Customer videos and reviews\" hidden></div>\n</div>\n\n<script>\n(function(){\n\"use strict\";\nvar root=document.getElementById(\"nn-ugc\"),\n    trigger=root.querySelector(\".nnu-trigger\"),\n    overlay=root.querySelector(\".nnu-overlay\"),\n    drawer=root.querySelector(\".nnu-drawer\"),\n    built=false,isOpen=false,lastFocus=null;\n\nvar videos=(window.NN_VIDEOS||[]).filter(function(v){return v.src&&v.src.indexOf(\"PASTE_\")===-1;});\nvar reviews=window.NN_REVIEWS||[], faqs=window.NN_FAQS||[];\n\ndocument.getElementById(\"nnu-ttext\").textContent=window.NN_TRIGGER_TEXT||\"What customers are saying\";\ndocument.getElementById(\"nnu-tcount\").textContent=videos.length?videos.length+\" videos\":\"\";\n\nfunction esc(s){return String(s==null?\"\":s).replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\");}\nfunction stars(n){var f=Math.round(n),s=\"\";for(var i=0;i<5;i++)s+=i<f?\"\\u2605\":\"\\u2606\";return s;}\nfunction track(ev,p){p=p||{};try{\n  if(typeof gtag===\"function\")gtag(\"event\",ev,p);\n  else if(Array.isArray(window.dataLayer))window.dataLayer.push(Object.assign({event:ev},p));\n  if(typeof fbq===\"function\")fbq(\"trackCustom\",ev,p);\n  if(typeof clarity===\"function\")clarity(\"event\",ev);\n}catch(e){}}\n\nfunction build(){\n  if(built)return;built=true;\n  var h='<div class=\"nnu-handle\"></div>'\n  +'<div class=\"nnu-head\"><button type=\"button\" class=\"nnu-x\" aria-label=\"Close\">\\u2715</button>'\n  +'<h2 class=\"nnu-title\">'+esc(window.NN_HEADER_TITLE||\"\")+'</h2>'\n  +'<div class=\"nnu-rline\"><span class=\"nnu-stars\">'+stars(window.NN_RATING||5)+'</span><span>'+(window.NN_RATING||5)+'/5 \\u00b7 '+(window.NN_REVIEW_COUNT||reviews.length)+' reviews</span></div>'\n  +'<div class=\"nnu-cust\">Trusted by '+esc(window.NN_CUSTOMERS||\"\")+'</div></div>';\n\n  var tabs='<div class=\"nnu-tabs\" role=\"tablist\">';\n  if(videos.length)tabs+='<button type=\"button\" class=\"nnu-tab on\" data-p=\"v\">Videos ('+videos.length+')</button>';\n  if(reviews.length)tabs+='<button type=\"button\" class=\"nnu-tab'+(videos.length?'':' on')+'\" data-p=\"r\">Reviews ('+reviews.length+')</button>';\n  if(faqs.length)tabs+='<button type=\"button\" class=\"nnu-tab\" data-p=\"f\">FAQ</button>';\n  tabs+='</div>';\n\n  var body='<div class=\"nnu-body\">';\n  if(videos.length){\n    body+='<div class=\"nnu-panel\" data-p=\"v\"><div class=\"nnu-grid\">';\n    videos.forEach(function(v,i){\n      body+='<button type=\"button\" class=\"nnu-vcard\" data-i=\"'+i+'\" aria-label=\"Play video by '+esc(v.name||\"customer\")+'\">'\n      +'<video src=\"'+esc(v.src)+'\" preload=\"metadata\" muted loop playsinline autoplay></video>'\n      +'<span class=\"nnu-vplay\"><svg viewBox=\"0 0 24 24\" width=\"15\" height=\"15\"><path d=\"M8 5.5v13l11-6.5z\" fill=\"currentColor\"/></svg></span>'\n      +'<span class=\"nnu-vmeta\"><span class=\"nnu-vname\">'+esc(v.name)+(v.verified?' <span class=\"nnu-vrf\" title=\"Verified purchase\">\\u2713</span>':'')+'</span>'\n      +(v.location?'<span class=\"nnu-vloc\">'+esc(v.location)+'</span>':'')\n      +(v.caption?'<span class=\"nnu-vcap\">'+esc(v.caption)+'</span>':'')+'</span></button>';\n    });\n    body+='</div></div>';\n  }\n  if(reviews.length){\n    body+='<div class=\"nnu-panel\" data-p=\"r\"'+(videos.length?' hidden':'')+'>';\n    reviews.forEach(function(r){\n      body+='<article class=\"nnu-rev\"><div class=\"nnu-rhead\"><span class=\"nnu-rname\">'+esc(r.name)\n      +(r.verified?' <span class=\"nnu-vrf\" title=\"Verified purchase\">\\u2713</span>':'')\n      +(r.location?' <span class=\"nnu-rloc\">'+esc(r.location)+'</span>':'')+'</span>'\n      +'<span class=\"nnu-rstars\">'+stars(r.rating||5)+'</span></div>'\n      +(r.title?'<div class=\"nnu-rtitle\">'+esc(r.title)+'</div>':'')\n      +(r.body?'<p class=\"nnu-rbody\">'+esc(r.body)+'</p>':'')+'</article>';\n    });\n    body+='</div>';\n  }\n  if(faqs.length){\n    body+='<div class=\"nnu-panel\" data-p=\"f\" hidden>';\n    faqs.forEach(function(f,i){\n      body+='<div class=\"nnu-faq\"><button type=\"button\" class=\"nnu-fq\" aria-expanded=\"false\" data-a=\"nnu-a'+i+'\">'+esc(f.q)+'<span class=\"nnu-fi\">+</span></button>'\n      +'<p class=\"nnu-fa\" id=\"nnu-a'+i+'\" hidden>'+esc(f.a)+'</p></div>';\n    });\n    if(window.NN_RISK_LINE)body+='<div class=\"nnu-risk\">\\uD83D\\uDEE1\\uFE0F <span>'+esc(window.NN_RISK_LINE)+'</span></div>';\n    body+='</div>';\n  }\n  body+='</div>';\n\n  var cta='<div class=\"nnu-ctaw\">'\n  +(window.NN_COMMUNITY?'<p class=\"nnu-comm\">'+esc(window.NN_COMMUNITY)+'</p>':'')\n  +'<button type=\"button\" class=\"nnu-cta\">'+esc(window.NN_CTA_TEXT||\"Add to cart\")+'</button></div>';\n\n  drawer.innerHTML=h+tabs+body+cta;\n  wire();\n  /* autoplay grid videos only while visible */\n  var vids=drawer.querySelectorAll(\".nnu-vcard video\");\n  if(\"IntersectionObserver\" in window){\n    var io=new IntersectionObserver(function(es){\n      es.forEach(function(en){\n        if(en.isIntersecting){en.target.play().catch(function(){});}\n        else{en.target.pause();}\n      });\n    },{root:drawer.querySelector(\".nnu-body\"),threshold:.25});\n    vids.forEach(function(v){io.observe(v);});\n  }else{\n    vids.forEach(function(v){v.play().catch(function(){});});\n  }\n}\n\nfunction wire(){\n  drawer.querySelector(\".nnu-x\").addEventListener(\"click\",close);\n  drawer.querySelectorAll(\".nnu-tab\").forEach(function(t){\n    t.addEventListener(\"click\",function(){\n      drawer.querySelectorAll(\".nnu-tab\").forEach(function(x){x.classList.toggle(\"on\",x===t);});\n      drawer.querySelectorAll(\".nnu-panel\").forEach(function(p){p.hidden=p.dataset.p!==t.dataset.p;});\n      drawer.querySelector(\".nnu-body\").scrollTop=0;\n      track(\"ugc_tab_view\",{tab:t.dataset.p});\n    });\n  });\n  drawer.addEventListener(\"click\",function(e){\n    var c=e.target.closest(\".nnu-vcard\");\n    if(c)openPlayer(parseInt(c.dataset.i,10));\n    var q=e.target.closest(\".nnu-fq\");\n    if(q){\n      var open=q.getAttribute(\"aria-expanded\")===\"true\";\n      q.setAttribute(\"aria-expanded\",open?\"false\":\"true\");\n      q.classList.toggle(\"on\",!open);\n      document.getElementById(q.dataset.a).hidden=open;\n      if(!open)track(\"ugc_faq_open\",{});\n    }\n  });\n  drawer.querySelector(\".nnu-cta\").addEventListener(\"click\",onCTA);\n}\n\nvar player=null,pv=null,pi=-1;\nfunction openPlayer(i){\n  var v=videos[i];if(!v)return;pi=i;\n  track(\"ugc_video_play\",{video:v.name});\n  if(!player){\n    player=document.createElement(\"div\");\n    player.className=\"nnu-player\";\n    player.setAttribute(\"role\",\"dialog\");\n    player.innerHTML='<button type=\"button\" class=\"nnu-px\" aria-label=\"Close video\">\\u2715</button><div style=\"position:relative\"><video playsinline controls preload=\"metadata\"></video><button type=\"button\" class=\"nnu-unmute\"><span>\\uD83D\\uDD07 Tap to unmute</span></button></div><div class=\"nnu-pmeta\"></div>';\n    root.appendChild(player);\n    pv=player.querySelector(\"video\");\n    player.querySelector(\".nnu-px\").addEventListener(\"click\",closePlayer);\n    player.addEventListener(\"click\",function(e){if(e.target===player)closePlayer();});\n    player.querySelector(\".nnu-unmute\").addEventListener(\"click\",function(){\n      pv.muted=false;this.style.display=\"none\";track(\"ugc_video_unmute\",{video:videos[pi].name});\n    });\n    pv.addEventListener(\"ended\",function(){track(\"ugc_video_complete\",{video:videos[pi].name});});\n  }\n  pv.src=v.src;\n  pv.muted=true;\n  player.querySelector(\".nnu-unmute\").style.display=\"grid\";\n  player.querySelector(\".nnu-pmeta\").innerHTML=\"<strong>\"+esc(v.name)+(v.location?\" \\u00b7 \"+esc(v.location):\"\")+\"</strong>\"+(v.caption?esc(v.caption):\"\");\n  player.style.display=\"grid\";\n  requestAnimationFrame(function(){player.classList.add(\"on\");});\n  pv.play().catch(function(){});\n}\nfunction closePlayer(){\n  if(!player)return;\n  pv.pause();pv.removeAttribute(\"src\");pv.load();\n  player.classList.remove(\"on\");\n  setTimeout(function(){player.style.display=\"none\";},200);\n}\n\nfunction onCTA(){\n  track(\"ugc_cta_click\",{});\n  var btn=drawer.querySelector(\".nnu-cta\");\n  var form=document.querySelector('form[action*=\"/cart/add\"]');\n  var idInput=form?form.querySelector('[name=\"id\"]'):null;\n  var vid=idInput?idInput.value:null;\n  if(!vid){close();if(form)form.scrollIntoView({behavior:\"smooth\",block:\"center\"});return;}\n  btn.disabled=true;\n  fetch(\"/cart/add.js\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify({items:[{id:parseInt(vid,10),quantity:1}]})})\n  .then(function(r){if(!r.ok)throw 0;return r.json();})\n  .then(function(){\n    btn.classList.add(\"done\");btn.textContent=\"Added \\u2713\";\n    track(\"ugc_add_to_cart_success\",{});\n    setTimeout(function(){\n      close();\n      document.dispatchEvent(new CustomEvent(\"cart:refresh\",{bubbles:true}));\n      btn.disabled=false;btn.classList.remove(\"done\");btn.textContent=window.NN_CTA_TEXT||\"Add to cart\";\n    },900);\n  })\n  .catch(function(){\n    btn.disabled=false;btn.textContent=\"Use the buy button below\";\n    setTimeout(function(){btn.textContent=window.NN_CTA_TEXT||\"Add to cart\";close();},1800);\n  });\n}\n\nfunction open(){\n  if(isOpen)return;isOpen=true;lastFocus=document.activeElement;\n  build();\n  overlay.hidden=false;drawer.hidden=false;\n  requestAnimationFrame(function(){requestAnimationFrame(function(){\n    overlay.classList.add(\"on\");drawer.classList.add(\"on\");\n  });});\n  root.classList.add(\"is-open\");\n  trigger.setAttribute(\"aria-expanded\",\"true\");\n  document.documentElement.style.overflow=\"hidden\";\n  document.addEventListener(\"keydown\",onKey);\n  overlay.addEventListener(\"click\",close);\n  track(\"ugc_widget_open\",{});\n  drawer.querySelectorAll(\".nnu-vcard video\").forEach(function(v){v.play().catch(function(){});});\n  setTimeout(function(){var x=drawer.querySelector(\".nnu-x\");if(x)x.focus();},260);\n}\nfunction close(){\n  if(!isOpen)return;isOpen=false;\n  drawer.classList.remove(\"on\");overlay.classList.remove(\"on\");\n  root.classList.remove(\"is-open\");\n  trigger.setAttribute(\"aria-expanded\",\"false\");\n  document.documentElement.style.overflow=\"\";\n  document.removeEventListener(\"keydown\",onKey);\n  track(\"ugc_widget_close\",{});\n  drawer.querySelectorAll(\".nnu-vcard video\").forEach(function(v){v.pause();});\n  setTimeout(function(){drawer.hidden=true;overlay.hidden=true;if(lastFocus&&lastFocus.focus)lastFocus.focus();},210);\n}\nfunction onKey(e){\n  if(e.key===\"Escape\"){\n    if(player&&player.classList.contains(\"on\"))closePlayer();else close();\n  }\n}\n\ntrigger.addEventListener(\"click\",open);\ntrack(\"ugc_widget_impression\",{});\n})();\n</script>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "rich_text_FgfNci",
+    "main",
+    "1719401238f991f376",
+    "grt_home_review_6QE43P",
+    "namnam_dual_marquee_GaUUhU",
+    "image_banner_PzAHqg",
+    "testimonial_slider_W9kfKQ",
+    "image_banner_gkN47R",
+    "image_with_text_g6p4XM",
+    "related-products",
+    "testimonial_slider_VBw3FT",
+    "custom_liquid_8cC9hF"
+  ]
+}

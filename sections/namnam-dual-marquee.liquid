@@ -1,0 +1,227 @@
+{% comment %}
+  Nam Nam Dual Marquee — seamless, premium, no visible spacer blocks
+  Fix: remove `| where:` filter; branch by block.type instead.
+{% endcomment %}
+
+<section id="section-{{ section.id }}" class="nn-marquee-wrap">
+  <style>
+    #section-{{ section.id }} .nn-marquee{
+      --bg: {{ section.settings.bg | default: '#f3ecd8' }};
+      --text: {{ section.settings.text | default: '#2B1C11' }};
+      --pill1: {{ section.settings.pill1 | default: '#da851a' }};
+      --pill2: {{ section.settings.pill2 | default: '#ffeab8' }};
+      --speed: {{ section.settings.speed | default: 25 }}s;   /* lower = faster */
+      --gap-d: {{ section.settings.gap_desktop | default: 40 }}px;
+      --gap-m: {{ section.settings.gap_mobile  | default: 22 }}px;
+      --size-d: {{ section.settings.font_desktop | default: 17 }}px;
+      --size-m: {{ section.settings.font_mobile  | default: 15 }}px;
+
+      --item-pad-y: .44rem;
+      --item-pad-x: .9rem;
+      --row-space: 10px;
+
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Color Emoji";
+      font-weight: 700;
+      letter-spacing: .1px;
+      overflow: hidden;
+      padding: 14px 0;
+
+      {% if section.settings.full_bleed %}
+        position: relative; left: 50%; right: 50%;
+        margin-left: -50vw; margin-right: -50vw;
+        width: 100vw; box-sizing: border-box;
+      {% endif %}
+
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+    }
+
+    #section-{{ section.id }} .nn-row{ overflow: hidden; }
+    #section-{{ section.id }} .nn-row + .nn-row{ margin-top: var(--row-space); }
+
+    #section-{{ section.id }} .nn-track{
+      display: flex; width: 200%;
+      font-size: var(--size-d);
+      white-space: nowrap;
+      will-change: transform;
+      transform: translateZ(0);
+      align-items: center;
+    }
+
+    #section-{{ section.id }} .nn-set{
+      display: inline-flex; align-items: center; gap: var(--gap-d);
+    }
+
+    @keyframes nn-left  { from { transform: translate3d(0,0,0); }   to { transform: translate3d(-50%,0,0); } }
+    @keyframes nn-right { from { transform: translate3d(-50%,0,0); } to { transform: translate3d(0,0,0); } }
+    #section-{{ section.id }} .scroll-left  { animation: nn-left  var(--speed) linear infinite; }
+    #section-{{ section.id }} .scroll-right { animation: nn-right var(--speed) linear infinite; }
+
+    #section-{{ section.id }} .nn-item{
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: var(--item-pad-y) var(--item-pad-x);
+      border-radius: 999px; line-height: 1.2;
+      transition: transform .18s ease;
+      position: relative;
+    }
+    #section-{{ section.id }} .nn-item.pill1{
+      background: var(--pill1); color: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 4px 10px rgba(0,0,0,.06);
+    }
+    #section-{{ section.id }} .nn-item.pill2{
+      background: var(--pill2); color: var(--text);
+      box-shadow: 0 1px 0 rgba(0,0,0,.03);
+    }
+
+    /* Dot separator as a pseudo-element (no extra spacer blocks) */
+    #section-{{ section.id }} .nn-item:not(:last-child)::after{
+      content:"";
+      display:inline-block;
+      width:.38rem; height:.38rem; border-radius:50%;
+      box-shadow: 0 0 0 4px rgba(218,133,26,.18), inset 0 0 0 999px rgba(218,133,26,1);
+      margin-left: calc(var(--gap-d) / 2);
+      margin-right: calc(var(--gap-d) / 2);
+    }
+
+    @media (hover:hover){
+      #section-{{ section.id }} .nn-item:hover{ transform: translateY(-1px); }
+      {% if section.settings.hover_pause %}
+      #section-{{ section.id }} .nn-marquee:hover .scroll-left,
+      #section-{{ section.id }} .nn-marquee:hover .scroll-right{ animation-play-state: paused; }
+      {% endif %}
+    }
+
+    @media (max-width: 640px){
+      #section-{{ section.id }} .nn-marquee{ padding: 10px 0; }
+      #section-{{ section.id }} .nn-track{ font-size: var(--size-m); }
+      #section-{{ section.id }} .nn-set{ gap: var(--gap-m); }
+      #section-{{ section.id }} .nn-item{ padding: .36rem .7rem; }
+      #section-{{ section.id }} .nn-item:not(:last-child)::after{
+        margin-left: calc(var(--gap-m) / 2);
+        margin-right: calc(var(--gap-m) / 2);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #section-{{ section.id }} .scroll-left,
+      #section-{{ section.id }} .scroll-right{ animation: none; }
+    }
+  </style>
+
+  {%- comment -%}
+    Build the HTML for top & bottom rows without using the `where` filter.
+  {%- endcomment -%}
+  {%- capture top_items -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'item' -%}
+        <span class="nn-item {% if block.settings.pill_style == 'pill1' %}pill1{% elsif block.settings.pill_style == 'pill2' %}pill2{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.emoji != blank -%}<span class="nn-emoji">{{ block.settings.emoji }}</span>{%- endif -%}
+          {{ block.settings.text }}
+        </span>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- capture bottom_items -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'item_bottom' -%}
+        <span class="nn-item {% if block.settings.pill_style == 'pill1' %}pill1{% elsif block.settings.pill_style == 'pill2' %}pill2{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.emoji != blank -%}<span class="nn-emoji">{{ block.settings.emoji }}</span>{%- endif -%}
+          {{ block.settings.text }}
+        </span>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  <div class="nn-marquee">
+    <!-- TOP ROW → moves RIGHT -->
+    <div class="nn-row" aria-hidden="true">
+      <div class="nn-track scroll-right">
+        <div class="nn-set">{{ top_items }}</div>
+        <div class="nn-set">{{ top_items }}</div>
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW ← moves LEFT -->
+    <div class="nn-row" aria-hidden="true">
+      <div class="nn-track scroll-left">
+        <div class="nn-set">{{ bottom_items }}</div>
+        <div class="nn-set">{{ bottom_items }}</div>
+      </div>
+    </div>
+  </div>
+
+  {% schema %}
+  {
+    "name": "Nam Nam Dual Marquee",
+    "settings": [
+      { "type": "color", "id": "bg", "label": "Background", "default": "#f3ecd8" },
+      { "type": "color", "id": "text", "label": "Text color", "default": "#2B1C11" },
+      { "type": "color", "id": "pill1", "label": "Pill 1 color", "default": "#da851a" },
+      { "type": "color", "id": "pill2", "label": "Pill 2 color", "default": "#ffeab8" },
+
+      { "type": "range", "id": "speed", "min": 12, "max": 60, "step": 1, "unit": "s", "label": "Scroll duration (lower = faster)", "default": 25 },
+
+      { "type": "range", "id": "gap_desktop", "min": 8, "max": 64, "step": 1, "unit": "px", "label": "Gap between items (desktop)", "default": 40 },
+      { "type": "range", "id": "gap_mobile", "min": 6, "max": 40, "step": 1, "unit": "px", "label": "Gap between items (mobile)", "default": 22 },
+
+      { "type": "range", "id": "font_desktop", "min": 12, "max": 24, "step": 1, "unit": "px", "label": "Font size (desktop)", "default": 17 },
+      { "type": "range", "id": "font_mobile", "min": 12, "max": 20, "step": 1, "unit": "px", "label": "Font size (mobile)", "default": 15 },
+
+      { "type": "checkbox", "id": "full_bleed", "label": "Full width (edge-to-edge)", "default": true },
+      { "type": "checkbox", "id": "hover_pause", "label": "Pause animation on hover (desktop)", "default": true }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Top row item",
+        "limit": 14,
+        "settings": [
+          { "type": "text", "id": "text", "label": "Text", "default": "LOVED BY 10,000+ FOODIES" },
+          { "type": "text", "id": "emoji", "label": "Emoji (optional)", "default": "💛" },
+          { "type": "select", "id": "pill_style", "label": "Pill style", "default": "pill1",
+            "options": [
+              { "value": "none", "label": "None" },
+              { "value": "pill1", "label": "Pill 1 (orange)" },
+              { "value": "pill2", "label": "Pill 2 (alt)" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "item_bottom",
+        "name": "Bottom row item",
+        "limit": 14,
+        "settings": [
+          { "type": "text", "id": "text", "label": "Text", "default": "GUILT-FREE INDULGENCE" },
+          { "type": "text", "id": "emoji", "label": "Emoji (optional)", "default": "😋" },
+          { "type": "select", "id": "pill_style", "label": "Pill style", "default": "pill2",
+            "options": [
+              { "value": "none", "label": "None" },
+              { "value": "pill1", "label": "Pill 1 (orange)" },
+              { "value": "pill2", "label": "Pill 2 (alt)" }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Nam Nam Dual Marquee",
+        "blocks": [
+          { "type": "item", "settings": { "text": "LOVED BY 10,000+ FOODIES", "emoji": "💛", "pill_style": "pill1" } },
+          { "type": "item", "settings": { "text": "CLEAN INGREDIENTS", "emoji": "🌱", "pill_style": "pill2" } },
+          { "type": "item", "settings": { "text": "NO PRESERVATIVES", "emoji": "🚫", "pill_style": "pill1" } },
+          { "type": "item", "settings": { "text": "BETTER SNACKING", "emoji": "🤩", "pill_style": "pill2" } },
+
+          { "type": "item_bottom", "settings": { "text": "GUILT-FREE INDULGENCE", "emoji": "😋", "pill_style": "pill2" } },
+          { "type": "item_bottom", "settings": { "text": "HANDCRAFTED WITH CARE", "emoji": "👩‍🍳", "pill_style": "pill1" } },
+          { "type": "item_bottom", "settings": { "text": "30-DAY HAPPINESS GUARANTEE", "emoji": "👍", "pill_style": "pill2" } }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+</section>

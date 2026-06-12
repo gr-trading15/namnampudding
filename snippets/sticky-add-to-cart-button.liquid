@@ -1,0 +1,65 @@
+<div class="sticky-container" id="sticky-container">
+  <div class="cart-button">
+    <form
+      method="post"
+      action="/cart/add"
+      id="{{ product_form_id }}"
+      accept-charset="UTF-8"
+      class="form"
+      enctype="multipart/form-data"
+      novalidate="novalidate"
+      data-type="add-to-cart-form"
+    >
+      <input type="hidden" name="form_type" value="product"><input type="hidden" name="utf8" value="✓"
+      ><input
+        type="hidden"
+        name="id"
+        value="{{ product.selected_or_first_available_variant.id }}"
+        class="product-variant-id"
+      >
+      <div class="product-form__buttons">
+        <button
+          id="{{ product_form_id }}"
+          type="submit"
+          name="add"
+          class="product-form__submit button button--full-width button--primary"
+        >
+          <span>Add to cart </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .sticky-container{
+    position: fixed;
+    bottom: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    background:none;
+    padding: 10px;
+    display: none;
+  }
+  .cart-button, .whatsapp-button{
+    margin: 0px 2px;
+    width: 50%;
+    height: 45px;
+    font-size: 14px;
+  }
+  .cart-button .product-form__submit{
+    margin-bottom: 0;
+  }
+
+  @media all and (max-width: 749px){
+    .sticky-container{
+      display: flex;
+    }
+  }
+</style>

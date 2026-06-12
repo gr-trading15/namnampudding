@@ -1,0 +1,242 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_liquid_WDNWbg": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<!-- FINAL — No-ghost single-line Typewriter (cursor hugs text) -->\n<div id=\"nam-nam-typewriter\" class=\"nam-nam-typewriter\" role=\"region\" aria-label=\"Highlights\">\n  <h1 class=\"nam-nam-hero\" aria-hidden=\"false\">\n    <span id=\"nam-nam-type\" class=\"nam-nam-type\" aria-live=\"polite\" aria-atomic=\"true\"></span>\n    <span id=\"nam-nam-cursor\" class=\"nam-nam-cursor\" aria-hidden=\"true\">_</span>\n  </h1>\n</div>\n\n<style>\n/* Container: no vertical padding, subtle horizontal breathing room */\n.nam-nam-typewriter {\n  box-sizing: border-box;\n  background: transparent;\n  text-align: center;\n  padding: 0 6vw; /* breathing room left/right */\n  margin: 0 auto;\n  max-width: 100%;\n  min-height: clamp(40px, 8vw, 72px); /* prevents vertical jump */\n}\n\n/* Headline container — keep single line */\n.nam-nam-hero {\n  margin: 0;\n  display: inline-block;\n  line-height: 1;\n  font-family: \"Fredoka One\", \"Luckiest Guy\", system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  text-transform: uppercase;\n  white-space: nowrap;\n  overflow: hidden;\n}\n\n/* Animated text — single-line, no wrap, no ghost, no min-width */\n.nam-nam-type {\n  display: inline-block;\n  font-weight: 900;\n  color: #000;\n  font-size: clamp(18px, 3vw, 34px); /* conservative sizing to avoid overflow */\n  line-height: 1;\n  vertical-align: middle;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: clip;\n  min-height: 1em; /* reserves vertical space */\n  box-sizing: border-box;\n  padding-left: 0.25em; /* tiny breathing space so text doesn't touch left edge */\n  letter-spacing: 0.4px;\n}\n\n/* Cursor sits directly after the text (no ghost). Small left margin keeps it separated */\n.nam-nam-cursor {\n  display: inline-block;\n  vertical-align: middle;\n  color: #cc7a2a;\n  font-weight: 900;\n  font-size: clamp(18px, 3vw, 34px);\n  margin-left: 6px;\n  line-height: 1;\n  will-change: opacity;\n}\n\n/* Cursor blink */\n@keyframes nam-nam-blink { 0% { opacity: 1 } 50% { opacity: 0.15 } 100% { opacity: 1 } }\n@media (prefers-reduced-motion: no-preference) {\n  .nam-nam-cursor { animation: nam-nam-blink 0.9s infinite; }\n}\n@media (prefers-reduced-motion: reduce) {\n  .nam-nam-cursor { animation: none; opacity: 1; }\n}\n\n/* Very small screens: shrink font so long words fit single line */\n@media (max-width: 420px) {\n  .nam-nam-type,\n  .nam-nam-cursor {\n    font-size: clamp(16px, 4vw, 26px);\n  }\n  .nam-nam-typewriter { padding: 0 8vw; min-height: 48px; }\n}\n</style>\n\n<script>\n/* No-ghost typewriter script — cursor will always be right after visible text.\n   Edit `texts` to change phrases. Works when pasted anywhere in theme.\n*/\n(function () {\n  function ready(cb) {\n    if (document.readyState === \"complete\" || document.readyState === \"interactive\") {\n      setTimeout(cb, 0);\n    } else {\n      document.addEventListener(\"DOMContentLoaded\", cb);\n    }\n  }\n\n  ready(function () {\n    const texts = [\n      \"Handmade\",\n      \"Irresistibly Yummy\",\n      \"Less Sugar, More Joy\",\n      \"Guilt-Free Indulgence\",\n      \"Small-Batch Goodness\",\n      \"Share the Smile\"\n    ];\n\n    const typingSpeed = 90;    // ms per char (slower = more readable)\n    const deletingSpeed = 55;  // ms per char when deleting\n    const pauseAfter = 1000;   // ms pause after full word\n    const initialDelay = 100;  // ms before starting\n    const loop = true;\n\n    const el = document.getElementById(\"nam-nam-type\");\n    const cursor = document.getElementById(\"nam-nam-cursor\");\n    if (!el) return;\n\n    // Reduced-motion fallback\n    const reduced = window.matchMedia && window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches;\n    if (reduced) {\n      el.textContent = texts[0] || \"\";\n      if (cursor) cursor.style.display = \"none\";\n      return;\n    }\n\n    // Ensure no wrapping and no overflow\n    el.style.whiteSpace = \"nowrap\";\n    el.style.overflow = \"hidden\";\n    el.style.textOverflow = \"clip\";\n\n    let textIndex = 0;\n    let charIndex = 0;\n    let deleting = false;\n\n    function step() {\n      const current = texts[textIndex] || \"\";\n      if (!deleting) {\n        el.textContent = current.slice(0, charIndex + 1);\n        charIndex++;\n        if (charIndex === current.length) {\n          if (texts.length > 1) {\n            setTimeout(() => { deleting = true; step(); }, pauseAfter);\n            return;\n          } else {\n            return;\n          }\n        }\n        setTimeout(step, typingSpeed);\n      } else {\n        el.textContent = current.slice(0, charIndex - 1);\n        charIndex--;\n        if (charIndex === 0) {\n          deleting = false;\n          textIndex = (textIndex + 1) % texts.length;\n          setTimeout(step, 120);\n          return;\n        }\n        setTimeout(step, deletingSpeed);\n      }\n    }\n\n    setTimeout(step, initialDelay);\n  });\n})();\n</script>",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "collection_header_LrJiVG": {
+      "type": "collection-header",
+      "blocks": {
+        "collection_Ty3mnQ": {
+          "type": "collection",
+          "settings": {
+            "collection": "shop"
+          }
+        },
+        "collection_m6k7XC": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers"
+          }
+        },
+        "collection_xUtPA3": {
+          "type": "collection",
+          "settings": {
+            "collection": "new-arrivals"
+          }
+        },
+        "collection_zHRm68": {
+          "type": "collection",
+          "settings": {
+            "collection": "brittles"
+          }
+        },
+        "collection_WPL9ng": {
+          "type": "collection",
+          "settings": {
+            "collection": "chocolates"
+          }
+        },
+        "collection_YDU3GE": {
+          "type": "collection",
+          "settings": {
+            "collection": "cheesecakes"
+          }
+        },
+        "collection_GDNt89": {
+          "type": "collection",
+          "settings": {
+            "collection": "freeze-dried-candies"
+          }
+        },
+        "collection_3er6Lg": {
+          "type": "collection",
+          "settings": {
+            "collection": "sweet-saver-bundles"
+          }
+        }
+      },
+      "block_order": [
+        "collection_Ty3mnQ",
+        "collection_m6k7XC",
+        "collection_xUtPA3",
+        "collection_zHRm68",
+        "collection_WPL9ng",
+        "collection_YDU3GE",
+        "collection_GDNt89",
+        "collection_3er6Lg"
+      ],
+      "name": "NamNam Header",
+      "settings": {
+        "show_announcement": false,
+        "announcement_text": "Free shipping on orders over ₹499",
+        "announcement_bg_color": "#e6f7f0",
+        "announcement_text_color": "#006633",
+        "show_promo": false,
+        "promo_text": "New — Bare Bites",
+        "promo_bg_color": "#ffdab2",
+        "promo_text_color": "#2a2430",
+        "hero_title": "",
+        "hero_subtitle": "",
+        "hero_bg_color": "#f4ecd7",
+        "title_color": "#e88e1c",
+        "subtitle_color": "#020912",
+        "title_font_size": "44px",
+        "banner_text": "",
+        "banner_bg_color": "#9edbd3",
+        "strapline": "",
+        "strapline_color": "#e88e1c",
+        "strapline_bg_color": "rgba(0,0,0,0)",
+        "strapline_text_color": "#e88e1c",
+        "star_count": 5,
+        "rating_count": 3654,
+        "star_color": "#ffcc33",
+        "pill_style": "filled",
+        "pill_bg_color": "#ffffff",
+        "pill_text_color": "#342f3d",
+        "pill_active_bg": "#e88e1c",
+        "pill_active_text": "#ffffff",
+        "pill_border_color": "#e6dfef",
+        "navigate_on_click": true,
+        "max_width": "1100px",
+        "hero_radius": 0,
+        "font_family": "Inter, 'Helvetica Neue', Arial, sans-serif",
+        "initial_active_index": 0
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "namnam_dual_marquee_Q7Anzn": {
+      "type": "namnam-dual-marquee",
+      "blocks": {
+        "item_yrzaC4": {
+          "type": "item",
+          "settings": {
+            "text": "LOVED BY 10,000+ FOODIES",
+            "emoji": "💛",
+            "pill_style": "pill1"
+          }
+        },
+        "item_KPhqPH": {
+          "type": "item",
+          "settings": {
+            "text": "CLEAN INGREDIENTS",
+            "emoji": "🌱",
+            "pill_style": "pill2"
+          }
+        },
+        "item_f4kDpN": {
+          "type": "item",
+          "settings": {
+            "text": "NO PRESERVATIVES",
+            "emoji": "🚫",
+            "pill_style": "pill1"
+          }
+        },
+        "item_EarRiA": {
+          "type": "item",
+          "settings": {
+            "text": "BETTER SNACKING",
+            "emoji": "🤩",
+            "pill_style": "pill2"
+          }
+        },
+        "item_bottom_AEMQTL": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "GUILT-FREE INDULGENCE",
+            "emoji": "😋",
+            "pill_style": "pill2"
+          }
+        },
+        "item_bottom_DnbXdB": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "HANDCRAFTED WITH CARE",
+            "emoji": "👩‍🍳",
+            "pill_style": "pill1"
+          }
+        },
+        "item_bottom_cErGyW": {
+          "type": "item_bottom",
+          "settings": {
+            "text": "30-DAY HAPPINESS GUARANTEE",
+            "emoji": "👍",
+            "pill_style": "pill2"
+          }
+        }
+      },
+      "block_order": [
+        "item_yrzaC4",
+        "item_KPhqPH",
+        "item_f4kDpN",
+        "item_EarRiA",
+        "item_bottom_AEMQTL",
+        "item_bottom_DnbXdB",
+        "item_bottom_cErGyW"
+      ],
+      "name": "Nam Nam Dual Marquee",
+      "settings": {
+        "bg": "#f3ecd8",
+        "text": "#2b1c11",
+        "pill1": "#da851a",
+        "pill2": "#ffeab8",
+        "speed": 12,
+        "gap_desktop": 15,
+        "gap_mobile": 15,
+        "font_desktop": 17,
+        "font_mobile": 16,
+        "full_bleed": true,
+        "hover_pause": false
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "image_ratio": "square",
+        "image_shape": "blob",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "enable_quick_add": true,
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "custom_liquid_WDNWbg",
+    "collection_header_LrJiVG",
+    "banner",
+    "namnam_dual_marquee_Q7Anzn",
+    "product-grid"
+  ]
+}
