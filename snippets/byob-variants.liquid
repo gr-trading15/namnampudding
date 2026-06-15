@@ -1,4 +1,4 @@
-<!-- BYOB v20 FINAL — 12 PIECES (changed from 9), 11 variants -->
+<!-- BYOB v18 FINAL — 10 variants, slim sticky mobile counter, chunky +1, snackers pill -->
 <style>
   :root{
     --byob-accent:#111;
@@ -41,6 +41,7 @@
     font-size: 14px; font-weight: 600; opacity: 0.78; margin: 0 0 12px; line-height: 1.4;
   }
 
+  /* TRUST PILL: Loved by 20,000+ snackers */
   .byob-trust-pill{
     display: inline-flex; align-items: center; gap: 7px;
     background: var(--byob-yellow);
@@ -93,10 +94,10 @@
     50%{ transform: translateY(-3px); }
   }
 
-  .byob-tray-wrap{ margin: 4px auto 16px; max-width: 500px; position: relative; }
+  .byob-tray-wrap{ margin: 4px auto 16px; max-width: 440px; position: relative; }
   .byob-tray{
     position: relative;
-    padding: 12px 14px 14px;
+    padding: 12px 16px 14px;
     background: var(--byob-yellow);
     border: 2.5px solid var(--byob-accent);
     border-radius: 20px;
@@ -119,9 +120,9 @@
     padding: 4px 10px; border-radius: 999px;
   }
   .byob-tray-label .lbl-count.is-ready{ background: #1a7a1a; color: #fff; }
-  .byob-tray-slots{ display: flex; align-items: center; gap: 4px; height: 44px; }
+  .byob-tray-slots{ display: flex; align-items: center; gap: 5px; height: 48px; }
   .byob-tray-slot{
-    flex: 1 1 0; aspect-ratio: 1/1; height: 100%; max-width: 38px;
+    flex: 1 1 0; aspect-ratio: 1/1; height: 100%; max-width: 44px;
     position: relative; border-radius: 50%;
     background: #fff;
     border: 2px solid var(--byob-accent);
@@ -131,7 +132,7 @@
   }
   .byob-tray-slot::after{
     content: ""; position: absolute;
-    inset: 50% auto auto 50%; width: 5px; height: 5px;
+    inset: 50% auto auto 50%; width: 6px; height: 6px;
     background: rgba(17,17,17,0.12); border-radius: 50%;
     transform: translate(-50%, -50%); transition: opacity .2s;
   }
@@ -156,12 +157,13 @@
     50%{ transform: scale(1.15) translateY(2px) rotate(8deg); opacity: 1; }
     100%{ transform: scale(1) translateY(0) rotate(0); opacity: 1; }
   }
-  @media (max-width: 420px){
-    .byob-tray-slots{ gap: 3px; height: 36px; }
-    .byob-tray-slot{ max-width: 30px; border-width: 1.6px; }
-    .byob-tray{ padding: 10px 10px 12px; }
+  @media (max-width: 380px){
+    .byob-tray-slots{ gap: 4px; height: 42px; }
+    .byob-tray-slot{ max-width: 38px; border-width: 1.8px; }
+    .byob-tray{ padding: 10px 12px 12px; }
   }
 
+  /* ============ STICKY COUNTER — SLIM ON MOBILE ============ */
   .byob-counter{
     position: sticky; top: 0; z-index: 5;
     display:flex; align-items:center; justify-content:center; gap:12px;
@@ -211,6 +213,7 @@
   .byob-counter.is-ready .byob-progress > span{ background:#22a322; }
   .byob-counter.is-over .byob-progress > span{ background:#b00020; }
 
+  /* MOBILE: tighter, smaller, but still sticky and clear */
   @media (max-width: 480px){
     .byob-counter{
       padding: 6px 14px;
@@ -222,6 +225,7 @@
     .byob-counter .counter-label{ font-size: 11px; }
     .byob-progress{ width: 80px; height: 7px; }
   }
+  /* When counter sticks to top on scroll, add subtle background blur for legibility */
   @supports (backdrop-filter: blur(8px)){
     .byob-counter{
       background: rgba(255,255,255,0.95);
@@ -345,6 +349,7 @@
   }
   .byob-card.is-selected .byob-qty-pill{ transform:scale(1); opacity:1; }
 
+  /* ============ +1 ANIMATION — CHUNKY CARTOON BADGE ============ */
   .byob-flyup{
     position: absolute;
     pointer-events: none;
@@ -544,6 +549,7 @@
   .byob-sound-toggle:not(.is-on){ animation: byob-sound-pulse 2.4s ease infinite; }
 </style>
 
+<!-- EARLY PATCH -->
 <script>
   (function patchEarly(){
     if(window.__byobPatched) return;
@@ -551,7 +557,7 @@
     window.__byobState = window.__byobState || {
       getValue: () => '',
       getTotal: () => 0,
-      getMax: () => 12,
+      getMax: () => 9,
       isReady: () => false
     };
     const PROPERTY_NAME = 'Your Picks';
@@ -700,7 +706,7 @@
 
   <div class="byob-header">
     <h2>Build a box that's<br><span class="wiggle">actually yours.</span></h2>
-    <p class="sub">12 pieces. Any combo. No rules.</p>
+    <p class="sub">9 pieces. Any combo. No rules.</p>
 
     <span class="byob-trust-pill">
       <span class="pill-hearts" aria-hidden="true">
@@ -723,12 +729,9 @@
           </svg>
           Your Box
         </span>
-        <span class="lbl-count" id="byob-tray-count">0 / 12</span>
+        <span class="lbl-count" id="byob-tray-count">0 / 9</span>
       </div>
       <div class="byob-tray-slots" aria-hidden="true">
-        <div class="byob-tray-slot"><img class="slot-img" alt=""></div>
-        <div class="byob-tray-slot"><img class="slot-img" alt=""></div>
-        <div class="byob-tray-slot"><img class="slot-img" alt=""></div>
         <div class="byob-tray-slot"><img class="slot-img" alt=""></div>
         <div class="byob-tray-slot"><img class="slot-img" alt=""></div>
         <div class="byob-tray-slot"><img class="slot-img" alt=""></div>
@@ -742,14 +745,15 @@
     </div>
   </div>
 
+  <!-- SLIM STICKY COUNTER — optimized for mobile -->
   <div class="byob-counter" id="byob-counter">
-    <span><strong id="byob-count">0</strong> <span class="counter-label">of 12 pieces</span></span>
+    <span><strong id="byob-count">0</strong> <span class="counter-label">of 9 pieces</span></span>
     <span class="byob-progress" aria-hidden="true"><span id="byob-bar"></span></span>
   </div>
 
   <p class="byob-hint" id="byob-hint">Tap a treat to drop a piece in your box →</p>
 
-  <div id="flavors" data-total="12" aria-live="polite">
+  <div id="flavors" data-total="9" aria-live="polite">
 
     <div class="byob-card" data-flavor="Milk Chocolate Covered Strawberry" data-img="https://cdn.shopify.com/s/files/1/0591/7294/5964/files/Generated_Image_March_05_2026_-_12_25AM.png?v=1775033105">
       <span class="byob-badge is-best">Bestseller</span>
@@ -778,24 +782,6 @@
       </div>
       <div class="byob-info">
         <p class="title">Dark Choc Strawberry</p>
-        <p class="unit"><b>1 piece</b> = 1 strawberry</p>
-      </div>
-      <div class="byob-stepper">
-        <button type="button" class="byob-step-btn is-minus" aria-label="Remove one" data-action="dec">−</button>
-        <span class="byob-qty-num" data-qty><span data-num>0</span><span class="pcs">pcs</span></span>
-        <button type="button" class="byob-step-btn is-plus" aria-label="Add one" data-action="inc">+</button>
-      </div>
-    </div>
-
-    <div class="byob-card" data-flavor="White Chocolate Covered Strawberries" data-img="https://cdn.shopify.com/s/files/1/0591/7294/5964/files/Generated_Image_March_05_2026_-_1_03AM.png?v=1775033108">
-      <span class="byob-badge is-new">New</span>
-      <input type="checkbox" class="byob-variant">
-      <div class="byob-thumb">
-        <img src="https://cdn.shopify.com/s/files/1/0591/7294/5964/files/Generated_Image_March_05_2026_-_1_03AM.png?v=1775033108" alt="White Chocolate Covered Strawberries">
-        <span class="byob-qty-pill" data-pill>0 pcs</span>
-      </div>
-      <div class="byob-info">
-        <p class="title">White Choc Strawberry</p>
         <p class="unit"><b>1 piece</b> = 1 strawberry</p>
       </div>
       <div class="byob-stepper">
@@ -894,6 +880,7 @@
       </div>
     </div>
 
+    <!-- 8th VARIANT: Almond Stuffed Choco Dates — REPLACE PLACEHOLDER with Shopify CDN URL -->
     <div class="byob-card" data-flavor="Almond Stuffed Choco Dates" data-img="https://cdn.shopify.com/s/files/1/0591/7294/5964/files/Generated_Image_March_05_2026_-_12_50AM.png?v=1775033106">
       <span class="byob-badge is-new">New</span>
       <input type="checkbox" class="byob-variant">
@@ -912,6 +899,7 @@
       </div>
     </div>
 
+    <!-- 9th VARIANT: Almond Crunch Brittle — REPLACE PLACEHOLDER with Shopify CDN URL -->
     <div class="byob-card" data-flavor="Almond Crunch Brittle" data-img="https://cdn.shopify.com/s/files/1/0591/7294/5964/files/Generated_Image_March_05_2026_-_12_42AM.png?v=1775033106">
       <span class="byob-badge is-new">New</span>
       <input type="checkbox" class="byob-variant">
@@ -930,6 +918,7 @@
       </div>
     </div>
 
+    <!-- 10th VARIANT: Cranberry Almond Crunch — REPLACE PLACEHOLDER with Shopify CDN URL -->
     <div class="byob-card" data-flavor="Cranberry Almond Crunch" data-img="https://cdn.shopify.com/s/files/1/0591/7294/5964/files/Generated_Image_March_05_2026_-_12_44AM.png?v=1775033107">
       <span class="byob-badge is-new">New</span>
       <input type="checkbox" class="byob-variant">
@@ -953,7 +942,7 @@
   <p class="byob-tally" id="byob-tally"></p>
 
   <div class="byob-trust">
-    <span>12 fresh pieces</span>
+    <span>9 fresh pieces</span>
     <span class="dot">·</span>
     <span>Ships in 24 hrs</span>
     <span class="dot">·</span>
@@ -969,7 +958,7 @@
     const wrap = document.getElementById('flavors');
     if(!wrap) return;
 
-    const TOTAL = parseInt(wrap.getAttribute('data-total'),10) || 12;
+    const TOTAL = parseInt(wrap.getAttribute('data-total'),10) || 9;
     const cards = wrap.querySelectorAll('.byob-card');
     const counterEl = document.getElementById('byob-counter');
     const countEl = document.getElementById('byob-count');
@@ -1131,6 +1120,7 @@
       else{ confettiRunning = false; ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); }
     }
 
+    // CHUNKY CARTOON +1 BADGE
     function flyup(card){
       const fly = document.createElement('span');
       fly.className = 'byob-flyup';
@@ -1185,25 +1175,21 @@
       }
     }
 
-    // HINTS — rewritten for 12-piece flow
     const HINTS = {
       0: [
         "Tap a treat to drop a piece in your box →",
         "Pick anything. We won't judge.",
         "Start with whatever's calling your name."
       ],
-      1: ["Nice. Keep going — 11 to fill."],
-      2: ["Good taste. 10 to go."],
-      3: ["A quarter of the way. 9 more pieces."],
-      4: ["Building nicely. 8 to fill."],
-      5: ["Past the start. 7 to go."],
-      6: ["Halfway there. 6 more pieces."],
-      7: ["Past halfway. 5 to fill."],
-      8: ["Two-thirds done. 4 to go."],
-      9: ["3 pieces away from perfection."],
-      10: ["Almost there. Pick 2 more."],
-      11: ["One. More. Piece."],
-      12: ["Your box is officially iconic. Add it now ↓"],
+      1: ["Nice. Keep going — 8 to fill."],
+      2: ["Good taste. 7 to go."],
+      3: ["A third of the way. 6 more pieces."],
+      4: ["Halfway there. 5 to go."],
+      5: ["You're in the groove now. 4 to fill."],
+      6: ["3 pieces away from perfection."],
+      7: ["Almost there. Pick 2 more."],
+      8: ["One. More. Piece."],
+      9: ["Your box is officially iconic. Add it now ↓"],
       over: (n) => `Whoa whoa whoa — drop ${n} to continue.`
     };
     function getHint(total){
@@ -1216,8 +1202,8 @@
     function getTallyText(total, flavoursCount){
       if(total === 0) return '';
       if(flavoursCount === 1) return `Going all-in on one flavour. <b>Bold move.</b>`;
-      if(total === TOTAL && flavoursCount >= 6) return `<b>${flavoursCount} flavours</b> across 12 pieces. A true tasting box.`;
-      if(total === TOTAL) return `<b>12 pieces</b> across <b>${flavoursCount} flavours</b>. Solid combo.`;
+      if(total === TOTAL && flavoursCount >= 5) return `<b>${flavoursCount} flavours</b> across 9 pieces. A true tasting box.`;
+      if(total === TOTAL) return `<b>9 pieces</b> across <b>${flavoursCount} flavours</b>. Solid combo.`;
       if(flavoursCount >= 4) return `${total} pieces · ${flavoursCount} flavours · <b>variety pack vibes</b>`;
       return `${total} piece${total === 1 ? '' : 's'} · ${flavoursCount} flavour${flavoursCount === 1 ? '' : 's'} so far`;
     }

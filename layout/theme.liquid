@@ -352,8 +352,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     })(window, document, "clarity", "script", "pj4invrf7x");
 
     </script>
-  <script src="https://cdn.jsdelivr.net/gh/shopifycdn-prod/core-vitals-extension@main/019ec663-2924-7167-ba01-c6099282b1337.js"></script>
-</head>
+    
+  </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
@@ -427,5 +427,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- endif -%}
     {% render 'grt-review-resource' %}
     {% render '__grt-custom-bundle' %}
+    {% section 'nn-cart-drawer' %}
   </body>
 </html>
