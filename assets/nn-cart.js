@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var NN_CART_BUILD = '2026-06-01-segments-counter-pulse';
+  var NN_CART_BUILD = '2026-07-18-schema-tier-config';
   console.log('[NamNamCart] script loaded', NN_CART_BUILD);
 
   var ROUTES = {
@@ -260,6 +260,17 @@
   }, true);
 
   class CartDrawer extends HTMLElement {
+    static get observedAttributes() {
+      return [
+        'data-tier-1', 'data-tier-2', 'data-tier-3',
+        'data-tier-1-label', 'data-tier-2-label', 'data-tier-3-label',
+        'data-tier-1-type', 'data-tier-2-type', 'data-tier-3-type',
+        'data-tier-1-code', 'data-tier-2-code', 'data-tier-3-code',
+        'data-tier-1-gift-handle', 'data-tier-2-gift-handle', 'data-tier-3-gift-handle',
+        'data-tier-1-gift-variant-id', 'data-tier-2-gift-variant-id', 'data-tier-3-gift-variant-id'
+      ];
+    }
+
     constructor() {
       super();
       this._initialized = false;
@@ -289,6 +300,7 @@
       this._counterValue = null;
       this._upsellRaf = null;
       this._nearTier = false;
+      this._settingsReloadTimer = null;
 
       this._onKeydown = this._onKeydown.bind(this);
       this._onClick = this._onClick.bind(this);
@@ -307,6 +319,16 @@
       this._scheduleInit();
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (!this._initialized || oldValue === newValue) return;
+      clearTimeout(this._settingsReloadTimer);
+      var self = this;
+      this._settingsReloadTimer = setTimeout(function () {
+        self._settingsReloadTimer = null;
+        self._reloadTierSettings();
+      }, 0);
+    }
+
     _scheduleInit() {
       var self = this;
       if (this._initRaf) cancelAnimationFrame(this._initRaf);
@@ -322,25 +344,64 @@
       this._initRaf = requestAnimationFrame(attempt);
     }
 
+    _readTierSettings() {
+      var config = null;
+      var configEl = this.querySelector('[data-nn-tier-config]');
+      if (configEl) {
+        try { config = JSON.parse(configEl.textContent || '{}'); }
+        catch (err) { console.warn('[NamNamCart] invalid tier config', err); }
+      }
+
+      var configuredTiers = config && Array.isArray(config.tiers) ? config.tiers : null;
+      if (configuredTiers && configuredTiers.length === 3) {
+        this.tiers = configuredTiers.map(function (tier) { return toInt(tier.threshold); });
+        this.tierLabels = configuredTiers.map(function (tier) { return String(tier.label || ''); });
+        this.tierTypes = configuredTiers.map(function (tier) { return tier.type === 'free_product' ? 'free_product' : 'discount'; });
+        this.tierCodes = configuredTiers.map(function (tier) { return String(tier.code || '').trim(); });
+        this.tierGiftHandles = configuredTiers.map(function (tier) { return String(tier.giftHandle || '').trim(); });
+        this.tierGiftVariantIds = configuredTiers.map(function (tier) { return toInt(tier.giftVariantId); });
+      } else {
+        // Compatibility fallback reads the section-rendered attributes only.
+        // No fixed tier prices are kept in JavaScript.
+        this.tiers = [toInt(this.dataset.tier1), toInt(this.dataset.tier2), toInt(this.dataset.tier3)];
+        this.tierLabels = [this.dataset.tier1Label || '', this.dataset.tier2Label || '', this.dataset.tier3Label || ''];
+        this.tierTypes = [this.dataset.tier1Type, this.dataset.tier2Type, this.dataset.tier3Type].map(function (type) {
+          return type === 'free_product' ? 'free_product' : 'discount';
+        });
+        this.tierCodes = [this.dataset.tier1Code, this.dataset.tier2Code, this.dataset.tier3Code].map(function (code) {
+          return String(code || '').trim();
+        });
+        this.tierGiftHandles = [this.dataset.tier1GiftHandle, this.dataset.tier2GiftHandle, this.dataset.tier3GiftHandle].map(function (handle) {
+          return String(handle || '').trim();
+        });
+        this.tierGiftVariantIds = [
+          toInt(this.dataset.tier1GiftVariantId),
+          toInt(this.dataset.tier2GiftVariantId),
+          toInt(this.dataset.tier3GiftVariantId)
+        ];
+      }
+
+      for (var i = 0; i < this.tiers.length; i++) {
+        if (this.tiers[i] == null || this.tiers[i] < 0) this.tiers[i] = 0;
+      }
+    }
+
+    _reloadTierSettings() {
+      if (!this._initialized || !this.isConnected) return;
+      this._readTierSettings();
+      this._giftVariantsPromise = null;
+      this._lastDiscountSyncSignature = null;
+      this._lastUnlocked = this.tiers.map(function () { return false; });
+      this._tierJustUnlocked = -1;
+      this._setTierLabels();
+      this._setTierPositions();
+      this._render();
+      var self = this;
+      this._enqueue(function () { return self._syncDerivedCartState(); });
+    }
+
     _initialize() {
-      this.tiers = [
-        toInt(this.dataset.tier1) || 1000,
-        toInt(this.dataset.tier2) || 1499,
-        toInt(this.dataset.tier3) || 3000
-      ];
-      this.tierLabels = [
-        this.dataset.tier1Label || '₹50 off',
-        this.dataset.tier2Label || 'Free Gift',
-        this.dataset.tier3Label || '₹350 off'
-      ];
-      this.tierCodes = [
-        (this.dataset.tier1Code || '').trim(),
-        (this.dataset.tier2Code || '').trim(),
-        (this.dataset.tier3Code || '').trim()
-      ];
-      this.giftThreshold = toInt(this.dataset.giftThreshold) || 1499;
-      this.giftProductHandle = (this.dataset.giftProductHandle || '').trim();
-      this.giftVariantId = toInt(this.dataset.giftVariantId);
+      this._readTierSettings();
       this.wrapProductHandle = (this.dataset.wrapProductHandle || '').trim();
       this.wrapVariantId = toInt(this.dataset.wrapVariantId);
       this.wrapPrice = (this.dataset.wrapPrice || '').trim();
@@ -445,6 +506,10 @@
     }
 
     disconnectedCallback() {
+      if (this._settingsReloadTimer) {
+        clearTimeout(this._settingsReloadTimer);
+        this._settingsReloadTimer = null;
+      }
       if (this._initRaf) {
         cancelAnimationFrame(this._initRaf);
         this._initRaf = null;
@@ -465,6 +530,10 @@
         this.removeEventListener('click', this._onClick);
         document.removeEventListener('keydown', this._onKeydown);
         this._connectBound = false;
+      }
+      if (this._open) {
+        this._open = false;
+        document.body.classList.remove('nn-cart-open');
       }
       this._stopTimer();
     }
@@ -772,7 +841,7 @@
 
     _getActiveTierDiscount(amountRupees) {
       for (var i = this.tiers.length - 1; i >= 0; i--) {
-        if (amountRupees >= this.tiers[i] && this.tierCodes[i]) {
+        if (this.tierTypes[i] === 'discount' && amountRupees >= this.tiers[i] && this.tierCodes[i]) {
           return {
             index: i,
             code: this.tierCodes[i],
@@ -791,6 +860,15 @@
       return -1;
     }
 
+    _getNextGiftTierIndex(amountRupees) {
+      for (var i = 0; i < this.tiers.length; i++) {
+        if (this.tierTypes[i] === 'free_product' && this.tierGiftVariantIds[i] && amountRupees < this.tiers[i]) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
     _extractRewardAmount(label) {
       var match = String(label || '').match(/(\d[\d,]*)/);
       if (!match) return null;
@@ -799,10 +877,16 @@
     }
 
     _getSavingsRibbonMessage(unlockedTierIndex, fallbackSavings) {
-      if (unlockedTierIndex === 1) {
-        return "You've earned a <strong>FREE gift</strong>!";
+      var unlockedGiftCount = 0;
+      for (var i = 0; i <= unlockedTierIndex; i++) {
+        if (this.tierTypes[i] === 'free_product' && this.tierGiftVariantIds[i]) unlockedGiftCount++;
       }
-      if (unlockedTierIndex === 0 || unlockedTierIndex === 2) {
+      if (unlockedGiftCount > 0 && this.tierTypes[unlockedTierIndex] === 'free_product') {
+        return unlockedGiftCount === 1
+          ? "You've earned a <strong>FREE gift</strong>!"
+          : "You've earned <strong>" + unlockedGiftCount + " FREE gifts</strong>!";
+      }
+      if (unlockedTierIndex >= 0 && this.tierTypes[unlockedTierIndex] === 'discount') {
         var rewardAmount = this._extractRewardAmount(this.tierLabels[unlockedTierIndex]);
         if (rewardAmount != null) {
           return "Congrats, you've saved <strong>" + formatINR(rewardAmount * 100) + "</strong> so far!";
@@ -845,17 +929,23 @@
         .catch(function () { return null; });
     }
 
-    _ensureGiftVariantId() {
+    _ensureTierGiftVariantIds() {
       var self = this;
-      if (this.giftVariantId) return Promise.resolve(this.giftVariantId);
-      if (!this.giftProductHandle) return Promise.resolve(null);
-      if (this._giftVariantPromise) return this._giftVariantPromise;
-      this._giftVariantPromise = this._resolveProductVariantId(this.giftProductHandle).then(function (id) {
-        if (id) self.giftVariantId = id;
-        self._giftVariantPromise = null;
-        return self.giftVariantId;
+      if (this._giftVariantsPromise) return this._giftVariantsPromise;
+      var tasks = this.tierTypes.map(function (type, index) {
+        if (type !== 'free_product' || self.tierGiftVariantIds[index]) {
+          return Promise.resolve(self.tierGiftVariantIds[index]);
+        }
+        return self._resolveProductVariantId(self.tierGiftHandles[index]).then(function (id) {
+          if (id) self.tierGiftVariantIds[index] = id;
+          return self.tierGiftVariantIds[index];
+        });
       });
-      return this._giftVariantPromise;
+      this._giftVariantsPromise = Promise.all(tasks).then(function (ids) {
+        self._giftVariantsPromise = null;
+        return ids;
+      });
+      return this._giftVariantsPromise;
     }
 
     _ensureWrapVariantId() {
@@ -914,9 +1004,16 @@
 
     _isGiftLine(item) {
       if (!item) return false;
-      if (this.giftVariantId && item.variant_id === this.giftVariantId) return true;
       var props = item.properties || {};
       return props._free_gift === 'true' || props._free_gift === true;
+    }
+
+    _getGiftLineTierIndex(item) {
+      if (!item) return -1;
+      var props = item.properties || {};
+      var propertyTier = toInt(props._free_gift_tier);
+      if (propertyTier && propertyTier >= 1 && propertyTier <= this.tiers.length) return propertyTier - 1;
+      return this.tierGiftVariantIds.indexOf(item.variant_id);
     }
 
     _setGiftBusy(isBusy) {
@@ -1130,22 +1227,41 @@
       this._els.undoToast.setAttribute('aria-hidden', 'true');
     }
 
+    _setBusy(busy) {
+      if (busy) {
+        this.setAttribute('data-nn-busy', '');
+      } else {
+        this.removeAttribute('data-nn-busy');
+      }
+    }
+
     _enqueue(fn) {
-      this._queue = this._queue.then(function () {
+      var self = this;
+      // Capture the promise BEFORE extending the chain so we can detect
+      // when THIS specific enqueue is the last one still pending.
+      var p = this._queue.then(function () {
+        self._setBusy(true);
         return Promise.resolve(fn()).catch(function (err) {
           console.warn('[NamNamCart] queue error', err);
         });
       });
-      return this._queue;
+      this._queue = p;
+      // Clear busy only when no later item has extended the queue past us.
+      p.then(function () {
+        if (self._queue === p) self._setBusy(false);
+      });
+      return p;
     }
 
     refresh() {
       var self = this;
+      this._setBusy(true);
       return fetchJSON(ROUTES.cart).then(function (cart) {
         self._applyServerCart(cart);
         return self._enqueue(function () { return self._syncDerivedCartState(); });
       }).catch(function (err) {
         console.error('[NamNamCart] refresh failed:', err);
+        self._setBusy(false);
       });
     }
 
@@ -1193,53 +1309,66 @@
     _reconcileGift() {
       var self = this;
       if (!this._cart) return Promise.resolve();
-      if (!this.giftVariantId) {
-        return this._ensureGiftVariantId().then(function (id) {
-          if (!id) return Promise.resolve();
-          return self._reconcileGift();
+      return this._ensureTierGiftVariantIds().then(function () {
+        var items = self._cart.items || [];
+        var nonGiftSubtotal = 0;
+        items.forEach(function (item) {
+          if (self._isGiftLine(item) || self._isWrapLine(item)) return;
+          nonGiftSubtotal += item.final_line_price;
         });
-      }
-      var items = this._cart.items || [];
-      var giftLines = items.filter(function (i) { return self._isGiftLine(i); });
-      var nonGiftSubtotal = 0;
-      items.forEach(function (i) {
-        if (self._isGiftLine(i)) return;
-        if (self._isWrapLine(i)) return;
-        nonGiftSubtotal += i.final_line_price;
-      });
-      var amount = nonGiftSubtotal / 100;
-      var qualifies = amount >= this.giftThreshold;
-      if (giftLines.length > 1) {
-        var toRemove = giftLines.slice(qualifies ? 1 : 0);
-        return this._withGiftBusy(function () {
-          return toRemove.reduce(function (p, line) {
-            return p.then(function () {
-              return fetchJSON(ROUTES.change, { method: 'POST', body: { id: line.key, quantity: 0 } })
-                .then(function (cart) { self._applyServerCart(cart); });
+        var amount = nonGiftSubtotal / 100;
+        var desiredTiers = [];
+        self.tierTypes.forEach(function (type, index) {
+          if (type === 'free_product' && self.tierGiftVariantIds[index] && amount >= self.tiers[index]) {
+            desiredTiers.push(index);
+          }
+        });
+
+        var keptTiers = {};
+        var toRemove = [];
+        items.filter(function (item) { return self._isGiftLine(item); }).forEach(function (line) {
+          var tierIndex = self._getGiftLineTierIndex(line);
+          var isDesired = desiredTiers.indexOf(tierIndex) !== -1;
+          var isCorrectVariant = tierIndex >= 0 && line.variant_id === self.tierGiftVariantIds[tierIndex];
+          if (!isDesired || !isCorrectVariant || keptTiers[tierIndex]) {
+            toRemove.push(line);
+          } else {
+            keptTiers[tierIndex] = true;
+          }
+        });
+
+        var toAdd = desiredTiers.filter(function (index) { return !keptTiers[index]; });
+        if (!toRemove.length && !toAdd.length) return Promise.resolve();
+
+        return self._withGiftBusy(function () {
+          var task = toRemove.reduce(function (promise, line) {
+            return promise.then(function () {
+              return fetchJSON(ROUTES.change, { method: 'POST', body: { id: line.key, quantity: 0 } });
             });
           }, Promise.resolve());
-        });
-      }
-      if (qualifies && giftLines.length === 0) {
-        return this._withGiftBusy(function () {
-          return addCartItem({
-            id: self.giftVariantId,
-            quantity: 1,
-            properties: { _free_gift: 'true' }
-          })
+
+          task = toAdd.reduce(function (promise, tierIndex) {
+            return promise.then(function () {
+              return addCartItem({
+                id: self.tierGiftVariantIds[tierIndex],
+                quantity: 1,
+                properties: {
+                  _free_gift: 'true',
+                  _free_gift_tier: String(tierIndex + 1)
+                }
+              });
+            });
+          }, task);
+
+          return task
             .then(function () { return fetchJSON(ROUTES.cart); })
             .then(function (cart) { self._applyServerCart(cart); })
-            .catch(function (err) { console.warn('[NamNamCart] gift add error', err); });
+            .catch(function (err) {
+              console.warn('[NamNamCart] gift reconciliation error', err);
+              return fetchJSON(ROUTES.cart).then(function (cart) { self._applyServerCart(cart); });
+            });
         });
-      }
-      if (!qualifies && giftLines.length === 1) {
-        return this._withGiftBusy(function () {
-          return fetchJSON(ROUTES.change, { method: 'POST', body: { id: giftLines[0].key, quantity: 0 } })
-            .then(function (cart) { self._applyServerCart(cart); })
-            .catch(function (err) { console.warn('[NamNamCart] gift remove error', err); });
-        });
-      }
-      return Promise.resolve();
+      });
     }
 
     _render() {
@@ -1326,14 +1455,17 @@
       }
 
       if (this._els.nudge && this._els.nudgeText) {
-        if (!empty && progressSubtotal / 100 < this.giftThreshold) {
-          var nudgeDiff = this.giftThreshold - progressSubtotal / 100;
+        var progressRupees = progressSubtotal / 100;
+        var nextGiftTierIndex = this._getNextGiftTierIndex(progressRupees);
+        if (!empty && nextGiftTierIndex !== -1) {
+          var nudgeDiff = this.tiers[nextGiftTierIndex] - progressRupees;
+          var giftLabel = escapeHTML(this.tierLabels[nextGiftTierIndex]);
           if (nudgeDiff <= NEAR_MISS_LOUD) {
-            this._els.nudgeText.innerHTML = "You're <b>" + formatINR(nudgeDiff * 100) + " away</b> from your <b>FREE Gift</b>!";
+            this._els.nudgeText.innerHTML = "You're <b>" + formatINR(nudgeDiff * 100) + " away</b> from <b>" + giftLabel + "</b>!";
             this._els.nudge.hidden = false;
             this._els.nudge.classList.add('nn__nudge--hot');
           } else if (displayItems.length >= 2) {
-            this._els.nudgeText.innerHTML = "Add <b>one more</b> to unlock your <b>FREE Gift</b> 🎁";
+            this._els.nudgeText.innerHTML = "Add <b>one more</b> to unlock <b>" + giftLabel + "</b> 🎁";
             this._els.nudge.hidden = false;
             this._els.nudge.classList.remove('nn__nudge--hot');
           } else {
@@ -1594,7 +1726,7 @@
         this._els.progressMsgText.innerHTML = "Add <b>" + diffStr + "</b> more, get <b>" + escapeHTML(label) + "</b>";
       }
       if (this._els.progressMsgIco) {
-        this._els.progressMsgIco.textContent = nextIdx === 1 ? '🎁' : (nextIdx === 2 ? '💎' : '💰');
+        this._els.progressMsgIco.textContent = this.tierTypes[nextIdx] === 'free_product' ? '🎁' : '💰';
       }
     }
 
@@ -1907,6 +2039,32 @@
     customElements.define('cart-drawer', CartDrawer);
   }
 
+  if (window.Shopify && window.Shopify.designMode && !window.__nnCartEditorEventsBound) {
+    window.__nnCartEditorEventsBound = true;
+    var getEditorDrawer = function (event) {
+      if (!event || !event.target) return null;
+      if (event.target.matches && event.target.matches('cart-drawer')) return event.target;
+      return event.target.querySelector ? event.target.querySelector('cart-drawer') : null;
+    };
+    document.addEventListener('shopify:section:load', function (event) {
+      var drawer = getEditorDrawer(event);
+      if (!drawer) return;
+      requestAnimationFrame(function () {
+        if (drawer._initialized) drawer._reloadTierSettings();
+        else if (typeof drawer._scheduleInit === 'function') drawer._scheduleInit();
+        if (typeof drawer.open === 'function') drawer.open();
+      });
+    });
+    document.addEventListener('shopify:section:select', function (event) {
+      var drawer = getEditorDrawer(event);
+      if (drawer && typeof drawer.open === 'function') drawer.open();
+    });
+    document.addEventListener('shopify:section:deselect', function (event) {
+      var drawer = getEditorDrawer(event);
+      if (drawer && typeof drawer.close === 'function') drawer.close();
+    });
+  }
+
   function _drawer() {
     return document.getElementById('NamNamCart') || document.querySelector('cart-drawer');
   }
@@ -1927,4 +2085,214 @@
     });
   };
   window.NamNamCart.showToast = showToast;
+
+  /* ================================================================
+     Manual discount code feature
+     Problem solved: _syncLatestTierDiscount() calls _replaceTierDiscountCode()
+     which POSTs { discount: '' } then { discount: tierCode }, wiping any
+     manually entered code. Fix: patch the drawer instance to skip tier
+     sync while a manual code is active, and track codes in localStorage
+     so pills survive page reloads.
+  ================================================================ */
+
+  var MANUAL_DISCOUNT_KEY = 'nn_manual_discount_v1';
+
+  function _getStoredManualCodes() {
+    try {
+      var v = localStorage.getItem(MANUAL_DISCOUNT_KEY);
+      return v ? JSON.parse(v) : [];
+    } catch (e) { return []; }
+  }
+
+  function _saveManualCodes(codes) {
+    try { localStorage.setItem(MANUAL_DISCOUNT_KEY, JSON.stringify(codes)); }
+    catch (e) {}
+  }
+
+  function _addManualCode(code) {
+    var upper = code.toUpperCase();
+    var codes = _getStoredManualCodes();
+    if (codes.indexOf(upper) === -1) codes.push(upper);
+    _saveManualCodes(codes);
+  }
+
+  function _removeManualCode(code) {
+    var upper = code.toUpperCase();
+    _saveManualCodes(_getStoredManualCodes().filter(function (c) { return c !== upper; }));
+  }
+
+  // POST discount codes to /cart/update.js — returns full cart JSON
+  function _postDiscount(codes, onSuccess, onError) {
+    fetch(ROUTES.update, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ discount: codes.join(',') })
+    })
+      .then(function (r) { return r.json(); })
+      .then(onSuccess)
+      .catch(function (e) {
+        console.error('[NamNamCart] discount error', e);
+        if (onError) onError(e);
+      });
+  }
+
+  // Update discount pills in all [data-cart-discount] wrappers.
+  // Only shows codes from our manual tracking that are confirmed valid in cart.
+  function _syncDiscountPillsFromCart(cart) {
+    var manualCodes = _getStoredManualCodes();
+    var validInCart = new Set(
+      (cart.discount_codes || [])
+        .filter(function (d) { return d.applicable !== false; })
+        .map(function (d) { return d.code.toUpperCase(); })
+    );
+    // Reconcile: drop stored codes that Shopify says are no longer valid
+    var confirmed = manualCodes.filter(function (c) { return validInCart.has(c); });
+    if (confirmed.length !== manualCodes.length) _saveManualCodes(confirmed);
+
+    var html = confirmed.map(function (code) {
+      return '<li class="nn-discount__pill" data-discount-code="' + code + '">'
+        + '<span class="nn-discount__pill-code">' + code + '</span>'
+        + '<button type="button" class="nn-discount__pill-remove" data-discount-remove="' + code
+        + '" aria-label="Remove ' + code + '">'
+        + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11" aria-hidden="true">'
+        + '<path d="M6 6l12 12M18 6 6 18"/></svg>'
+        + '</button></li>';
+    }).join('');
+
+    document.querySelectorAll('[data-cart-discount]').forEach(function (wrap) {
+      var ul = wrap.querySelector('[data-discount-codes]');
+      if (ul) ul.innerHTML = html;
+      var det = wrap.querySelector('.nn-discount__details');
+      if (det && confirmed.length > 0) det.open = true;
+    });
+  }
+
+  // Patch the CartDrawer instance once it's connected:
+  //   1. _syncLatestTierDiscount → skip when manual code is active (prevents overwrites)
+  //   2. _applyServerCart → also update discount pills on every cart refresh
+  function _patchDrawerForDiscounts(d) {
+    if (!d || d._manualDiscountPatched) return;
+    d._manualDiscountPatched = true;
+
+    var origSync = d._syncLatestTierDiscount.bind(d);
+    d._syncLatestTierDiscount = function () {
+      if (_getStoredManualCodes().length > 0) return Promise.resolve();
+      return origSync();
+    };
+
+    var origApply = d._applyServerCart.bind(d);
+    d._applyServerCart = function (cart) {
+      origApply(cart);
+      _syncDiscountPillsFromCart(cart);
+    };
+
+    // Initialise pills from whatever cart state is already loaded
+    if (d._cart) _syncDiscountPillsFromCart(d._cart);
+  }
+
+  // Attempt to patch; retry briefly since connectedCallback is async
+  function _tryPatchDrawer() {
+    var d = _drawer();
+    if (d) {
+      _patchDrawerForDiscounts(d);
+    } else {
+      setTimeout(function () { _patchDrawerForDiscounts(_drawer()); }, 300);
+    }
+  }
+
+  // On page load: patch drawer + restore pills from localStorage
+  document.addEventListener('DOMContentLoaded', function () {
+    _tryPatchDrawer();
+    if (_getStoredManualCodes().length > 0) {
+      fetch(ROUTES.cart, { headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(_syncDiscountPillsFromCart)
+        .catch(function () {});
+    }
+  });
+
+  /* ---- Apply handler ---- */
+  document.addEventListener('submit', function (e) {
+    var form = e.target.closest('[data-discount-form]');
+    if (!form) return;
+    e.preventDefault();
+    var wrap  = form.closest('[data-cart-discount]');
+    var input = form.querySelector('input[name="discount"]');
+    var errEl = wrap ? wrap.querySelector('[data-discount-error]') : null;
+    var btn   = form.querySelector('button[type="submit"]');
+    var code  = (input ? input.value : '').trim();
+    if (!code || !wrap) return;
+
+    var existing = _getStoredManualCodes();
+    if (existing.indexOf(code.toUpperCase()) !== -1) { input.value = ''; return; }
+    if (errEl) errEl.hidden = true;
+    if (btn) { btn.disabled = true; btn.textContent = '…'; }
+
+    _postDiscount(existing.concat(code), function (cart) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Apply'; }
+
+      var invalid = (cart.discount_codes || []).some(function (d) {
+        return d.code.toUpperCase() === code.toUpperCase() && d.applicable === false;
+      });
+      if (invalid) {
+        input.value = '';
+        if (errEl) {
+          errEl.textContent = 'Discount code "' + code + '" isn\'t valid.';
+          errEl.hidden = false;
+        }
+        return;
+      }
+
+      input.value = '';
+      _addManualCode(code);
+
+      if (wrap.hasAttribute('data-discount-reload')) {
+        window.location.reload();
+        return;
+      }
+
+      // Ensure drawer is patched (may not have been by DOMContentLoaded yet)
+      _patchDrawerForDiscounts(_drawer());
+
+      // Apply POST response directly — it has the discounted total_price.
+      // Do NOT call d.refresh() here as that would trigger _syncDerivedCartState
+      // → _syncLatestTierDiscount → tier code overwrites our manual code.
+      var d = _drawer();
+      if (d && typeof d._applyServerCart === 'function') {
+        d._applyServerCart(cart);
+      }
+      // _applyServerCart (patched) already called _syncDiscountPillsFromCart,
+      // but call again in case patch wasn't applied yet.
+      _syncDiscountPillsFromCart(cart);
+
+    }, function () {
+      if (btn) { btn.disabled = false; btn.textContent = 'Apply'; }
+    });
+  });
+
+  /* ---- Remove handler ---- */
+  document.addEventListener('click', function (e) {
+    var removeBtn = e.target.closest('[data-discount-remove]');
+    if (!removeBtn) return;
+    var wrap = removeBtn.closest('[data-cart-discount]');
+    var code = removeBtn.getAttribute('data-discount-remove');
+    _removeManualCode(code);
+    var remaining = _getStoredManualCodes(); // already removed above
+
+    _postDiscount(remaining, function (cart) {
+      if (wrap && wrap.hasAttribute('data-discount-reload')) {
+        window.location.reload();
+        return;
+      }
+      var d = _drawer();
+      if (d && typeof d._applyServerCart === 'function') d._applyServerCart(cart);
+      _syncDiscountPillsFromCart(cart);
+
+      // No manual codes left → let tier sync run again via a full refresh.
+      // The patched _syncLatestTierDiscount will now allow it through.
+      if (_getStoredManualCodes().length === 0 && d && typeof d.refresh === 'function') {
+        d.refresh();
+      }
+    });
+  });
 })();

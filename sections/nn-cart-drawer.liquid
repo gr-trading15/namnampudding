@@ -10,12 +10,18 @@
   assign tier_1_label = section.settings.tier_1_label
   assign tier_2_label = section.settings.tier_2_label
   assign tier_3_label = section.settings.tier_3_label
+  assign tier_1_type = section.settings.tier_1_type | default: 'discount'
+  assign tier_2_type = section.settings.tier_2_type | default: 'free_product'
+  assign tier_3_type = section.settings.tier_3_type | default: 'discount'
   assign tier_1_code = section.settings.tier_1_code | strip
   assign tier_2_code = section.settings.tier_2_code | strip
   assign tier_3_code = section.settings.tier_3_code | strip
-  assign free_gift_threshold = section.settings.free_gift_threshold
-  assign free_gift_product = section.settings.free_gift_product
-  assign free_gift_handle = free_gift_product.handle | default: section.settings.free_gift_product
+  assign tier_1_product_handle = section.settings.tier_1_product | strip
+  assign tier_2_product_handle = section.settings.tier_2_product | strip
+  assign tier_3_product_handle = section.settings.tier_3_product | strip
+  assign tier_1_product = all_products[tier_1_product_handle]
+  assign tier_2_product = all_products[tier_2_product_handle]
+  assign tier_3_product = all_products[tier_3_product_handle]
   assign gift_wrap_product = section.settings.gift_wrap_product
   assign gift_wrap_variant_setting = section.settings.gift_wrap_variant_id | strip
   assign gift_wrap_handle = gift_wrap_product.handle
@@ -27,7 +33,9 @@
   assign free_ship_threshold = section.settings.free_ship_threshold | default: 499
 -%}
 
-{%- capture free_gift_variant_id -%}{%- if free_gift_product != blank -%}{{ free_gift_product.selected_or_first_available_variant.id }}{%- endif -%}{%- endcapture -%}
+{%- capture tier_1_gift_variant_id -%}{%- if tier_1_type == 'free_product' and tier_1_product != blank -%}{{ tier_1_product.selected_or_first_available_variant.id }}{%- endif -%}{%- endcapture -%}
+{%- capture tier_2_gift_variant_id -%}{%- if tier_2_type == 'free_product' and tier_2_product != blank -%}{{ tier_2_product.selected_or_first_available_variant.id }}{%- endif -%}{%- endcapture -%}
+{%- capture tier_3_gift_variant_id -%}{%- if tier_3_type == 'free_product' and tier_3_product != blank -%}{{ tier_3_product.selected_or_first_available_variant.id }}{%- endif -%}{%- endcapture -%}
 {%- capture gift_wrap_variant_id -%}
   {%- if gift_wrap_product != blank -%}
     {%- if gift_wrap_product.selected_or_first_available_variant != blank -%}
@@ -45,25 +53,33 @@
   {%- endif -%}
 {%- endcapture -%}
 {%- assign gift_wrap_variant_id_value = gift_wrap_variant_id | strip -%}
+{%- capture discount_reward_icon -%}<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="15" x2="15" y2="9"/><circle cx="9.5" cy="9.5" r="1.2" fill="currentColor"/><circle cx="14.5" cy="14.5" r="1.2" fill="currentColor"/></svg>{%- endcapture -%}
+{%- capture free_product_reward_icon -%}<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>{%- endcapture -%}
 
 <script src="{{ 'nn-cart.js' | asset_url }}"></script>
 
 <cart-drawer
   id="NamNamCart"
   class="nn"
-  data-build="2026-05-31-wrap-debug-3"
+  data-build="2026-07-18-schema-tier-config"
   data-tier-1="{{ tier_1 }}"
   data-tier-2="{{ tier_2 }}"
   data-tier-3="{{ tier_3 }}"
   data-tier-1-label="{{ tier_1_label | escape }}"
   data-tier-2-label="{{ tier_2_label | escape }}"
   data-tier-3-label="{{ tier_3_label | escape }}"
+  data-tier-1-type="{{ tier_1_type }}"
+  data-tier-2-type="{{ tier_2_type }}"
+  data-tier-3-type="{{ tier_3_type }}"
   data-tier-1-code="{{ tier_1_code | escape }}"
   data-tier-2-code="{{ tier_2_code | escape }}"
   data-tier-3-code="{{ tier_3_code | escape }}"
-  data-gift-threshold="{{ free_gift_threshold }}"
-  data-gift-product-handle="{{ free_gift_handle | escape }}"
-  data-gift-variant-id="{{ free_gift_variant_id | strip }}"
+  data-tier-1-gift-handle="{{ tier_1_product_handle | escape }}"
+  data-tier-2-gift-handle="{{ tier_2_product_handle | escape }}"
+  data-tier-3-gift-handle="{{ tier_3_product_handle | escape }}"
+  data-tier-1-gift-variant-id="{{ tier_1_gift_variant_id | strip }}"
+  data-tier-2-gift-variant-id="{{ tier_2_gift_variant_id | strip }}"
+  data-tier-3-gift-variant-id="{{ tier_3_gift_variant_id | strip }}"
   data-wrap-product-handle="{{ gift_wrap_handle | escape }}"
   data-wrap-variant-id="{{ gift_wrap_variant_id_value }}"
   data-wrap-price="{{ gift_wrap_price | strip }}"
@@ -75,6 +91,37 @@
   aria-modal="true"
   aria-label="Shopping cart"
 >
+  <script type="application/json" data-nn-tier-config>
+    {
+      "tiers": [
+        {
+          "threshold": {{ tier_1 | json }},
+          "label": {{ tier_1_label | json }},
+          "type": {{ tier_1_type | json }},
+          "code": {{ tier_1_code | json }},
+          "giftHandle": {{ tier_1_product_handle | json }},
+          "giftVariantId": {{ tier_1_gift_variant_id | strip | json }}
+        },
+        {
+          "threshold": {{ tier_2 | json }},
+          "label": {{ tier_2_label | json }},
+          "type": {{ tier_2_type | json }},
+          "code": {{ tier_2_code | json }},
+          "giftHandle": {{ tier_2_product_handle | json }},
+          "giftVariantId": {{ tier_2_gift_variant_id | strip | json }}
+        },
+        {
+          "threshold": {{ tier_3 | json }},
+          "label": {{ tier_3_label | json }},
+          "type": {{ tier_3_type | json }},
+          "code": {{ tier_3_code | json }},
+          "giftHandle": {{ tier_3_product_handle | json }},
+          "giftVariantId": {{ tier_3_gift_variant_id | strip | json }}
+        }
+      ]
+    }
+  </script>
+
   <div class="nn__backdrop" data-cart-close tabindex="-1" aria-hidden="true"></div>
 
   <aside class="nn__panel" role="document">
@@ -120,27 +167,21 @@
         <li class="nn__progress-tier" data-progress-tier="1" style="left: calc({{ tier_1 | times: 100.0 | divided_by: tier_3 }}% - 35px)">
           <span class="nn__progress-amt" data-tier-amount>₹{{ tier_1 }}</span>
           <span class="nn__progress-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9"/><line x1="9" y1="15" x2="15" y2="9"/><circle cx="9.5" cy="9.5" r="1.2" fill="currentColor"/><circle cx="14.5" cy="14.5" r="1.2" fill="currentColor"/>
-            </svg>
+            {%- if tier_1_type == 'free_product' -%}{{ free_product_reward_icon }}{%- else -%}{{ discount_reward_icon }}{%- endif -%}
           </span>
           <span class="nn__progress-label" data-tier-label>{{ tier_1_label }}</span>
         </li>
         <li class="nn__progress-tier" data-progress-tier="2" style="left: calc({{ tier_2 | times: 100.0 | divided_by: tier_3 }}% - 35px)">
           <span class="nn__progress-amt" data-tier-amount>₹{{ tier_2 }}</span>
           <span class="nn__progress-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-            </svg>
+            {%- if tier_2_type == 'free_product' -%}{{ free_product_reward_icon }}{%- else -%}{{ discount_reward_icon }}{%- endif -%}
           </span>
           <span class="nn__progress-label" data-tier-label>{{ tier_2_label }}</span>
         </li>
         <li class="nn__progress-tier" data-progress-tier="3" style="align-items: flex-end; left: calc(100% - 69px);">
           <span class="nn__progress-amt" data-tier-amount>₹{{ tier_3 }}</span>
           <span class="nn__progress-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9"/><line x1="9" y1="15" x2="15" y2="9"/><circle cx="9.5" cy="9.5" r="1.2" fill="currentColor"/><circle cx="14.5" cy="14.5" r="1.2" fill="currentColor"/>
-            </svg>
+            {%- if tier_3_type == 'free_product' -%}{{ free_product_reward_icon }}{%- else -%}{{ discount_reward_icon }}{%- endif -%}
           </span>
           <span class="nn__progress-label" data-tier-label>{{ tier_3_label }}</span>
         </li>
@@ -314,6 +355,8 @@
         <span class="nn__perk">COD available</span>
       </div>
 
+      {%- render 'cart-discount' -%}
+
       <div class="nn__totals">
         <div class="nn__totals-row">
           <span class="nn__totals-label">
@@ -329,7 +372,7 @@
         {% comment %} <div class="nn__totals-sub">Taxes calculated at checkout. Shipping FREE above ₹{{ free_ship_threshold }}.</div> {% endcomment %}
       </div>
 
-      <button type="button" class="nn__btn nn__btn--checkout" data-cart-checkout aria-label="Proceed to checkout">
+      {% comment %} <button type="button" class="nn__btn nn__btn--checkout" data-cart-checkout aria-label="Proceed to checkout">
         <span class="nn__btn-lock" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </span>
@@ -339,7 +382,22 @@
         <span class="nn__btn-arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </span>
-      </button>
+      </button> {% endcomment %}
+      {% if settings.goEnable %}
+<div class="gokwik-checkout"{% if settings.hideFlow %} style="display:none !important;" {% endif %}>
+  <button type='button' class="disabled nn__btn nn__btn--checkout" disabled onclick="onCheckoutClick(this)">
+            <span class="btn-text" >
+                <span>{{ settings.main-titile }}</span>
+                <span>{{ settings.sub-titile }}</span>
+            </span>
+          <span class="pay-opt-icon">
+             <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg">
+             <img src="https://cdn.gokwik.co/v4/images/right-arrow.svg">
+ </span>
+    <div style="display:none" class="addloadr" id="btn-loader"><div class="cir-loader">Loading..</div></div>
+  </button>
+</div>
+{% endif %}
     </footer>
   </aside>
 
@@ -412,18 +470,34 @@
     { "type": "header", "content": "Hero / Branding" },
     { "type": "text", "id": "hero_line", "label": "Tagline above 'Your Cart'", "default": "All Joy. No Rules." },
     { "type": "header", "content": "Reward Tiers" },
+    { "type": "paragraph", "content": "Choose a reward type for each tier. Only the settings for that reward type will be shown." },
+    { "type": "header", "content": "Tier 1" },
     { "type": "number", "id": "tier_1_value", "label": "Tier 1 threshold (₹)", "default": 1000 },
     { "type": "text", "id": "tier_1_label", "label": "Tier 1 reward label", "default": "₹50 off" },
-    { "type": "text", "id": "tier_1_code", "label": "Tier 1 discount code", "info": "Optional. Applied when Tier 1 is the highest unlocked tier." },
+    { "type": "select", "id": "tier_1_type", "label": "Tier 1 reward type", "default": "discount", "options": [
+      { "value": "discount", "label": "Discount" },
+      { "value": "free_product", "label": "Free product" }
+    ] },
+    { "type": "text", "id": "tier_1_code", "label": "Tier 1 discount code", "info": "Applied when this is the highest unlocked discount tier.", "visible_if": "{{ section.settings.tier_1_type == 'discount' }}" },
+    { "type": "text", "id": "tier_1_product", "label": "Tier 1 free product handle", "info": "Enter the handle from the product URL. This product is added automatically when Tier 1 is unlocked.", "visible_if": "{{ section.settings.tier_1_type == 'free_product' }}" },
+    { "type": "header", "content": "Tier 2" },
     { "type": "number", "id": "tier_2_value", "label": "Tier 2 threshold (₹)", "default": 1499 },
     { "type": "text", "id": "tier_2_label", "label": "Tier 2 reward label", "default": "Free Gift" },
-    { "type": "text", "id": "tier_2_code", "label": "Tier 2 discount code", "info": "Optional. Applied when Tier 2 is the highest unlocked tier." },
+    { "type": "select", "id": "tier_2_type", "label": "Tier 2 reward type", "default": "free_product", "options": [
+      { "value": "discount", "label": "Discount" },
+      { "value": "free_product", "label": "Free product" }
+    ] },
+    { "type": "text", "id": "tier_2_code", "label": "Tier 2 discount code", "info": "Applied when this is the highest unlocked discount tier.", "visible_if": "{{ section.settings.tier_2_type == 'discount' }}" },
+    { "type": "text", "id": "tier_2_product", "label": "Tier 2 free product handle", "info": "Enter the handle from the product URL. This product is added automatically when Tier 2 is unlocked.", "visible_if": "{{ section.settings.tier_2_type == 'free_product' }}" },
+    { "type": "header", "content": "Tier 3" },
     { "type": "number", "id": "tier_3_value", "label": "Tier 3 threshold (₹)", "default": 3000 },
     { "type": "text", "id": "tier_3_label", "label": "Tier 3 reward label", "default": "₹350 off" },
-    { "type": "text", "id": "tier_3_code", "label": "Tier 3 discount code", "info": "Optional. Applied when Tier 3 is the highest unlocked tier." },
-    { "type": "header", "content": "Free Gift" },
-    { "type": "product", "id": "free_gift_product", "label": "Free gift product" },
-    { "type": "number", "id": "free_gift_threshold", "label": "Free gift unlock threshold (₹)", "default": 1499 },
+    { "type": "select", "id": "tier_3_type", "label": "Tier 3 reward type", "default": "discount", "options": [
+      { "value": "discount", "label": "Discount" },
+      { "value": "free_product", "label": "Free product" }
+    ] },
+    { "type": "text", "id": "tier_3_code", "label": "Tier 3 discount code", "info": "Applied when this is the highest unlocked discount tier.", "visible_if": "{{ section.settings.tier_3_type == 'discount' }}" },
+    { "type": "text", "id": "tier_3_product", "label": "Tier 3 free product handle", "info": "Enter the handle from the product URL. This product is added automatically when Tier 3 is unlocked.", "visible_if": "{{ section.settings.tier_3_type == 'free_product' }}" },
     { "type": "header", "content": "Gift Wrap" },
     { "type": "product", "id": "gift_wrap_product", "label": "Gift wrap product", "info": "Use this when selecting a normal product from the customizer." },
     { "type": "text", "id": "gift_wrap_variant_id", "label": "Gift wrap variant ID", "info": "Optional. Use this when you want to drive gift wrap by a specific variant ID instead of a product handle." },

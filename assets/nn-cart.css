@@ -1674,6 +1674,131 @@
   .nn .nn__progress-tier { --nn-tier-width: 52px; }
 }
 
+/* ── Cart busy lock — blocks interaction, zero visual change ─── */
+/* Applied via data-nn-busy attribute set by _enqueue / refresh() */
+cart-drawer[data-nn-busy] input,
+cart-drawer[data-nn-busy] textarea,
+cart-drawer[data-nn-busy] select,
+cart-drawer[data-nn-busy] button,
+cart-drawer[data-nn-busy] label,
+cart-drawer[data-nn-busy] a[href] {
+  pointer-events: none;
+}
+
+/* ── Discount code form ──────────────────────────────────────── */
+.nn-discount {
+  margin: 0 6px 12px;
+}
+.nn-discount__details {
+  border: 1px solid var(--nn-border-mid);
+  border-radius: var(--nn-r-card-sm);
+  overflow: hidden;
+}
+.nn-discount__toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  color: var(--nn-body-text);
+  background: var(--nn-off-white);
+  user-select: none;
+}
+.nn-discount__toggle::-webkit-details-marker { display: none; }
+.nn-discount__chevron {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+.nn-discount__details[open] .nn-discount__chevron { transform: rotate(180deg); }
+.nn-discount__body {
+  padding: 10px 14px 14px;
+  background: #fff;
+  border-top: 1px solid var(--nn-border);
+}
+.nn-discount__form {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.nn-discount__input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-family: var(--nn-ff-body);
+  border: 1.5px solid var(--nn-border-mid);
+  border-radius: var(--nn-r-input);
+  background: var(--nn-off-white);
+  color: var(--nn-near-black);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.nn-discount__input:focus { border-color: var(--nn-orange); }
+.nn-discount__apply {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: var(--nn-ff-body);
+  background: var(--nn-near-black);
+  color: #fff;
+  border: none;
+  border-radius: var(--nn-r-input);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nn-discount__apply:hover { background: var(--nn-orange-deep); }
+.nn-discount__apply:disabled { opacity: 0.55; cursor: not-allowed; }
+.nn-discount__error {
+  font-size: 11.5px;
+  color: var(--nn-error);
+  margin-top: 7px;
+}
+.nn-discount__error[hidden] { display: none; }
+.nn-discount__codes {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+}
+.nn-discount__codes:empty { display: none; }
+.nn-discount__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 11px;
+  border: 1.5px solid var(--nn-orange);
+  border-radius: var(--nn-r-pill);
+  background: #fff8ee;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nn-orange-deep);
+}
+.nn-discount__pill-remove {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--nn-orange-deep);
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.nn-discount__pill-remove:hover { opacity: 1; }
+
+/* Cart-page discount form (outside .nn scope) */
+.nn-discount { width: 100%; margin-bottom: 14px; }
+
 @media (prefers-reduced-motion: reduce) {
   .nn, .nn *, .nn__sheet, .nn__sheet *, .nn-toast {
     animation-duration: 0.01ms !important;

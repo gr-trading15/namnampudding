@@ -46,6 +46,7 @@
         },
         "vo_product_options_block_gHcRpP": {
           "type": "shopify://apps/vo-product-options/blocks/block/430cbd7b-bd20-4c16-ba41-db6f4c645164",
+          "disabled": true,
           "settings": {
             "font_color": ""
           }
