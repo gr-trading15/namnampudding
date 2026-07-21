@@ -129,13 +129,15 @@
     "cart_drawer_collection": "",
     "mid": "19s88medg9xe",
     "envType": "production",
+    "hideFlow": false,
     "ga4Gokwik": "G-951C62Q68R",
     "fb pixel": "348022450973356",
     "priClr": "#e88e1c",
     "secClr": "#020912",
     "goEnable": true,
-    "main-titile": "BUY NOW",
+    "main-titile": "Checkout",
     "goBuynowEnable": true,
+    "buynow-titile": "Buy Now",
     "btnBClr": "#e88e1c",
     "checkout_logo_image": "shopify://shop_images/MicrosoftTeams-image.png",
     "checkout_logo_position": "center",
@@ -202,6 +204,34 @@
         "settings": {
           "enable": true
         }
+      },
+      "nn-cart-drawer": {
+        "type": "nn-cart-drawer",
+        "settings": {
+          "hero_line": "All Joy. No Rules.",
+          "tier_1_value": 899,
+          "tier_1_label": "Free Gift",
+          "tier_1_type": "free_product",
+          "tier_1_code": "",
+          "tier_1_product": "🎁-almond-crunch-brittle-trial-pack-75-grams",
+          "tier_2_value": 1499,
+          "tier_2_label": "Free Gift",
+          "tier_2_type": "free_product",
+          "tier_2_code": "",
+          "tier_2_product": "🎁-himalayan-salted-caramel-popcorn-80-grams",
+          "tier_3_value": 3000,
+          "tier_3_label": "₹350 off",
+          "tier_3_type": "discount",
+          "tier_3_code": "",
+          "tier_3_product": "",
+          "gift_wrap_product": "gift-wrap",
+          "gift_wrap_variant_id": "",
+          "upsell_collection": "shop",
+          "bestseller_collection": "",
+          "timer_minutes": 4,
+          "free_ship_threshold": 499,
+          "explore_url": ""
+        }
       }
     },
     "content_for_index": [],
@@ -209,11 +239,6 @@
       "4981902369724952902": {
         "type": "shopify://apps/vo-product-options/blocks/embed-block/430cbd7b-bd20-4c16-ba41-db6f4c645164",
         "disabled": true,
-        "settings": {}
-      },
-      "1409715032340194113": {
-        "type": "shopify://apps/gokwik-cart-slide-cart-drawer/blocks/app-embed/531cd8ff-cc36-43b1-9a44-c16d44927215",
-        "disabled": false,
         "settings": {}
       },
       "855628211100114053": {
@@ -243,6 +268,11 @@
           "debugging_global_script": "",
           "enable_reelPops": true
         }
+      },
+      "1409715032340194113": {
+        "type": "shopify://apps/gokwik-cart-slide-cart-drawer/blocks/app-embed/531cd8ff-cc36-43b1-9a44-c16d44927215",
+        "disabled": true,
+        "settings": {}
       }
     },
     "color_schemes": {
