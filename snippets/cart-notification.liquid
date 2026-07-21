@@ -42,11 +42,10 @@
           class="button button--secondary button--full-width"
         >{{ 'general.cart.view_empty_cart' | t }}</a>
         <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form">
-          {% comment %} <div class="shiprocket-headless" data-type="mini-cart"></div> {% endcomment %}
+          <div class="shiprocket-headless" data-type="mini-cart"></div>
           <!-- <button class="button button--primary button--full-width" name="checkout">
             {{ 'sections.cart.checkout' | t }}
           </button> -->
-          {% render 'gokwik-checkout' %}
         
         </form>
         <button type="button" class="link button-label">{{ 'general.continue_shopping' | t }}</button>

@@ -260,6 +260,15 @@
     },
     "1704354184263b4274": {
       "type": "apps",
+      "blocks": {
+        "trustoo_io_reviews_review_widget_C6rQJE": {
+          "type": "shopify://apps/trustoo-io-reviews/blocks/review-widget/c8f15077-6475-4e86-ad06-b66038d5ba2c",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "trustoo_io_reviews_review_widget_C6rQJE"
+      ],
       "settings": {
         "include_margins": true
       }
