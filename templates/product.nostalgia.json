@@ -49,7 +49,7 @@
         "text_YwzMJQ": {
           "type": "text",
           "settings": {
-            "text": "The only person I'd never share this with. Sharing it.",
+            "text": "For the sibling who still owes you 20 rupees from 2004.",
             "text_style": "body"
           }
         },
@@ -295,7 +295,7 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/RAKHI_LITTLE_GESTURE.png",
+        "image": "shopify://shop_images/NOSTALGIA_BANNER.png",
         "image_overlay_opacity": 0,
         "image_height": "adapt",
         "desktop_content_position": "middle-center",

@@ -1,0 +1,185 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_MLPtbU": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_KNfPyr": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "<strong>We’re here. Actually.</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_9yMraC": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Have a question about an order?</p><p>Something you loved. Something you didn’t.</p><p>Or just thinking about snacks a little too much?</p><p><br/></p><p>Write to us. We read everything.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_KNfPyr",
+        "text_9yMraC"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "88504f23-05c5-4a79-b54b-9c7209b66311": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--15340900450348__88504f23-05c5-4a79-b54b-9c7209b66311-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h1"
+          }
+        },
+        "template--15340900450348__88504f23-05c5-4a79-b54b-9c7209b66311-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>✔️ Orders answered within <strong>24 hours</strong></p><p>✔️ Real humans. No bots. No scripts.</p><p>✔️ Support from the same team that makes your snacks</p>",
+            "text_style": "body"
+          }
+        },
+        "template--15340900450348__88504f23-05c5-4a79-b54b-9c7209b66311-button-1": {
+          "type": "button",
+          "settings": {
+            "button_label": "Mail Us",
+            "button_link": "mailto:piyushnijhawan@namnam.in",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "template--15340900450348__88504f23-05c5-4a79-b54b-9c7209b66311-heading-1",
+        "template--15340900450348__88504f23-05c5-4a79-b54b-9c7209b66311-text-1",
+        "template--15340900450348__88504f23-05c5-4a79-b54b-9c7209b66311-button-1"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Generated_Image_December_16_2025_-_5_38PM.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "e5692442-3aef-485b-839f-03cd791d98bd": {
+      "type": "image-with-text",
+      "blocks": {
+        "23e86504-8c78-465d-ab9a-64ac0737fb3e": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h1"
+          }
+        },
+        "da5858ad-db1b-45b9-aaa7-b01dd09297f8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>OFFICE NO 210 A-2/42, SECOND FLOOR, GUPTA PALACE, RAJOURI GARDEN, West , Delhi, 110027</p><ul><li><a href=\"tel:+91-9711887974\">+91-9711887974</a></li></ul>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "23e86504-8c78-465d-ab9a-64ac0737fb3e",
+        "da5858ad-db1b-45b9-aaa7-b01dd09297f8"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Generated_Image_December_16_2025_-_5_41PM.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "47929879-5ed1-4940-a8f5-e51d6384a360": {
+      "type": "rich-text",
+      "blocks": {
+        "template--15340900450348__47929879-5ed1-4940-a8f5-e51d6384a360-heading-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "Get in Touch",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "template--15340900450348__47929879-5ed1-4940-a8f5-e51d6384a360-heading-1"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".rich-text.content-container {border: none;}"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "color_scheme": "background-1",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_MLPtbU",
+    "88504f23-05c5-4a79-b54b-9c7209b66311",
+    "e5692442-3aef-485b-839f-03cd791d98bd",
+    "47929879-5ed1-4940-a8f5-e51d6384a360",
+    "form"
+  ]
+}

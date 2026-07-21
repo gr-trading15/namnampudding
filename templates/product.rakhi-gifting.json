@@ -49,7 +49,7 @@
         "text_YwzMJQ": {
           "type": "text",
           "settings": {
-            "text": "The only person I'd never share this with. Sharing it.",
+            "text": "<em>Freeze-dried fresh strawberries coated in rich Belgian dark couverture.</em>",
             "text_style": "body"
           }
         },
@@ -295,7 +295,7 @@
       "type": "image-banner",
       "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "image": "shopify://shop_images/RAKHI_LITTLE_GESTURE.png",
+        "image": "shopify://shop_images/Generated_Image_December_19_2025_-_2_20PM.jpg",
         "image_overlay_opacity": 0,
         "image_height": "adapt",
         "desktop_content_position": "middle-center",
@@ -348,6 +348,22 @@
         "top_padding": 28,
         "bottom_padding": 28,
         "peek_px": 32
+      }
+    },
+    "image_banner_gkN47R": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Amazing_dark_chocolate_strawberry.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
       }
     },
     "image_with_text_g6p4XM": {
@@ -467,6 +483,7 @@
     "namnam_dual_marquee_GaUUhU",
     "image_banner_PzAHqg",
     "testimonial_slider_W9kfKQ",
+    "image_banner_gkN47R",
     "image_with_text_g6p4XM",
     "related-products",
     "testimonial_slider_VBw3FT",
