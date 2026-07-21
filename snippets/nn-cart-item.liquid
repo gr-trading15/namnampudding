@@ -1,0 +1,120 @@
+{% comment %}
+  Renders one cart line item.
+  Params: item, free_gift_variant_id
+{% endcomment %}
+
+{%- liquid
+  assign is_free_gift = false
+  if free_gift_variant_id != blank
+    assign gift_id_int = free_gift_variant_id | plus: 0
+    if item.variant_id == gift_id_int
+      assign is_free_gift = true
+    endif
+  endif
+  assign has_discount = false
+  if item.original_line_price > item.final_line_price
+    assign has_discount = true
+  endif
+-%}
+
+<li
+  class="nn__item{% if is_free_gift %} nn__item--gift{% endif %}{% if has_discount %} is-discounted{% endif %}"
+  data-cart-item
+  data-line-key="{{ item.key }}"
+  data-variant-id="{{ item.variant_id }}"
+  data-is-gift="{{ is_free_gift }}"
+>
+  <a href="{{ item.url }}" class="nn__item-media" tabindex="-1" aria-hidden="true">
+    {%- if item.image -%}
+      <img
+        src="{{ item.image | image_url: width: 200 }}"
+        srcset="{{ item.image | image_url: width: 160 }} 160w, {{ item.image | image_url: width: 240 }} 240w, {{ item.image | image_url: width: 320 }} 320w"
+        sizes="84px"
+        width="84"
+        height="84"
+        alt="{{ item.image.alt | default: item.product.title | escape }}"
+        loading="lazy"
+        decoding="async"
+      >
+    {%- else -%}
+      <div class="nn__item-media-fallback" aria-hidden="true"></div>
+    {%- endif -%}
+    {%- if is_free_gift -%}
+      <span class="nn__item-badge nn__item-badge--gift">FREE</span>
+    {%- elsif has_discount -%}
+      <span class="nn__item-badge nn__item-badge--save">SAVE</span>
+    {%- endif -%}
+  </a>
+
+  <div class="nn__item-main">
+    <a href="{{ item.url }}" class="nn__item-title">{{ item.product.title }}</a>
+
+    {%- if item.product.has_only_default_variant == false or item.selling_plan_allocation -%}
+      <div class="nn__item-meta">
+        {%- unless item.product.has_only_default_variant -%}
+          <span>{{ item.variant.title }}</span>
+        {%- endunless -%}
+        {%- if item.selling_plan_allocation -%}
+          <span>{{ item.selling_plan_allocation.selling_plan.name }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if item.line_level_discount_allocations.size > 0 -%}
+      <ul class="nn__item-discounts" role="list">
+        {%- for discount in item.line_level_discount_allocations -%}
+          <li>− {{ discount.discount_application.title }} (−{{ discount.amount | money }})</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <div class="nn__item-row">
+      <div class="nn__item-qty" {% if is_free_gift %}aria-hidden="true"{% endif %}>
+        {%- if is_free_gift -%}
+          <span class="nn__item-qty-fixed">×1</span>
+        {%- else -%}
+          <button type="button" class="nn__item-qty-btn" data-qty-decrease aria-label="Decrease quantity">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            class="nn__item-qty-input"
+            value="{{ item.quantity }}"
+            data-qty-input
+            aria-label="Quantity"
+          >
+          <button type="button" class="nn__item-qty-btn" data-qty-increase aria-label="Increase quantity">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        {%- endif -%}
+      </div>
+
+      <div class="nn__item-price">
+        {%- if is_free_gift -%}
+          <span class="nn__item-price-now nn__item-price-free">FREE</span>
+          <span class="nn__item-price-was">{{ item.original_line_price | money }}</span>
+        {%- elsif has_discount -%}
+          <span class="nn__item-price-now">{{ item.final_line_price | money }}</span>
+          <span class="nn__item-price-was">{{ item.original_line_price | money }}</span>
+        {%- else -%}
+          <span class="nn__item-price-now">{{ item.final_line_price | money }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- unless is_free_gift -%}
+    <button
+      type="button"
+      class="nn__item-remove"
+      data-item-remove
+      aria-label="Remove {{ item.product.title | escape }} from cart"
+    >
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  {%- endunless -%}
+</li>

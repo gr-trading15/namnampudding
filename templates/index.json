@@ -15,13 +15,13 @@
         "template--15340900384812__a6426f52-ab54-4e20-af8e-1e03ff2d1061-slide-1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/rewards678.png",
-            "image_1": "shopify://shop_images/rewards678.png",
+            "image": "shopify://shop_images/byob_banner.png",
+            "image_1": "shopify://shop_images/byob_banner.png",
             "heading": "Premium Gourmet Snacks & Desserts — Shipped Pan-India",
             "heading_size": "h2",
             "subheading": "",
             "button_label": "",
-            "link": "shopify://pages/rewards-terms",
+            "link": "shopify://products/build-your-own-box",
             "button_style_secondary": false,
             "box_align": "middle-left",
             "show_text_box": false,
